@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { 
   Building2, 
   MapPin, 
@@ -8,9 +8,11 @@ import {
   Heart, 
   Layers, 
   ExternalLink,
-  Award
+  Award,
+  FileCheck2
 } from 'lucide-react';
 import { useApp } from '../utils/context';
+import logoImg from '../assets/logo.jpg';
 
 export const Footer: React.FC = () => {
   const { setActiveView } = useApp();
@@ -25,7 +27,7 @@ export const Footer: React.FC = () => {
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center space-x-3 cursor-pointer" onClick={() => setActiveView('home')}>
               <img 
-                src="/logo.jpg" 
+                src={logoImg} 
                 alt="Grand Gedeh Citizens Development Council Official Crest" 
                 className="w-14 h-14 rounded-full border-2 border-amber-400 shadow-md object-cover"
               />
@@ -84,6 +86,12 @@ export const Footer: React.FC = () => {
               <li>
                 <button onClick={() => setActiveView('workforce')} className="hover:text-emerald-400 transition-colors">
                   Skills Registry & Gap Modeler
+                </button>
+              </li>
+              <li>
+                <button onClick={() => setActiveView('verification')} className="text-amber-400 hover:text-amber-300 font-semibold flex items-center space-x-1.5 transition-colors">
+                  <FileCheck2 className="w-3.5 h-3.5" />
+                  <span>Secretariat Verification Desk</span>
                 </button>
               </li>
             </ul>

@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { AppProvider, useApp } from './utils/context';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
@@ -15,6 +15,7 @@ import { WorkingGroupWorkspace } from './components/WorkingGroupWorkspace';
 import { OpportunitiesHub } from './components/OpportunitiesHub';
 import { DocumentRepository } from './components/DocumentRepository';
 import { InstitutionalGovernance } from './components/InstitutionalGovernance';
+import { SecretariatVerificationDesk } from './components/SecretariatVerificationDesk';
 import { RoleSwitcherModal } from './components/RoleSwitcherModal';
 import { Footer } from './components/Footer';
 import { 
@@ -176,6 +177,7 @@ const MainContent: React.FC = () => {
         {activeView === 'opportunities' && <OpportunitiesHub />}
         {activeView === 'documents' && <DocumentRepository />}
         {activeView === 'governance' && <InstitutionalGovernance />}
+        {activeView === 'verification' && <SecretariatVerificationDesk />}
       </main>
 
       <Footer />

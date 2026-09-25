@@ -10,7 +10,8 @@ import {
   TechnicalExpert, 
   WorkingGroup, 
   DocumentItem, 
-  OpportunityItem 
+  OpportunityItem,
+  UploadedCredential
 } from '../types';
 import { 
   CONCESSIONS_DATA, 
@@ -48,10 +49,15 @@ interface AppContextType {
   documents: DocumentItem[];
   opportunities: OpportunityItem[];
   
-  registerBusiness: (business: Omit<BusinessSupplier, 'id' | 'verifiedLocal' | 'registrationDate'>) => void;
-  registerWorkforce: (profile: Omit<WorkforceProfile, 'id'>) => void;
+  registerBusiness: (business: Omit<BusinessSupplier, 'id' | 'trackingNumber' | 'verifiedLocal' | 'verificationStatus' | 'registrationDate'> & { uploadedCredentials?: UploadedCredential[] }) => string;
+  registerWorkforce: (profile: Omit<WorkforceProfile, 'id' | 'trackingNumber' | 'verificationStatus'> & { uploadedCredentials?: UploadedCredential[] }) => string;
   submitConsultation: (consultationId: string, concern: string, authorName: string, community: string) => void;
-  nominateExpert: (expert: Omit<TechnicalExpert, 'id'>) => void;
+  nominateExpert: (expert: Omit<TechnicalExpert, 'id' | 'accreditationStatus'>) => void;
+  
+  // Secretariat Verification Actions
+  updateBusinessVerification: (id: string, status: BusinessSupplier['verificationStatus'], notes: string, auditor: string) => void;
+  updateWorkforceVerification: (id: string, status: WorkforceProfile['verificationStatus'], notes: string, auditor: string) => void;
+  verifyCredentialDoc: (entityType: 'business' | 'workforce', entityId: string, credId: string, status: UploadedCredential['status'], notes?: string) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -74,22 +80,32 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const [documents] = useState<DocumentItem[]>(DOCUMENTS_DATA);
   const [opportunities] = useState<OpportunityItem[]>(OPPORTUNITIES_DATA);
 
-  const registerBusiness = (businessData: Omit<BusinessSupplier, 'id' | 'verifiedLocal' | 'registrationDate'>) => {
+  const registerBusiness = (businessData: Omit<BusinessSupplier, 'id' | 'trackingNumber' | 'verifiedLocal' | 'verificationStatus' | 'registrationDate'> & { uploadedCredentials?: UploadedCredential[] }): string => {
+    const trackingNum = `GG-BIZ-${new Date().getFullYear()}-${Math.floor(100 + Math.random() * 900)}`;
     const newBiz: BusinessSupplier = {
       ...businessData,
       id: `biz-${Date.now()}`,
-      verifiedLocal: true,
-      registrationDate: new Date().toISOString().split('T')[0]
+      trackingNumber: trackingNum,
+      verifiedLocal: false,
+      verificationStatus: 'Pending Secretarial Audit',
+      registrationDate: new Date().toISOString().split('T')[0],
+      uploadedCredentials: businessData.uploadedCredentials || []
     };
     setBusinesses(prev => [newBiz, ...prev]);
+    return trackingNum;
   };
 
-  const registerWorkforce = (profileData: Omit<WorkforceProfile, 'id'>) => {
+  const registerWorkforce = (profileData: Omit<WorkforceProfile, 'id' | 'trackingNumber' | 'verificationStatus'> & { uploadedCredentials?: UploadedCredential[] }): string => {
+    const trackingNum = `GG-TALENT-${new Date().getFullYear()}-${Math.floor(100 + Math.random() * 900)}`;
     const newProfile: WorkforceProfile = {
       ...profileData,
-      id: `wf-${Date.now()}`
+      id: `wf-${Date.now()}`,
+      trackingNumber: trackingNum,
+      verificationStatus: 'Pending Secretarial Audit',
+      uploadedCredentials: profileData.uploadedCredentials || []
     };
     setWorkforce(prev => [newProfile, ...prev]);
+    return trackingNum;
   };
 
   const submitConsultation = (consultationId: string, _concern: string, _authorName: string, _community: string) => {
@@ -104,12 +120,76 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     }));
   };
 
-  const nominateExpert = (expertData: Omit<TechnicalExpert, 'id'>) => {
+  const nominateExpert = (expertData: Omit<TechnicalExpert, 'id' | 'accreditationStatus'>) => {
     const newExp: TechnicalExpert = {
       ...expertData,
-      id: `exp-${Date.now()}`
+      id: `exp-${Date.now()}`,
+      accreditationStatus: 'Nominated'
     };
     setExperts(prev => [newExp, ...prev]);
+  };
+
+  const updateBusinessVerification = (id: string, status: BusinessSupplier['verificationStatus'], notes: string, auditor: string) => {
+    setBusinesses(prev => prev.map(b => {
+      if (b.id === id) {
+        return {
+          ...b,
+          verificationStatus: status,
+          verifiedLocal: status === 'Approved & Accredited',
+          secretariatAuditNotes: notes,
+          accreditedBy: auditor
+        };
+      }
+      return b;
+    }));
+  };
+
+  const updateWorkforceVerification = (id: string, status: WorkforceProfile['verificationStatus'], notes: string, auditor: string) => {
+    setWorkforce(prev => prev.map(w => {
+      if (w.id === id) {
+        return {
+          ...w,
+          verificationStatus: status,
+          secretariatAuditNotes: notes,
+          accreditedBy: auditor
+        };
+      }
+      return w;
+    }));
+  };
+
+  const verifyCredentialDoc = (entityType: 'business' | 'workforce', entityId: string, credId: string, status: UploadedCredential['status'], notes?: string) => {
+    if (entityType === 'business') {
+      setBusinesses(prev => prev.map(b => {
+        if (b.id === entityId) {
+          return {
+            ...b,
+            uploadedCredentials: b.uploadedCredentials.map(c => {
+              if (c.id === credId) {
+                return { ...c, status, verificationNotes: notes, verifiedBy: 'GGCDC Secretariat' };
+              }
+              return c;
+            })
+          };
+        }
+        return b;
+      }));
+    } else {
+      setWorkforce(prev => prev.map(w => {
+        if (w.id === entityId) {
+          return {
+            ...w,
+            uploadedCredentials: w.uploadedCredentials.map(c => {
+              if (c.id === credId) {
+                return { ...c, status, verificationNotes: notes, verifiedBy: 'GGCDC Secretariat' };
+              }
+              return c;
+            })
+          };
+        }
+        return w;
+      }));
+    }
   };
 
   return (
@@ -137,7 +217,10 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       registerBusiness,
       registerWorkforce,
       submitConsultation,
-      nominateExpert
+      nominateExpert,
+      updateBusinessVerification,
+      updateWorkforceVerification,
+      verifyCredentialDoc
     }}>
       {children}
     </AppContext.Provider>

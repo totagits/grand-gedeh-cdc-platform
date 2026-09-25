@@ -2,38 +2,54 @@
 import { 
   Briefcase, 
   Search, 
-  Filter, 
-  CheckCircle, 
-  ShieldCheck, 
   PlusCircle, 
   Phone, 
   MapPin, 
-  Users, 
-  Wrench,
-  Award
+  ShieldCheck, 
+  Upload, 
+  CheckCircle, 
+  FileText, 
+  ExternalLink,
+  Clock,
+  Building2,
+  Mail
 } from 'lucide-react';
 import { useApp } from '../utils/context';
+import { UploadedCredential } from '../types';
 
 export const BusinessRegistry: React.FC = () => {
-  const { businesses, registerBusiness } = useApp();
+  const { businesses, registerBusiness, setActiveView } = useApp();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSector, setSelectedSector] = useState<string>('All');
   const [showRegisterModal, setShowRegisterModal] = useState(false);
+  const [registrationSuccess, setRegistrationSuccess] = useState<string | null>(null);
 
   // Form State
   const [formData, setFormData] = useState({
     name: '',
     sector: 'Construction',
     ownership: '100% Grand Gedeh' as const,
-    location: 'Zwedru City',
+    location: 'Zwedru City Center',
     servicesStr: '',
     contactPerson: '',
     contactPhone: '',
+    contactEmail: '',
     legalStatus: 'LBR Registered' as const,
     taxStatus: 'LRA Tax Compliant' as const,
-    workforceSize: 10,
+    workforceSize: 12,
     equipmentSummary: '',
     pastContractsStr: ''
+  });
+
+  // Attached files state
+  const [attachedFiles, setAttachedFiles] = useState<{
+    lbrCert: string;
+    lraTax: string;
+    addressProof: string;
+  }>({
+    lbrCert: 'LBR_Certificate_Scan.pdf',
+    lraTax: 'LRA_Tax_Clearance_2026.pdf',
+    addressProof: 'Zwedru_Office_Proof.pdf'
   });
 
   const sectors = [
@@ -59,7 +75,38 @@ export const BusinessRegistry: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    registerBusiness({
+
+    const credentials: UploadedCredential[] = [
+      {
+        id: `cred-${Date.now()}-1`,
+        name: 'Liberia Business Registry (LBR) Certificate',
+        docType: 'LBR Business Registration',
+        fileName: attachedFiles.lbrCert,
+        fileSize: '1.4 MB',
+        uploadedAt: new Date().toISOString().split('T')[0],
+        status: 'Pending Verification'
+      },
+      {
+        id: `cred-${Date.now()}-2`,
+        name: 'LRA Tax Clearance Certificate',
+        docType: 'LRA Tax Clearance',
+        fileName: attachedFiles.lraTax,
+        fileSize: '950 KB',
+        uploadedAt: new Date().toISOString().split('T')[0],
+        status: 'Pending Verification'
+      },
+      {
+        id: `cred-${Date.now()}-3`,
+        name: 'Proof of Physical Grand Gedeh Presence',
+        docType: 'Proof of Address',
+        fileName: attachedFiles.addressProof,
+        fileSize: '2.1 MB',
+        uploadedAt: new Date().toISOString().split('T')[0],
+        status: 'Pending Verification'
+      }
+    ];
+
+    const trackingNum = registerBusiness({
       name: formData.name,
       sector: formData.sector,
       ownership: formData.ownership,
@@ -67,28 +114,17 @@ export const BusinessRegistry: React.FC = () => {
       services: formData.servicesStr.split(',').map(s => s.trim()).filter(Boolean),
       contactPerson: formData.contactPerson,
       contactPhone: formData.contactPhone,
+      contactEmail: formData.contactEmail,
       legalStatus: formData.legalStatus,
       taxStatus: formData.taxStatus,
       workforceSize: Number(formData.workforceSize),
       equipmentSummary: formData.equipmentSummary,
-      pastContracts: formData.pastContractsStr.split(',').map(s => s.trim()).filter(Boolean)
+      pastContracts: formData.pastContractsStr.split(',').map(s => s.trim()).filter(Boolean),
+      uploadedCredentials: credentials
     });
+
     setShowRegisterModal(false);
-    // Reset form
-    setFormData({
-      name: '',
-      sector: 'Construction',
-      ownership: '100% Grand Gedeh',
-      location: 'Zwedru City',
-      servicesStr: '',
-      contactPerson: '',
-      contactPhone: '',
-      legalStatus: 'LBR Registered',
-      taxStatus: 'LRA Tax Compliant',
-      workforceSize: 10,
-      equipmentSummary: '',
-      pastContractsStr: ''
-    });
+    setRegistrationSuccess(trackingNum);
   };
 
   return (
@@ -100,25 +136,55 @@ export const BusinessRegistry: React.FC = () => {
           <div>
             <div className="inline-flex items-center space-x-2 text-xs font-semibold text-emerald-400 bg-emerald-950/80 border border-emerald-800 px-3 py-1 rounded-full uppercase tracking-wider mb-2">
               <Briefcase className="w-3.5 h-3.5" />
-              <span>Local Content & Enterprise Empowerment</span>
+              <span>Verified Grand Gedeh Enterprise Directory</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
               Grand Gedeh Business & Supplier Registry
             </h2>
             <p className="text-xs sm:text-sm text-slate-300 max-w-2xl mt-1">
-              Connecting Putu, timber concessions, highway contractors, and commercial investors 
-              with verified Grand Gedeh businesses capable of supplying goods, services, and works.
+              Concessionaires (Putu Mining Corp, Singbeh, Cavalla Agro) are mandated to procure from verified local suppliers. 
+              Register your enterprise with uploaded LBR and Tax credentials to receive accreditation.
             </p>
           </div>
 
-          <button
-            onClick={() => setShowRegisterModal(true)}
-            className="inline-flex items-center space-x-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-4 py-2.5 rounded-lg shadow-lg transition-colors self-start md:self-auto"
-          >
-            <PlusCircle className="w-4 h-4" />
-            <span>Register Your Enterprise</span>
-          </button>
+          <div className="flex flex-wrap items-center gap-3">
+            <button
+              onClick={() => setActiveView('verification')}
+              className="inline-flex items-center space-x-2 bg-slate-800 hover:bg-slate-700 text-amber-400 border border-amber-600/80 font-bold text-xs px-4 py-2.5 rounded-lg shadow transition-colors"
+            >
+              <ShieldCheck className="w-4 h-4" />
+              <span>Secretariat Audit Desk</span>
+            </button>
+
+            <button
+              onClick={() => setShowRegisterModal(true)}
+              className="inline-flex items-center space-x-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-4 py-2.5 rounded-lg shadow-lg transition-colors"
+            >
+              <PlusCircle className="w-4 h-4" />
+              <span>Register Enterprise & Upload Docs</span>
+            </button>
+          </div>
         </div>
+
+        {/* Tracking Success Notification */}
+        {registrationSuccess && (
+          <div className="mb-8 p-5 bg-gradient-to-r from-emerald-950 via-slate-900 to-emerald-950 border-2 border-emerald-500 rounded-2xl shadow-2xl space-y-2">
+            <div className="flex items-center space-x-2 text-emerald-400 font-bold text-sm">
+              <CheckCircle className="w-5 h-5 text-emerald-400 flex-shrink-0" />
+              <span>Enterprise Application Successfully Registered!</span>
+            </div>
+            <p className="text-xs text-slate-200 leading-relaxed">
+              Your application and 3 uploaded credentials (LBR, Tax, Proof of Address) have been transmitted to the 
+              <strong> GGCDC Secretariat Verification Desk</strong> under Tracking Number:
+            </p>
+            <div className="inline-block bg-slate-950 border border-amber-500/80 text-amber-400 font-mono font-bold text-sm px-3 py-1 rounded-lg">
+              {registrationSuccess}
+            </div>
+            <p className="text-[11px] text-slate-400 pt-1">
+              Secretariat officers will audit your uploaded documents and award the official "Verified Local Supplier" accreditation badge.
+            </p>
+          </div>
+        )}
 
         {/* Filter Toolbar */}
         <div className="bg-slate-800/90 border border-slate-700 rounded-xl p-4 mb-6 flex flex-col md:flex-row items-center justify-between gap-4">
@@ -155,21 +221,27 @@ export const BusinessRegistry: React.FC = () => {
           {filteredBusinesses.map((biz) => (
             <div
               key={biz.id}
-              className="bg-slate-800/90 border border-slate-700/80 rounded-xl p-5 hover:border-emerald-600 transition-all shadow-lg flex flex-col justify-between"
+              className="bg-slate-800/90 border border-slate-700/80 rounded-xl p-5 hover:border-emerald-500 transition-all shadow-lg flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-[11px] font-bold text-amber-400 bg-amber-950/80 border border-amber-800 px-2 py-0.5 rounded">
                     {biz.sector}
                   </span>
-                  {biz.verifiedLocal && (
+                  {biz.verificationStatus === 'Approved & Accredited' ? (
                     <span className="inline-flex items-center space-x-1 text-[11px] font-bold text-emerald-300 bg-emerald-950 border border-emerald-700 px-2 py-0.5 rounded-full">
                       <ShieldCheck className="w-3 h-3 text-emerald-400" />
-                      <span>Verified Local</span>
+                      <span>Verified Supplier</span>
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center space-x-1 text-[10px] font-bold text-amber-300 bg-amber-950 border border-amber-800 px-2 py-0.5 rounded-full">
+                      <Clock className="w-3 h-3 text-amber-400" />
+                      <span>Audit Pending</span>
                     </span>
                   )}
                 </div>
 
+                <div className="text-[10px] font-mono text-slate-500">Tracking: {biz.trackingNumber}</div>
                 <h3 className="text-base font-bold text-white mt-1 leading-snug">
                   {biz.name}
                 </h3>
@@ -181,7 +253,6 @@ export const BusinessRegistry: React.FC = () => {
                   <span className="text-emerald-400 font-medium">{biz.ownership}</span>
                 </div>
 
-                {/* Services list */}
                 <div className="mt-3">
                   <span className="text-[11px] text-slate-400 block mb-1">Products & Services:</span>
                   <div className="flex flex-wrap gap-1">
@@ -193,7 +264,6 @@ export const BusinessRegistry: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Capacity & Compliance */}
                 <div className="mt-4 p-3 bg-slate-900/70 border border-slate-800 rounded-lg text-xs space-y-1.5">
                   <div className="flex items-center justify-between">
                     <span className="text-slate-400">Legal Registration:</span>
@@ -204,17 +274,12 @@ export const BusinessRegistry: React.FC = () => {
                     <span className="text-emerald-400 font-medium">{biz.taxStatus}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-slate-400">Workforce Size:</span>
-                    <span className="text-white font-medium">{biz.workforceSize} Personnel</span>
-                  </div>
-                  <div className="pt-1 text-[11px] text-slate-400">
-                    <span className="font-semibold text-slate-300">Equipment: </span>
-                    <span>{biz.equipmentSummary}</span>
+                    <span className="text-slate-400">Verified Credentials:</span>
+                    <span className="text-white font-medium">{biz.uploadedCredentials?.length || 0} Documents On File</span>
                   </div>
                 </div>
               </div>
 
-              {/* Card Footer */}
               <div className="mt-4 pt-3 border-t border-slate-700/80 flex items-center justify-between text-xs">
                 <div>
                   <span className="text-slate-400 block text-[10px]">Contact Person:</span>
@@ -232,10 +297,10 @@ export const BusinessRegistry: React.FC = () => {
           ))}
         </div>
 
-        {/* Modal: Register Local Business */}
+        {/* Modal: Register Local Business WITH Credential Uploads */}
         {showRegisterModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm overflow-y-auto">
-            <div className="bg-slate-900 border border-slate-700 rounded-2xl max-w-xl w-full p-6 sm:p-8 shadow-2xl relative my-8">
+            <div className="bg-slate-900 border border-slate-700 rounded-2xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl relative my-8">
               <button
                 onClick={() => setShowRegisterModal(false)}
                 className="absolute top-5 right-5 text-slate-400 hover:text-white bg-slate-800 p-1.5 rounded-full"
@@ -248,19 +313,20 @@ export const BusinessRegistry: React.FC = () => {
                 <span>Grand Gedeh Local Content Protocol</span>
               </div>
               <h2 className="text-xl font-extrabold text-white">
-                Register Your Grand Gedeh Enterprise
+                Register Local Enterprise & Upload Credentials
               </h2>
               <p className="text-xs text-slate-300 mt-1 mb-6">
-                Submitted businesses are verified by the GGCDC Local Content Directorate for concession procurement matchmaking.
+                All registrations are submitted directly to the GGCDC Central Secretariat for verification 
+                against the Liberia Business Registry (LBR) and LRA tax databases.
               </p>
 
               <form onSubmit={handleSubmit} className="space-y-4 text-xs">
                 <div>
-                  <label className="block text-slate-300 mb-1 font-medium">Enterprise / Business Name</label>
+                  <label className="block text-slate-300 mb-1 font-medium">Enterprise Legal Name</label>
                   <input
                     type="text"
                     required
-                    placeholder="e.g. Zwedru Logistics & Aggregate Works"
+                    placeholder="e.g. Cavalla Aggregate & Civil Quarrying Ltd."
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-emerald-500"
@@ -275,14 +341,14 @@ export const BusinessRegistry: React.FC = () => {
                       onChange={(e) => setFormData({ ...formData, sector: e.target.value })}
                       className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-emerald-500"
                     >
-                      <option value="Construction">Construction & Civil Works</option>
+                      <option value="Construction">Construction & Civil Engineering</option>
                       <option value="Transportation">Transportation & Logistics</option>
-                      <option value="Fuel supply">Fuel & Petroleum Supply</option>
-                      <option value="Catering">Catering & Food Provision</option>
-                      <option value="ICT">ICT & Telecommunications</option>
+                      <option value="Fuel supply">Fuel & Bulk Petroleum</option>
+                      <option value="Catering">Catering & Camp Support</option>
+                      <option value="ICT">ICT & Electrical Power</option>
                       <option value="Security">Security & Facility Protection</option>
-                      <option value="Environmental services">Environmental & Sanitation</option>
-                      <option value="Equipment rental">Heavy Equipment Rental</option>
+                      <option value="Environmental services">Environmental Sanitation</option>
+                      <option value="Equipment rental">Heavy Machinery Hire</option>
                     </select>
                   </div>
 
@@ -294,19 +360,19 @@ export const BusinessRegistry: React.FC = () => {
                       className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-emerald-500"
                     >
                       <option value="100% Grand Gedeh">100% Grand Gedeh Resident Owned</option>
-                      <option value="Liberian Majority">Liberian Majority Owned</option>
-                      <option value="Joint Venture">Joint Venture</option>
+                      <option value="Liberian Majority">Liberian Majority Owned (51%+)</option>
+                      <option value="Joint Venture">Joint Venture with Foreign Partner</option>
                     </select>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-slate-300 mb-1 font-medium">Town / District Location</label>
+                    <label className="block text-slate-300 mb-1 font-medium">Physical Location in Grand Gedeh</label>
                     <input
                       type="text"
                       required
-                      placeholder="e.g. Zwedru City Center"
+                      placeholder="e.g. Zwedru City Center / Putu Jarwodee"
                       value={formData.location}
                       onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                       className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-emerald-500"
@@ -314,7 +380,7 @@ export const BusinessRegistry: React.FC = () => {
                   </div>
 
                   <div>
-                    <label className="block text-slate-300 mb-1 font-medium">Permanent Workforce Size</label>
+                    <label className="block text-slate-300 mb-1 font-medium">Full-Time Workforce Size</label>
                     <input
                       type="number"
                       required
@@ -327,24 +393,13 @@ export const BusinessRegistry: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-slate-300 mb-1 font-medium">Products / Services Offered (Comma-separated)</label>
+                  <label className="block text-slate-300 mb-1 font-medium">Services / Goods Provided (Comma-separated)</label>
                   <input
                     type="text"
                     required
-                    placeholder="e.g. Road grading, Bridge culverts, Concrete casting, Fuel tanker delivery"
+                    placeholder="e.g. Gravel crushing, Dump truck hauling, Road grading, Concrete casting"
                     value={formData.servicesStr}
                     onChange={(e) => setFormData({ ...formData, servicesStr: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-emerald-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-slate-300 mb-1 font-medium">Major Equipment & Facilities Owned</label>
-                  <input
-                    type="text"
-                    placeholder="e.g. 2 CAT Excavators, 3 Tipper Dump Trucks, Cold storage facility"
-                    value={formData.equipmentSummary}
-                    onChange={(e) => setFormData({ ...formData, equipmentSummary: e.target.value })}
                     className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-emerald-500"
                   />
                 </div>
@@ -363,7 +418,7 @@ export const BusinessRegistry: React.FC = () => {
                   </div>
 
                   <div>
-                    <label className="block text-slate-300 mb-1 font-medium">Phone Number</label>
+                    <label className="block text-slate-300 mb-1 font-medium">Direct Phone Number</label>
                     <input
                       type="tel"
                       required
@@ -372,6 +427,49 @@ export const BusinessRegistry: React.FC = () => {
                       onChange={(e) => setFormData({ ...formData, contactPhone: e.target.value })}
                       className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-emerald-500"
                     />
+                  </div>
+                </div>
+
+                {/* MANDATORY CREDENTIAL UPLOAD SECTION */}
+                <div className="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-3">
+                  <div className="flex items-center space-x-2 text-xs font-bold text-amber-400 uppercase tracking-wider">
+                    <Upload className="w-4 h-4" />
+                    <span>Upload Proof Documents for Secretariat Audit</span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div className="p-2.5 bg-slate-900 border border-slate-700 rounded-lg">
+                      <label className="block text-[11px] text-slate-300 font-semibold mb-1">1. LBR Registration</label>
+                      <input
+                        type="text"
+                        value={attachedFiles.lbrCert}
+                        onChange={(e) => setAttachedFiles({ ...attachedFiles, lbrCert: e.target.value })}
+                        className="w-full bg-slate-950 border border-slate-800 rounded p-1.5 text-[11px] text-emerald-400"
+                      />
+                      <span className="text-[10px] text-slate-500 mt-1 block">PDF or Stamped Scan</span>
+                    </div>
+
+                    <div className="p-2.5 bg-slate-900 border border-slate-700 rounded-lg">
+                      <label className="block text-[11px] text-slate-300 font-semibold mb-1">2. LRA Tax Clearance</label>
+                      <input
+                        type="text"
+                        value={attachedFiles.lraTax}
+                        onChange={(e) => setAttachedFiles({ ...attachedFiles, lraTax: e.target.value })}
+                        className="w-full bg-slate-950 border border-slate-800 rounded p-1.5 text-[11px] text-emerald-400"
+                      />
+                      <span className="text-[10px] text-slate-500 mt-1 block">Valid Tax Receipt</span>
+                    </div>
+
+                    <div className="p-2.5 bg-slate-900 border border-slate-700 rounded-lg">
+                      <label className="block text-[11px] text-slate-300 font-semibold mb-1">3. Proof of Address</label>
+                      <input
+                        type="text"
+                        value={attachedFiles.addressProof}
+                        onChange={(e) => setAttachedFiles({ ...attachedFiles, addressProof: e.target.value })}
+                        className="w-full bg-slate-950 border border-slate-800 rounded p-1.5 text-[11px] text-emerald-400"
+                      />
+                      <span className="text-[10px] text-slate-500 mt-1 block">Lease or Town Letter</span>
+                    </div>
                   </div>
                 </div>
 
@@ -385,9 +483,10 @@ export const BusinessRegistry: React.FC = () => {
                   </button>
                   <button
                     type="submit"
-                    className="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg shadow"
+                    className="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg shadow-lg flex items-center space-x-1.5"
                   >
-                    Submit Enterprise for Verification
+                    <span>Transmit to Secretariat Desk</span>
+                    <ShieldCheck className="w-4 h-4" />
                   </button>
                 </div>
               </form>

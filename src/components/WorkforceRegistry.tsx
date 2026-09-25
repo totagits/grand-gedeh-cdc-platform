@@ -1,25 +1,27 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { 
   Users, 
   Search, 
-  Filter, 
   Calculator, 
   CheckCircle, 
   GraduationCap, 
   Globe, 
   PlusCircle, 
-  Building2, 
   ShieldCheck, 
-  ArrowRight,
-  TrendingUp
+  TrendingUp,
+  Upload,
+  Clock,
+  Award
 } from 'lucide-react';
 import { useApp } from '../utils/context';
+import { UploadedCredential } from '../types';
 
 export const WorkforceRegistry: React.FC = () => {
-  const { workforce, registerWorkforce } = useApp();
+  const { workforce, registerWorkforce, setActiveView } = useApp();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTrade, setSelectedTrade] = useState<string>('All');
   const [showRegisterModal, setShowRegisterModal] = useState(false);
+  const [registrationSuccess, setRegistrationSuccess] = useState<string | null>(null);
 
   // Investor Skills Gap Calculator State
   const [calcTrade, setCalcTrade] = useState('Heavy-equipment operators');
@@ -28,16 +30,26 @@ export const WorkforceRegistry: React.FC = () => {
   // Form State
   const [formData, setFormData] = useState({
     fullName: '',
-    gender: 'Male' as const,
+    gender: 'Male' as 'Male' | 'Female',
     district: 'Putu District',
     isDiaspora: false,
     diasporaCountry: '',
     tradeCategory: 'Heavy-equipment operators',
     specialization: '',
-    qualificationLevel: 'Trade Certified' as const,
+    qualificationLevel: 'Trade Certified' as 'Trade Certified' | 'Diploma' | 'BSc / BEng' | 'Master / PhD' | 'Apprentice',
     yearsExperience: 5,
-    currentStatus: 'Available for Immediate Hire' as const,
+    currentStatus: 'Available for Immediate Hire' as 'Available for Immediate Hire' | 'Currently Employed' | 'Available for Advisory',
     verifiedSkillsStr: ''
+  });
+
+  const [attachedFiles, setAttachedFiles] = useState<{
+    tradeCert: string;
+    operatingLicense: string;
+    resume: string;
+  }>({
+    tradeCert: 'TVET_Trade_Certification.pdf',
+    operatingLicense: 'Heavy_Machinery_License.pdf',
+    resume: 'Curriculum_Vitae_Resume.pdf'
   });
 
   const trades = [
@@ -62,17 +74,46 @@ export const WorkforceRegistry: React.FC = () => {
     return matchesTrade && matchesSearch;
   });
 
-  // Calculate Skills Gap Breakdown
   const availableInDb = workforce.filter(w => w.tradeCategory.toLowerCase().includes(calcTrade.toLowerCase().split(' ')[0]));
   const countInDb = availableInDb.length;
-  // Scaled modeling based on database sample
   const verifiedQualified = Math.min(calcDemand, Math.round(countInDb * 66));
   const partialQualified = Math.min(calcDemand - verifiedQualified, Math.round(calcDemand * 0.22));
   const trainingRequired = Math.max(0, calcDemand - verifiedQualified - partialQualified);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    registerWorkforce({
+
+    const credentials: UploadedCredential[] = [
+      {
+        id: `cred-${Date.now()}-1`,
+        name: 'Technical Trade Certificate or University Degree',
+        docType: formData.qualificationLevel === 'BSc / BEng' || formData.qualificationLevel === 'Master / PhD' ? 'University Degree' : 'TVET Trade Certificate',
+        fileName: attachedFiles.tradeCert,
+        fileSize: '1.8 MB',
+        uploadedAt: new Date().toISOString().split('T')[0],
+        status: 'Pending Verification'
+      },
+      {
+        id: `cred-${Date.now()}-2`,
+        name: 'Professional Operator or Engineering License',
+        docType: 'Equipment Operator License',
+        fileName: attachedFiles.operatingLicense,
+        fileSize: '1.1 MB',
+        uploadedAt: new Date().toISOString().split('T')[0],
+        status: 'Pending Verification'
+      },
+      {
+        id: `cred-${Date.now()}-3`,
+        name: 'Curriculum Vitae / Work History',
+        docType: 'CV / Resume',
+        fileName: attachedFiles.resume,
+        fileSize: '750 KB',
+        uploadedAt: new Date().toISOString().split('T')[0],
+        status: 'Pending Verification'
+      }
+    ];
+
+    const trackingNum = registerWorkforce({
       fullName: formData.fullName,
       gender: formData.gender,
       district: formData.district,
@@ -83,9 +124,12 @@ export const WorkforceRegistry: React.FC = () => {
       qualificationLevel: formData.qualificationLevel,
       yearsExperience: Number(formData.yearsExperience),
       currentStatus: formData.currentStatus,
-      verifiedSkills: formData.verifiedSkillsStr.split(',').map(s => s.trim()).filter(Boolean)
+      verifiedSkills: formData.verifiedSkillsStr.split(',').map(s => s.trim()).filter(Boolean),
+      uploadedCredentials: credentials
     });
+
     setShowRegisterModal(false);
+    setRegistrationSuccess(trackingNum);
   };
 
   return (
@@ -97,27 +141,57 @@ export const WorkforceRegistry: React.FC = () => {
           <div>
             <div className="inline-flex items-center space-x-2 text-xs font-semibold text-emerald-400 bg-emerald-950/80 border border-emerald-800 px-3 py-1 rounded-full uppercase tracking-wider mb-2">
               <Users className="w-3.5 h-3.5" />
-              <span>Human Capital & Local Content Desk</span>
+              <span>Countywide & Diaspora Professional Roster</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
               Grand Gedeh Skills & Workforce Registry
             </h2>
             <p className="text-xs sm:text-sm text-slate-300 max-w-2xl mt-1">
-              Countywide and diaspora professional registry. Transforming employment advocacy from vague demands 
-              into verified skills data, precise labor gap analysis, and targeted training covenants.
+              Organizing talent across Grand Gedeh and the global diaspora. Upload trade certifications 
+              and professional diplomas to receive accreditation for mining, infrastructure, and forestry contracts.
             </p>
           </div>
 
-          <button
-            onClick={() => setShowRegisterModal(true)}
-            className="inline-flex items-center space-x-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-4 py-2.5 rounded-lg shadow-lg transition-colors self-start md:self-auto"
-          >
-            <PlusCircle className="w-4 h-4" />
-            <span>Register Your Skills Profile</span>
-          </button>
+          <div className="flex flex-wrap items-center gap-3">
+            <button
+              onClick={() => setActiveView('verification')}
+              className="inline-flex items-center space-x-2 bg-slate-800 hover:bg-slate-700 text-amber-400 border border-amber-600/80 font-bold text-xs px-4 py-2.5 rounded-lg shadow transition-colors"
+            >
+              <ShieldCheck className="w-4 h-4" />
+              <span>Secretariat Audit Desk</span>
+            </button>
+
+            <button
+              onClick={() => setShowRegisterModal(true)}
+              className="inline-flex items-center space-x-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-4 py-2.5 rounded-lg shadow-lg transition-colors"
+            >
+              <PlusCircle className="w-4 h-4" />
+              <span>Register Skills & Upload Credentials</span>
+            </button>
+          </div>
         </div>
 
-        {/* Dynamic Investor Skills Gap Calculator Banner */}
+        {/* Tracking Success Alert */}
+        {registrationSuccess && (
+          <div className="mb-8 p-5 bg-gradient-to-r from-emerald-950 via-slate-900 to-emerald-950 border-2 border-emerald-500 rounded-2xl shadow-2xl space-y-2">
+            <div className="flex items-center space-x-2 text-emerald-400 font-bold text-sm">
+              <CheckCircle className="w-5 h-5 text-emerald-400 flex-shrink-0" />
+              <span>Professional Registration Successfully Received!</span>
+            </div>
+            <p className="text-xs text-slate-200 leading-relaxed">
+              Your profile and uploaded credential files have been transmitted to the 
+              <strong> GGCDC Secretariat Verification Desk</strong> under Tracking Number:
+            </p>
+            <div className="inline-block bg-slate-950 border border-amber-500/80 text-amber-400 font-mono font-bold text-sm px-3 py-1 rounded-lg">
+              {registrationSuccess}
+            </div>
+            <p className="text-[11px] text-slate-400 pt-1">
+              Once verified by Secretariat officers, your profile will be flagged as Accredited and prioritized for concession hiring quotas.
+            </p>
+          </div>
+        )}
+
+        {/* Dynamic Investor Skills Gap Calculator */}
         <div className="bg-gradient-to-r from-slate-900 via-emerald-950/60 to-slate-900 border border-emerald-800/80 rounded-2xl p-6 mb-10 shadow-2xl">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-emerald-900/60">
             <div>
@@ -129,7 +203,7 @@ export const WorkforceRegistry: React.FC = () => {
                 Factual Labor Capability & Training Obligation Modeler
               </h3>
               <p className="text-xs text-slate-300 mt-1 max-w-2xl">
-                When an investor or concessionaire requires skilled workers, this system replaces guesswork with empirical Grand Gedeh talent data.
+                When an investor requires workers, this tool calculates verified talent vs TVET training obligations.
               </p>
             </div>
 
@@ -164,7 +238,6 @@ export const WorkforceRegistry: React.FC = () => {
             </div>
           </div>
 
-          {/* Calculator Output Breakdown Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6">
             <div className="bg-slate-950/80 border border-emerald-700/60 rounded-xl p-4">
               <div className="flex items-center justify-between text-xs text-emerald-400 mb-1">
@@ -195,19 +268,19 @@ export const WorkforceRegistry: React.FC = () => {
               </div>
               <div className="text-2xl font-black text-white">{trainingRequired} Trainees</div>
               <p className="text-[11px] text-slate-400 mt-1">
-                Allocated to GGCC TVET accelerator funded under Concession Article 11 training fund.
+                Allocated to GGCC TVET accelerator funded under Concession training funds.
               </p>
             </div>
           </div>
         </div>
 
-        {/* Search & Trade Category Filter */}
+        {/* Search & Filter Toolbar */}
         <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 mb-6 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="relative w-full md:w-80">
             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
             <input
               type="text"
-              placeholder="Search by name, skill, district, degree..."
+              placeholder="Search by name, skill, district, tracking..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full bg-slate-950 border border-slate-700 rounded-lg pl-9 pr-4 py-2 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-emerald-500"
@@ -231,7 +304,7 @@ export const WorkforceRegistry: React.FC = () => {
           </div>
         </div>
 
-        {/* Workforce Profiles Grid */}
+        {/* Talent Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredWorkforce.map((person) => (
             <div
@@ -243,18 +316,20 @@ export const WorkforceRegistry: React.FC = () => {
                   <span className="text-[11px] font-bold text-amber-400 bg-amber-950/80 border border-amber-800 px-2 py-0.5 rounded">
                     {person.tradeCategory}
                   </span>
-                  {person.isDiaspora ? (
-                    <span className="inline-flex items-center space-x-1 text-[10px] font-bold text-sky-300 bg-sky-950 border border-sky-800 px-2 py-0.5 rounded-full">
-                      <Globe className="w-3 h-3 text-sky-400" />
-                      <span>Diaspora: {person.diasporaCountry?.split('(')[0]}</span>
+                  {person.verificationStatus === 'Approved & Accredited' ? (
+                    <span className="inline-flex items-center space-x-1 text-[10px] font-bold text-emerald-300 bg-emerald-950 border border-emerald-700 px-2 py-0.5 rounded-full">
+                      <ShieldCheck className="w-3 h-3 text-emerald-400" />
+                      <span>Accredited</span>
                     </span>
                   ) : (
-                    <span className="text-[10px] text-slate-400 font-medium">
-                      {person.district}
+                    <span className="inline-flex items-center space-x-1 text-[10px] font-bold text-amber-300 bg-amber-950 border border-amber-800 px-2 py-0.5 rounded-full">
+                      <Clock className="w-3 h-3 text-amber-400" />
+                      <span>Audit Pending</span>
                     </span>
                   )}
                 </div>
 
+                <div className="text-[10px] font-mono text-slate-500">ID: {person.trackingNumber}</div>
                 <h3 className="text-base font-bold text-white mt-1 leading-snug">
                   {person.fullName}
                 </h3>
@@ -273,14 +348,17 @@ export const WorkforceRegistry: React.FC = () => {
                     <span className="text-white font-medium">{person.yearsExperience} Years</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-slate-400">Availability:</span>
-                    <span className="text-amber-300 font-medium">{person.currentStatus}</span>
+                    <span className="text-slate-400">Location:</span>
+                    <span className="text-slate-300">{person.isDiaspora ? `Diaspora (${person.diasporaCountry})` : person.district}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-slate-400">Verified Files:</span>
+                    <span className="text-amber-300 font-mono">{person.uploadedCredentials?.length || 0} Docs</span>
                   </div>
                 </div>
 
-                {/* Verified Skills Badges */}
                 <div className="mt-3">
-                  <span className="text-[11px] text-slate-400 block mb-1">Verified Technical Competencies:</span>
+                  <span className="text-[11px] text-slate-400 block mb-1">Technical Skills:</span>
                   <div className="flex flex-wrap gap-1">
                     {person.verifiedSkills.map((sk, idx) => (
                       <span key={idx} className="bg-slate-800 text-slate-200 text-[10px] px-2 py-0.5 rounded border border-slate-700">
@@ -291,18 +369,20 @@ export const WorkforceRegistry: React.FC = () => {
                 </div>
               </div>
 
-              {/* Action */}
               <div className="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
-                <span className="text-slate-500 font-mono text-[10px]">ID: {person.id.toUpperCase()}</span>
-                <button className="text-emerald-400 hover:text-emerald-300 font-semibold underline text-xs">
-                  Request Roster Verification
+                <span className="text-slate-400 text-[11px]">{person.currentStatus}</span>
+                <button 
+                  onClick={() => setActiveView('verification')}
+                  className="text-emerald-400 hover:text-emerald-300 font-semibold text-xs"
+                >
+                  Inspect in Secretariat
                 </button>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Modal: Register Workforce Profile */}
+        {/* Modal: Register Workforce Profile with Credential Uploads */}
         {showRegisterModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm overflow-y-auto">
             <div className="bg-slate-900 border border-slate-700 rounded-2xl max-w-xl w-full p-6 sm:p-8 shadow-2xl relative my-8">
@@ -318,10 +398,10 @@ export const WorkforceRegistry: React.FC = () => {
                 <span>Countywide & Diaspora Talent Pool</span>
               </div>
               <h2 className="text-xl font-extrabold text-white">
-                Register Your Qualifications & Skills
+                Register Skills & Upload Credentials
               </h2>
               <p className="text-xs text-slate-300 mt-1 mb-6">
-                Your profile is reviewed by the GGCDC Human Capital Desk to match with concession vacancies, TVET scholarships, and advisory panels.
+                Accredited profiles are matched with concession jobs, TVET apprenticeships, and advisory panels.
               </p>
 
               <form onSubmit={handleSubmit} className="space-y-4 text-xs">
@@ -330,7 +410,7 @@ export const WorkforceRegistry: React.FC = () => {
                   <input
                     type="text"
                     required
-                    placeholder="e.g. Moses Glaydor Krahn"
+                    placeholder="e.g. Helena Quaye Boley"
                     value={formData.fullName}
                     onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
                     className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-emerald-500"
@@ -339,7 +419,7 @@ export const WorkforceRegistry: React.FC = () => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-slate-300 mb-1 font-medium">Trade / Profession Category</label>
+                    <label className="block text-slate-300 mb-1 font-medium">Trade / Discipline Category</label>
                     <select
                       value={formData.tradeCategory}
                       onChange={(e) => setFormData({ ...formData, tradeCategory: e.target.value })}
@@ -351,7 +431,7 @@ export const WorkforceRegistry: React.FC = () => {
                       <option value="Civil engineers">Civil Engineers</option>
                       <option value="Geologists">Geologists & Mining Specialists</option>
                       <option value="Environmental specialists">Environmental Specialists</option>
-                      <option value="Agricultural specialists">Agricultural Extension & Agronomy</option>
+                      <option value="Agricultural specialists">Agricultural Extension</option>
                       <option value="Accountants">Accountants & Finance</option>
                       <option value="Surveyors">Surveyors & GIS Technicians</option>
                     </select>
@@ -364,7 +444,7 @@ export const WorkforceRegistry: React.FC = () => {
                       onChange={(e) => setFormData({ ...formData, qualificationLevel: e.target.value as any })}
                       className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-emerald-500"
                     >
-                      <option value="Trade Certified">Trade Certified (TVET / Apprenticeship)</option>
+                      <option value="Trade Certified">Trade Certified (TVET)</option>
                       <option value="Diploma">Diploma / Associate Degree</option>
                       <option value="BSc / BEng">BSc / Bachelor of Engineering</option>
                       <option value="Master / PhD">Master / PhD</option>
@@ -375,7 +455,7 @@ export const WorkforceRegistry: React.FC = () => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-slate-300 mb-1 font-medium">Grand Gedeh Origin District</label>
+                    <label className="block text-slate-300 mb-1 font-medium">District of Origin</label>
                     <select
                       value={formData.district}
                       onChange={(e) => setFormData({ ...formData, district: e.target.value })}
@@ -404,29 +484,18 @@ export const WorkforceRegistry: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-slate-300 mb-1 font-medium">Primary Specialization</label>
+                  <label className="block text-slate-300 mb-1 font-medium">Specialization Summary</label>
                   <input
                     type="text"
                     required
-                    placeholder="e.g. CAT 349 Excavator operator, AWS 6G pipe welding, or Tailings dam hydrology"
+                    placeholder="e.g. CAT 390 Excavator bench digging, structural steel AWS welding"
                     value={formData.specialization}
                     onChange={(e) => setFormData({ ...formData, specialization: e.target.value })}
                     className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-emerald-500"
                   />
                 </div>
 
-                <div>
-                  <label className="block text-slate-300 mb-1 font-medium">Verified Technical Skills (Comma-separated)</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="e.g. Open Pit Excavation, Grade Stakes, Safety Audits, Hydraulic Maintenance"
-                    value={formData.verifiedSkillsStr}
-                    onChange={(e) => setFormData({ ...formData, verifiedSkillsStr: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-emerald-500"
-                  />
-                </div>
-
+                {/* Diaspora Checkbox */}
                 <div className="flex items-center space-x-2 pt-1">
                   <input
                     type="checkbox"
@@ -445,13 +514,56 @@ export const WorkforceRegistry: React.FC = () => {
                     <label className="block text-slate-300 mb-1 font-medium">Diaspora City & Country</label>
                     <input
                       type="text"
-                      placeholder="e.g. Houston, Texas, USA"
+                      placeholder="e.g. Houston, USA / Calgary, Canada"
                       value={formData.diasporaCountry}
                       onChange={(e) => setFormData({ ...formData, diasporaCountry: e.target.value })}
                       className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-emerald-500"
                     />
                   </div>
                 )}
+
+                {/* UPLOAD CREDENTIALS */}
+                <div className="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-3">
+                  <div className="flex items-center space-x-2 text-xs font-bold text-amber-400 uppercase tracking-wider">
+                    <Upload className="w-4 h-4" />
+                    <span>Upload Credentials for Secretariat Accreditation</span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div className="p-2.5 bg-slate-900 border border-slate-700 rounded-lg">
+                      <label className="block text-[11px] text-slate-300 font-semibold mb-1">1. Certificate / Degree</label>
+                      <input
+                        type="text"
+                        value={attachedFiles.tradeCert}
+                        onChange={(e) => setAttachedFiles({ ...attachedFiles, tradeCert: e.target.value })}
+                        className="w-full bg-slate-950 border border-slate-800 rounded p-1.5 text-[11px] text-emerald-400"
+                      />
+                      <span className="text-[10px] text-slate-500 mt-1 block">TVET or Degree</span>
+                    </div>
+
+                    <div className="p-2.5 bg-slate-900 border border-slate-700 rounded-lg">
+                      <label className="block text-[11px] text-slate-300 font-semibold mb-1">2. Operator / License</label>
+                      <input
+                        type="text"
+                        value={attachedFiles.operatingLicense}
+                        onChange={(e) => setAttachedFiles({ ...attachedFiles, operatingLicense: e.target.value })}
+                        className="w-full bg-slate-950 border border-slate-800 rounded p-1.5 text-[11px] text-emerald-400"
+                      />
+                      <span className="text-[10px] text-slate-500 mt-1 block">License or Cert</span>
+                    </div>
+
+                    <div className="p-2.5 bg-slate-900 border border-slate-700 rounded-lg">
+                      <label className="block text-[11px] text-slate-300 font-semibold mb-1">3. CV / Resume</label>
+                      <input
+                        type="text"
+                        value={attachedFiles.resume}
+                        onChange={(e) => setAttachedFiles({ ...attachedFiles, resume: e.target.value })}
+                        className="w-full bg-slate-950 border border-slate-800 rounded p-1.5 text-[11px] text-emerald-400"
+                      />
+                      <span className="text-[10px] text-slate-500 mt-1 block">Work History</span>
+                    </div>
+                  </div>
+                </div>
 
                 <div className="pt-4 flex justify-end space-x-3">
                   <button
@@ -463,9 +575,10 @@ export const WorkforceRegistry: React.FC = () => {
                   </button>
                   <button
                     type="submit"
-                    className="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg shadow"
+                    className="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg shadow-lg flex items-center space-x-1.5"
                   >
-                    Save & Submit Profile
+                    <span>Transmit to Secretariat</span>
+                    <ShieldCheck className="w-4 h-4" />
                   </button>
                 </div>
               </form>

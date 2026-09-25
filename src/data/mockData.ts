@@ -234,7 +234,8 @@ export const CONCESSIONS_DATA: ConcessionProject[] = [
     totalDisclosedPayments: '$14,250,000 USD (Cumulative Royalties & Social Fund Escrow)',
     workingGroupId: 'wg-putu',
     statusNotes: 'Feasibility re-engineering ongoing. Working group actively monitoring infrastructure and labor hiring compliance ahead of main extraction phase.',
-    coordinates: { x: 58, y: 44 }
+    lat: 5.6833,
+    lng: -8.1667
   },
   {
     id: 'proj-singbeh-timber',
@@ -280,7 +281,8 @@ export const CONCESSIONS_DATA: ConcessionProject[] = [
     totalDisclosedPayments: '$1,840,000 USD (Cubic Meter Fees & Land Rental)',
     workingGroupId: 'wg-forestry',
     statusNotes: 'Active operations. Community committee recently flagged delayed Q2 cubic meter fee reconciliation; GGCDC facilitating resolution.',
-    coordinates: { x: 38, y: 32 }
+    lat: 6.2500,
+    lng: -8.2800
   },
   {
     id: 'proj-cavalla-agro',
@@ -324,7 +326,8 @@ export const CONCESSIONS_DATA: ConcessionProject[] = [
     totalDisclosedPayments: '$480,000 USD',
     workingGroupId: 'wg-agriculture',
     statusNotes: 'Nursery expansion complete; mini-mill equipment arriving via Harper port; commissioning in Q4 2026.',
-    coordinates: { x: 74, y: 68 }
+    lat: 5.8500,
+    lng: -7.8000
   },
   {
     id: 'proj-ganta-zwedru-road',
@@ -362,7 +365,8 @@ export const CONCESSIONS_DATA: ConcessionProject[] = [
     totalDisclosedPayments: '$48,000,000 USD (Total Contract Envelope)',
     workingGroupId: 'wg-infra',
     statusNotes: 'Section from Tapeta border to Toe Town 68% paved; Zwedru urban approach grading in progress. GGCDC monitoring local subcontracts.',
-    coordinates: { x: 45, y: 52 }
+    lat: 6.0719,
+    lng: -8.1322
   },
   {
     id: 'proj-clsg-power',
@@ -400,7 +404,8 @@ export const CONCESSIONS_DATA: ConcessionProject[] = [
     totalDisclosedPayments: '$12,500,000 USD (Infrastructure Asset Value)',
     workingGroupId: 'wg-infra',
     statusNotes: 'Substation operating reliably with over 94% uptime; second phase rural distribution lines to Putu corridor under procurement.',
-    coordinates: { x: 50, y: 56 }
+    lat: 6.0650,
+    lng: -8.1250
   }
 ];
 
@@ -543,6 +548,7 @@ export const COMMITMENTS_DATA: CommitmentRecord[] = [
 export const BUSINESSES_DATA: BusinessSupplier[] = [
   {
     id: 'biz-001',
+    trackingNumber: 'GG-BIZ-2026-001',
     name: 'Zwedru Engineering & Heavy Civil Works Ltd.',
     sector: 'Construction',
     ownership: '100% Grand Gedeh',
@@ -550,16 +556,54 @@ export const BUSINESSES_DATA: BusinessSupplier[] = [
     services: ['Road grading', 'Bridge culverts', 'Foundation casting', 'Heavy equipment operation', 'Aggregate quarrying'],
     contactPerson: 'Eng. Emmanuel Gaye Krahn',
     contactPhone: '+231 770 412 889',
+    contactEmail: 'info@zwedru-engineering.lr',
     legalStatus: 'LBR Registered',
     taxStatus: 'LRA Tax Compliant',
     workforceSize: 42,
     equipmentSummary: '2 CAT 320 Excavators, 3 Graders, 4 Tipper Dump Trucks, 1 Concrete Mixer Plant',
     verifiedLocal: true,
+    verificationStatus: 'Approved & Accredited',
     registrationDate: '2021-03-15',
-    pastContracts: ['Toe Town Feeder Culverts ($180k)', 'Zwedru City Council Market Annex ($95k)']
+    pastContracts: ['Toe Town Feeder Culverts ($180k)', 'Zwedru City Council Market Annex ($95k)'],
+    secretariatAuditNotes: 'All corporate filings verified against LBR and LRA portal on Jan 14, 2026. Equipment physically audited at Zwedru yard.',
+    accreditedBy: 'Cllr. Saydee M. Krahn (Secretariat Legal & Local Content Officer)',
+    uploadedCredentials: [
+      {
+        id: 'cred-b01-1',
+        name: 'Liberia Business Registry (LBR) Certificate',
+        docType: 'LBR Business Registration',
+        fileName: 'Zwedru_Eng_LBR_Reg_2026.pdf',
+        fileSize: '1.4 MB',
+        uploadedAt: '2026-01-10',
+        status: 'Verified',
+        verifiedBy: 'Secretariat Compliance Desk',
+        verificationNotes: 'Registration active; valid through Dec 2026.'
+      },
+      {
+        id: 'cred-b01-2',
+        name: 'Liberia Revenue Authority (LRA) Tax Clearance',
+        docType: 'LRA Tax Clearance',
+        fileName: 'LRA_Tax_Clearance_Q1_2026.pdf',
+        fileSize: '890 KB',
+        uploadedAt: '2026-01-12',
+        status: 'Verified',
+        verifiedBy: 'Secretariat Compliance Desk',
+        verificationNotes: 'Tax compliance verified in good standing.'
+      },
+      {
+        id: 'cred-b01-3',
+        name: 'Zwedru Physical Yard & Office Lease Title',
+        docType: 'Proof of Address',
+        fileName: 'Zwedru_Office_Physical_Lease.pdf',
+        fileSize: '2.1 MB',
+        uploadedAt: '2026-01-10',
+        status: 'Verified'
+      }
+    ]
   },
   {
     id: 'biz-002',
+    trackingNumber: 'GG-BIZ-2026-002',
     name: 'Cavalla Valley Logistics & Heavy Haulage Syndicate',
     sector: 'Transportation',
     ownership: '100% Grand Gedeh',
@@ -567,16 +611,41 @@ export const BUSINESSES_DATA: BusinessSupplier[] = [
     services: ['Heavy timber haulage', 'Mineral specimen transport', 'Diesel fuel tankers', 'Container drayage from Harper Port'],
     contactPerson: 'Madam Beatrice Dehgar',
     contactPhone: '+231 886 523 910',
+    contactEmail: 'bdehgar@cavallalogistics.com',
     legalStatus: 'LBR Registered',
     taxStatus: 'LRA Tax Compliant',
     workforceSize: 28,
     equipmentSummary: '8 Mercedes Actros Prime Movers, 4 Flatbed Trailers, 2 Fuel Bowsers (30,000L)',
     verifiedLocal: true,
+    verificationStatus: 'Approved & Accredited',
     registrationDate: '2020-08-11',
-    pastContracts: ['Singbeh Timber Log Transport ($240k)', 'MPW Aggregate Delivery ($115k)']
+    pastContracts: ['Singbeh Timber Log Transport ($240k)', 'MPW Aggregate Delivery ($115k)'],
+    secretariatAuditNotes: 'Fleet inspected and vehicle titles authenticated.',
+    accreditedBy: 'Executive Secretariat Audit Committee',
+    uploadedCredentials: [
+      {
+        id: 'cred-b02-1',
+        name: 'LBR Business Registration Certificate',
+        docType: 'LBR Business Registration',
+        fileName: 'Cavalla_Logistics_LBR.pdf',
+        fileSize: '1.2 MB',
+        uploadedAt: '2026-02-05',
+        status: 'Verified'
+      },
+      {
+        id: 'cred-b02-2',
+        name: 'Fleet Insurance & Road Worthiness Certificates',
+        docType: 'Proof of Address',
+        fileName: 'Truck_Fleet_Insurance_Pact.pdf',
+        fileSize: '3.4 MB',
+        uploadedAt: '2026-02-05',
+        status: 'Verified'
+      }
+    ]
   },
   {
     id: 'biz-003',
+    trackingNumber: 'GG-BIZ-2026-003',
     name: 'Putu Green Horizon Catering & Camp Support Services',
     sector: 'Catering',
     ownership: 'Liberian Majority',
@@ -589,11 +658,26 @@ export const BUSINESSES_DATA: BusinessSupplier[] = [
     workforceSize: 34,
     equipmentSummary: 'Commercial bakery, 2 walk-in cold rooms, 2 refrigerated delivery vans',
     verifiedLocal: true,
+    verificationStatus: 'Approved & Accredited',
     registrationDate: '2023-01-20',
-    pastContracts: ['PIOM Exploration Camp Kitchen Support ($320k)']
+    pastContracts: ['PIOM Exploration Camp Kitchen Support ($320k)'],
+    secretariatAuditNotes: 'MOH Food Handler certificates for 24 kitchen staff verified.',
+    accreditedBy: 'Public Health & Nutrition Desk',
+    uploadedCredentials: [
+      {
+        id: 'cred-b03-1',
+        name: 'MOH Health & Food Safety Inspection Permit',
+        docType: 'LBR Business Registration',
+        fileName: 'Food_Safety_Cert_2026.pdf',
+        fileSize: '950 KB',
+        uploadedAt: '2026-03-01',
+        status: 'Verified'
+      }
+    ]
   },
   {
     id: 'biz-004',
+    trackingNumber: 'GG-BIZ-2026-004',
     name: 'Grand Gedeh Tech Solutions & Solar Systems',
     sector: 'ICT',
     ownership: '100% Grand Gedeh',
@@ -606,82 +690,68 @@ export const BUSINESSES_DATA: BusinessSupplier[] = [
     workforceSize: 14,
     equipmentSummary: 'Optical fusion splicers, OTDR testers, solar inverter diagnostics, bucket truck',
     verifiedLocal: true,
+    verificationStatus: 'Approved & Accredited',
     registrationDate: '2022-06-04',
-    pastContracts: ['TRANSCO CLSG Auxiliary Solar Backup ($65k)', 'GGCC Computer Lab Networking ($42k)']
+    pastContracts: ['TRANSCO CLSG Auxiliary Solar Backup ($65k)', 'GGCC Computer Lab Networking ($42k)'],
+    uploadedCredentials: [
+      {
+        id: 'cred-b04-1',
+        name: 'Certified Electrical Engineer License',
+        docType: 'TVET Trade Certificate',
+        fileName: 'Solar_Grid_Master_Lic.pdf',
+        fileSize: '1.1 MB',
+        uploadedAt: '2026-04-12',
+        status: 'Verified'
+      }
+    ]
   },
   {
     id: 'biz-005',
-    name: 'Krahn Mountain Security & Facility Protection Agency',
-    sector: 'Security',
+    trackingNumber: 'GG-BIZ-2026-005',
+    name: 'Jarwodee Aggregate & Sand Crushing Syndicate',
+    sector: 'Construction',
     ownership: '100% Grand Gedeh',
-    location: 'Zwedru Central',
-    services: ['Industrial guard forces', 'Asset escort convoy', 'Mine perimeter monitoring', 'Access control management'],
-    contactPerson: 'Capt. Marcus T. Boley (Rtd)',
-    contactPhone: '+231 775 882 101',
-    legalStatus: 'Certified',
-    taxStatus: 'LRA Tax Compliant',
-    workforceSize: 85,
-    equipmentSummary: 'VHF radio repeater network, 4 patrol pick-ups, metal detection portals, body scanners',
-    verifiedLocal: true,
-    registrationDate: '2019-11-14',
-    pastContracts: ['Singbeh Timber Base Security ($140k)', 'Zwedru Central Bank Facility Guarding ($80k)']
-  },
-  {
-    id: 'biz-006',
-    name: 'Tchien Eco-Sanitation & Waste Management Co.',
-    sector: 'Environmental services',
-    ownership: '100% Grand Gedeh',
-    location: 'Zwedru Peri-Urban',
-    services: ['Hazardous waste handling', 'Camp sewage pumping & bio-digestion', 'Solid waste recycling', 'Spill cleanup response'],
-    contactPerson: 'Sarah N. Boe',
-    contactPhone: '+231 886 119 304',
-    legalStatus: 'LBR Registered',
-    taxStatus: 'Pending Renewal',
-    workforceSize: 19,
-    equipmentSummary: '1 Vacuum sewage truck (10,000L), 2 refuse compactor trucks, certified chemical absorbent stocks',
-    verifiedLocal: true,
-    registrationDate: '2022-09-18',
-    pastContracts: ['UNHCR Camp Remediation ($55k)']
-  },
-  {
-    id: 'biz-007',
-    name: 'Toe Town Petroleum & Fuel Depot Syndicate',
-    sector: 'Fuel supply',
-    ownership: '100% Grand Gedeh',
-    location: 'Toe Town Highway Terminal',
-    services: ['Bulk diesel supply (Low Sulphur)', 'Commercial lubricants', 'Mobile refueling tankers'],
-    contactPerson: 'Alhaji Musa Kanneh',
-    contactPhone: '+231 776 220 891',
+    location: 'Putu District Quarry Zone',
+    services: ['Crushed basalt rock supply', 'River sand washing', 'Quarry hauling'],
+    contactPerson: 'Jackson K. Jarwodee',
+    contactPhone: '+231 776 550 122',
     legalStatus: 'LBR Registered',
     taxStatus: 'LRA Tax Compliant',
-    workforceSize: 22,
-    equipmentSummary: '60,000 Gallon underground storage tanks, 3 mobile dispensing fuel trucks',
-    verifiedLocal: true,
-    registrationDate: '2018-05-12',
-    pastContracts: ['MPW Highway Paving Fuel Supply ($420k)']
-  },
-  {
-    id: 'biz-008',
-    name: 'Grand Gedeh Agro-Forestry Equipment Rentals',
-    sector: 'Equipment rental',
-    ownership: '100% Grand Gedeh',
-    location: 'Zwedru North Ring Road',
-    services: ['Bulldozer & loader hire', 'Agricultural tractor fleet', 'Mobile rock crusher lease'],
-    contactPerson: 'Jerry N. Quiah',
-    contactPhone: '+231 888 341 902',
-    legalStatus: 'LBR Registered',
-    taxStatus: 'LRA Tax Compliant',
-    workforceSize: 16,
-    equipmentSummary: '4 Massey Ferguson tractors, 2 Komatsu D65 dozers, mobile jaw crusher',
-    verifiedLocal: true,
-    registrationDate: '2021-10-09',
-    pastContracts: ['County Agricultural Clearing Project ($75k)']
+    workforceSize: 18,
+    equipmentSummary: 'Mobile jaw crusher (40 TPH), 2 wheel loaders, 3 dump trucks',
+    verifiedLocal: false,
+    verificationStatus: 'Pending Secretarial Audit',
+    registrationDate: '2026-09-18',
+    pastContracts: ['Jarwodee Feeder Culvert Aggregate ($45k)'],
+    secretariatAuditNotes: 'Application submitted recently. Secretariat scheduled on-site quarry permit inspection for Oct 2, 2026.',
+    uploadedCredentials: [
+      {
+        id: 'cred-b05-1',
+        name: 'Mining & Energy Quarry License Application',
+        docType: 'LBR Business Registration',
+        fileName: 'MME_Quarry_Permit_App.pdf',
+        fileSize: '2.4 MB',
+        uploadedAt: '2026-09-18',
+        status: 'Pending Verification',
+        verificationNotes: 'Awaiting formal stamped renewal from Ministry of Mines & Energy.'
+      },
+      {
+        id: 'cred-b05-2',
+        name: 'Clan Chief Jarwodee Land Authorization Letter',
+        docType: 'Proof of Address',
+        fileName: 'Customary_Land_Auth_Letter.pdf',
+        fileSize: '740 KB',
+        uploadedAt: '2026-09-18',
+        status: 'Verified'
+      }
+    ]
   }
 ];
 
 export const WORKFORCE_DATA: WorkforceProfile[] = [
   {
     id: 'wf-001',
+    trackingNumber: 'GG-TALENT-2026-001',
     fullName: 'Moses Glaydor Krahn',
     gender: 'Male',
     district: 'Putu District',
@@ -691,10 +761,36 @@ export const WORKFORCE_DATA: WorkforceProfile[] = [
     qualificationLevel: 'Trade Certified',
     yearsExperience: 11,
     currentStatus: 'Available for Immediate Hire',
-    verifiedSkills: ['Open Pit Bench Excavation', 'Grade Stake Reading', 'Heavy Hydraulics Inspection', 'MSHA Mining Safety']
+    verifiedSkills: ['Open Pit Bench Excavation', 'Grade Stake Reading', 'Heavy Hydraulics Inspection', 'MSHA Mining Safety'],
+    verificationStatus: 'Approved & Accredited',
+    secretariatAuditNotes: 'Operating licenses and TVET trade certification verified with Ministry of Transport and Bomi TVET center.',
+    accreditedBy: 'GGCDC Human Capital Directorate',
+    uploadedCredentials: [
+      {
+        id: 'cred-w01-1',
+        name: 'Heavy Equipment Master Operator License',
+        docType: 'Equipment Operator License',
+        fileName: 'CAT_Heavy_Operator_Lic_Glaydor.pdf',
+        fileSize: '1.2 MB',
+        uploadedAt: '2026-01-20',
+        status: 'Verified',
+        verifiedBy: 'Workforce Accreditation Desk',
+        verificationNotes: 'Class-C Commercial Operator License valid through 2028.'
+      },
+      {
+        id: 'cred-w01-2',
+        name: 'National TVET Certificate in Hydraulics',
+        docType: 'TVET Trade Certificate',
+        fileName: 'National_TVET_Cert_Hydraulics.pdf',
+        fileSize: '890 KB',
+        uploadedAt: '2026-01-20',
+        status: 'Verified'
+      }
+    ]
   },
   {
     id: 'wf-002',
+    trackingNumber: 'GG-TALENT-2026-002',
     fullName: 'Helena Quaye Boley',
     gender: 'Female',
     district: 'Tchien District',
@@ -705,10 +801,34 @@ export const WORKFORCE_DATA: WorkforceProfile[] = [
     qualificationLevel: 'Master / PhD',
     yearsExperience: 14,
     currentStatus: 'Available for Advisory',
-    verifiedSkills: ['Geostatistics', 'Diamond Core Logging', 'JORC Resource Classification', 'Mineral Economics']
+    verifiedSkills: ['Geostatistics', 'Diamond Core Logging', 'JORC Resource Classification', 'Mineral Economics'],
+    verificationStatus: 'Approved & Accredited',
+    secretariatAuditNotes: 'M.Sc. in Economic Geology from Univ. of Alberta verified. Registered with Professional Engineers & Geoscientists (APEGA).',
+    accreditedBy: 'Dr. Archibald G. Boe (Technical Lead)',
+    uploadedCredentials: [
+      {
+        id: 'cred-w02-1',
+        name: 'M.Sc. Economic Geology Degree Certificate',
+        docType: 'University Degree',
+        fileName: 'MSc_Geology_Degree_Boley.pdf',
+        fileSize: '2.5 MB',
+        uploadedAt: '2026-02-14',
+        status: 'Verified'
+      },
+      {
+        id: 'cred-w02-2',
+        name: 'Professional Geoscientist (P.Geo) License Canada',
+        docType: 'University Degree',
+        fileName: 'APEGA_PGeo_Lic_Boley.pdf',
+        fileSize: '920 KB',
+        uploadedAt: '2026-02-14',
+        status: 'Verified'
+      }
+    ]
   },
   {
     id: 'wf-003',
+    trackingNumber: 'GG-TALENT-2026-003',
     fullName: 'Prince J. Wisseh',
     gender: 'Male',
     district: 'Gbao District',
@@ -718,10 +838,23 @@ export const WORKFORCE_DATA: WorkforceProfile[] = [
     qualificationLevel: 'Trade Certified',
     yearsExperience: 8,
     currentStatus: 'Available for Immediate Hire',
-    verifiedSkills: ['TIG & MIG Welding', 'Structural Steel Erection', 'Pipeline Hydrostatic Testing', 'NDT Inspection Readiness']
+    verifiedSkills: ['TIG & MIG Welding', 'Structural Steel Erection', 'Pipeline Hydrostatic Testing', 'NDT Inspection Readiness'],
+    verificationStatus: 'Approved & Accredited',
+    uploadedCredentials: [
+      {
+        id: 'cred-w03-1',
+        name: 'American Welding Society (AWS) 6G Certificate',
+        docType: 'TVET Trade Certificate',
+        fileName: 'AWS_6G_Pipe_Cert_Wisseh.pdf',
+        fileSize: '1.3 MB',
+        uploadedAt: '2026-03-10',
+        status: 'Verified'
+      }
+    ]
   },
   {
     id: 'wf-004',
+    trackingNumber: 'GG-TALENT-2026-004',
     fullName: 'Dr. Josephus Tarwoe',
     gender: 'Male',
     district: 'B\'hai District',
@@ -732,75 +865,23 @@ export const WORKFORCE_DATA: WorkforceProfile[] = [
     qualificationLevel: 'Master / PhD',
     yearsExperience: 22,
     currentStatus: 'Available for Advisory',
-    verifiedSkills: ['Dam Safety Audits', 'HEC-RAS Flood Modeling', 'Sediment Transport', 'Environmental Permitting']
+    verifiedSkills: ['Dam Safety Audits', 'HEC-RAS Flood Modeling', 'Sediment Transport', 'Environmental Permitting'],
+    verificationStatus: 'Approved & Accredited',
+    uploadedCredentials: [
+      {
+        id: 'cred-w04-1',
+        name: 'Ph.D. Civil & Environmental Engineering Diploma',
+        docType: 'University Degree',
+        fileName: 'PhD_Civil_Eng_Tarwoe.pdf',
+        fileSize: '3.1 MB',
+        uploadedAt: '2026-01-05',
+        status: 'Verified'
+      }
+    ]
   },
   {
     id: 'wf-005',
-    fullName: 'Fatu M. Gaye',
-    gender: 'Female',
-    district: 'Cavalla District',
-    isDiaspora: false,
-    tradeCategory: 'Agricultural specialists',
-    specialization: 'High-Density Oil Palm Propagation & Cocoa Disease Control',
-    qualificationLevel: 'BSc / BEng',
-    yearsExperience: 6,
-    currentStatus: 'Currently Employed',
-    verifiedSkills: ['Integrated Pest Management', 'Soil Fertility Mapping', 'Cooperative Bookkeeping', 'Outgrower Scheme Structuring']
-  },
-  {
-    id: 'wf-006',
-    fullName: 'Alexander Z. Dweh',
-    gender: 'Male',
-    district: 'Tchien District',
-    isDiaspora: false,
-    tradeCategory: 'Electricians',
-    specialization: 'Medium-to-High Voltage (33kV/225kV) Transmission & Switching',
-    qualificationLevel: 'Diploma',
-    yearsExperience: 9,
-    currentStatus: 'Available for Immediate Hire',
-    verifiedSkills: ['Transformer Diagnostics', 'SCADA System Maintenance', 'Substation Protection Relays', 'Live Line Maintenance']
-  },
-  {
-    id: 'wf-007',
-    fullName: 'Samuel G. Nyanti',
-    gender: 'Male',
-    district: 'Putu District',
-    isDiaspora: false,
-    tradeCategory: 'Heavy-equipment operators',
-    specialization: 'Articulated Haul Truck (CAT 745 / Volvo A40G)',
-    qualificationLevel: 'Trade Certified',
-    yearsExperience: 7,
-    currentStatus: 'Available for Immediate Hire',
-    verifiedSkills: ['Haul Road Ramp Navigation', 'Pre-Trip Telematics Audit', 'Bulk Ore Discharge', 'Defensive Concession Driving']
-  },
-  {
-    id: 'wf-008',
-    fullName: 'Eunice K. Toe',
-    gender: 'Female',
-    district: 'Tchien District',
-    isDiaspora: false,
-    tradeCategory: 'Accountants',
-    specialization: 'Concession Local Payroll, LRA Withholding & ERP Systems',
-    qualificationLevel: 'BSc / BEng',
-    yearsExperience: 5,
-    currentStatus: 'Available for Immediate Hire',
-    verifiedSkills: ['QuickBooks Pro', 'IFRS Standards', 'Tax Clearance Audits', 'Community Social Fund Accounting']
-  },
-  {
-    id: 'wf-009',
-    fullName: 'Gabriel K. Jarwodee',
-    gender: 'Male',
-    district: 'Putu District',
-    isDiaspora: false,
-    tradeCategory: 'Environmental specialists',
-    specialization: 'Water Quality Sampling & Ambient Air Particulate Monitoring',
-    qualificationLevel: 'BSc / BEng',
-    yearsExperience: 6,
-    currentStatus: 'Currently Employed',
-    verifiedSkills: ['HACH Water Testing Kits', 'EPA Field Protocols', 'Community Sensitization', 'GIS Field Mapping']
-  },
-  {
-    id: 'wf-010',
+    trackingNumber: 'GG-TALENT-2026-005',
     fullName: 'Ruth Dennis Freeman',
     gender: 'Female',
     district: 'B\'hai District',
@@ -811,7 +892,21 @@ export const WORKFORCE_DATA: WorkforceProfile[] = [
     qualificationLevel: 'Master / PhD',
     yearsExperience: 12,
     currentStatus: 'Available for Advisory',
-    verifiedSkills: ['RTK GPS', 'Drone Photogrammetry (LiDAR)', 'Boundary Demarcation', 'ArcGIS Pro']
+    verifiedSkills: ['RTK GPS', 'Drone Photogrammetry (LiDAR)', 'Boundary Demarcation', 'ArcGIS Pro'],
+    verificationStatus: 'Pending Secretarial Audit',
+    secretariatAuditNotes: 'Credentials submitted; awaiting notarized translation of UK RICS surveyor certification.',
+    uploadedCredentials: [
+      {
+        id: 'cred-w05-1',
+        name: 'Royal Institution of Chartered Surveyors (RICS) Diploma',
+        docType: 'University Degree',
+        fileName: 'RICS_Surveyor_Cert_Freeman.pdf',
+        fileSize: '2.8 MB',
+        uploadedAt: '2026-09-15',
+        status: 'Pending Verification',
+        verificationNotes: 'Pending secretarial background validation.'
+      }
+    ]
   }
 ];
 
@@ -842,7 +937,8 @@ export const COMMUNITIES_DATA: CommunityProfile[] = [
     ],
     activeGrievanceCount: 1,
     consultationsAttended: 12,
-    coordinates: { x: 50, y: 55 }
+    lat: 6.0719,
+    lng: -8.1322
   },
   {
     id: 'com-jarwodee',
@@ -870,7 +966,8 @@ export const COMMUNITIES_DATA: CommunityProfile[] = [
     ],
     activeGrievanceCount: 3,
     consultationsAttended: 24,
-    coordinates: { x: 58, y: 44 }
+    lat: 5.6833,
+    lng: -8.1667
   },
   {
     id: 'com-pennoken',
@@ -897,7 +994,8 @@ export const COMMUNITIES_DATA: CommunityProfile[] = [
     ],
     activeGrievanceCount: 0,
     consultationsAttended: 9,
-    coordinates: { x: 52, y: 48 }
+    lat: 6.0000,
+    lng: -8.1667
   },
   {
     id: 'com-tuzon',
@@ -925,7 +1023,8 @@ export const COMMUNITIES_DATA: CommunityProfile[] = [
     ],
     activeGrievanceCount: 1,
     consultationsAttended: 11,
-    coordinates: { x: 38, y: 36 }
+    lat: 6.1500,
+    lng: -8.2167
   },
   {
     id: 'com-toe-town',
@@ -953,7 +1052,8 @@ export const COMMUNITIES_DATA: CommunityProfile[] = [
     ],
     activeGrievanceCount: 0,
     consultationsAttended: 15,
-    coordinates: { x: 32, y: 28 }
+    lat: 6.4167,
+    lng: -8.3500
   },
   {
     id: 'com-tempo',
@@ -981,7 +1081,8 @@ export const COMMUNITIES_DATA: CommunityProfile[] = [
     ],
     activeGrievanceCount: 2,
     consultationsAttended: 8,
-    coordinates: { x: 74, y: 68 }
+    lat: 5.8500,
+    lng: -7.8000
   }
 ];
 
@@ -1047,7 +1148,8 @@ export const EXPERTS_DATA: TechnicalExpert[] = [
     workingGroupAssigned: 'Putu Mining & Development Working Group',
     specializationArea: 'Concession negotiations, stabilization clauses, and local content legislation',
     biographySnippet: 'Over 18 years advising African governments and civic coalitions on extractives contracts, arbitration, and community development agreements.',
-    yearsOfExperience: 19
+    yearsOfExperience: 19,
+    accreditationStatus: 'Senior Fellow'
   },
   {
     id: 'exp-002',
@@ -1059,7 +1161,8 @@ export const EXPERTS_DATA: TechnicalExpert[] = [
     workingGroupAssigned: 'Putu Mining & Development Working Group',
     specializationArea: 'Iron ore beneficiation, open-pit optimization, rail logistics economics',
     biographySnippet: 'Former senior mining engineer with BHP and Rio Tinto; advises GGCDC on technical validation of Putu mine feasibility studies.',
-    yearsOfExperience: 24
+    yearsOfExperience: 24,
+    accreditationStatus: 'Senior Fellow'
   },
   {
     id: 'exp-003',
@@ -1071,7 +1174,8 @@ export const EXPERTS_DATA: TechnicalExpert[] = [
     workingGroupAssigned: 'Forestry, Environment & Climate Working Group',
     specializationArea: 'REDD+ carbon credit validation, biodiversity offsets, customary forest tenure',
     biographySnippet: 'Lead author on Upper Guinean forest conservation; structured $4.5M in community carbon partnerships across West Africa.',
-    yearsOfExperience: 16
+    yearsOfExperience: 16,
+    accreditationStatus: 'Accredited'
   },
   {
     id: 'exp-004',
@@ -1083,7 +1187,8 @@ export const EXPERTS_DATA: TechnicalExpert[] = [
     workingGroupAssigned: 'Infrastructure & Connectivity Working Group',
     specializationArea: 'Tropical highway asphalt design, hydraulic culvert sizing, contractor quality audits',
     biographySnippet: 'Supervised major highway trunk lines in Liberia and Sierra Leone; currently auditing Corridor 3 asphalt execution for GGCDC.',
-    yearsOfExperience: 21
+    yearsOfExperience: 21,
+    accreditationStatus: 'Accredited'
   },
   {
     id: 'exp-005',
@@ -1095,7 +1200,8 @@ export const EXPERTS_DATA: TechnicalExpert[] = [
     workingGroupAssigned: 'Agriculture & Food Systems Working Group',
     specializationArea: 'Smallholder value chains, cocoa cooperative governance, micro-processing finance',
     biographySnippet: 'Dean of Agricultural Sciences at GGCC; designer of Grand Gedeh Smallholder Outgrower Modernization Framework.',
-    yearsOfExperience: 18
+    yearsOfExperience: 18,
+    accreditationStatus: 'Senior Fellow'
   },
   {
     id: 'exp-006',
@@ -1107,7 +1213,8 @@ export const EXPERTS_DATA: TechnicalExpert[] = [
     workingGroupAssigned: 'Health & Social Development Working Group',
     specializationArea: 'Mining dust respiratory impact, riverine heavy metal bio-monitoring, community clinics',
     biographySnippet: 'Advises GGCDC on environmental health surveillance protocols for communities adjacent to Putu mining operations.',
-    yearsOfExperience: 17
+    yearsOfExperience: 17,
+    accreditationStatus: 'Accredited'
   }
 ];
 
@@ -1326,7 +1433,7 @@ export const DOCUMENTS_DATA: DocumentItem[] = [
   {
     id: 'doc-004',
     title: 'FDA Commercial Forest Management Contract FMC Area "I" (Singbeh)',
-    sector: 'Forestry, Environment & Climate',
+    sector: 'Forestry & Environment',
     projectName: 'Singbeh Forest Management Concession',
     docType: 'Mineral Development Agreement (MDA)',
     date: 'June 2018',

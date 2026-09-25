@@ -5,6 +5,18 @@
   | 'secretariat' 
   | 'community_rep';
 
+export interface UploadedCredential {
+  id: string;
+  name: string;
+  docType: 'LBR Business Registration' | 'LRA Tax Clearance' | 'Articles of Incorporation' | 'Proof of Address' | 'TVET Trade Certificate' | 'University Degree' | 'Equipment Operator License' | 'CV / Resume';
+  fileName: string;
+  fileSize: string;
+  uploadedAt: string;
+  status: 'Verified' | 'Pending Verification' | 'Requires Re-upload';
+  verifiedBy?: string;
+  verificationNotes?: string;
+}
+
 export interface Pillar {
   id: string;
   name: string;
@@ -46,7 +58,8 @@ export interface ConcessionProject {
   totalDisclosedPayments: string;
   workingGroupId: string;
   statusNotes: string;
-  coordinates: { x: number; y: number }; // Relative map % coordinates (0-100)
+  lat: number;
+  lng: number;
 }
 
 export type CommitmentStatus = 'Not Started' | 'In Progress' | 'Completed' | 'Delayed' | 'Awaiting Verification';
@@ -56,8 +69,8 @@ export interface CommitmentRecord {
   title: string;
   projectId: string;
   projectName: string;
-  obligor: string; // Who made it?
-  beneficiary: string; // To whom?
+  obligor: string;
+  beneficiary: string;
   sector: string;
   sourceDoc: string;
   clauseRef: string;
@@ -73,6 +86,7 @@ export interface CommitmentRecord {
 
 export interface BusinessSupplier {
   id: string;
+  trackingNumber: string;
   name: string;
   sector: string;
   ownership: '100% Grand Gedeh' | 'Liberian Majority' | 'Joint Venture';
@@ -80,17 +94,23 @@ export interface BusinessSupplier {
   services: string[];
   contactPerson: string;
   contactPhone: string;
+  contactEmail?: string;
   legalStatus: 'LBR Registered' | 'MoCI Pending' | 'Certified';
   taxStatus: 'LRA Tax Compliant' | 'Pending Renewal';
   workforceSize: number;
   equipmentSummary: string;
   verifiedLocal: boolean;
+  verificationStatus: 'Approved & Accredited' | 'Pending Secretarial Audit' | 'Under Review' | 'Information Required';
   registrationDate: string;
   pastContracts: string[];
+  uploadedCredentials: UploadedCredential[];
+  secretariatAuditNotes?: string;
+  accreditedBy?: string;
 }
 
 export interface WorkforceProfile {
   id: string;
+  trackingNumber: string;
   fullName: string;
   gender: 'Male' | 'Female';
   district: string;
@@ -102,6 +122,10 @@ export interface WorkforceProfile {
   yearsExperience: number;
   currentStatus: 'Available for Immediate Hire' | 'Currently Employed' | 'Available for Advisory';
   verifiedSkills: string[];
+  verificationStatus: 'Approved & Accredited' | 'Pending Secretarial Audit' | 'Under Review' | 'Information Required';
+  uploadedCredentials: UploadedCredential[];
+  secretariatAuditNotes?: string;
+  accreditedBy?: string;
 }
 
 export interface CommunityProfile {
@@ -126,7 +150,8 @@ export interface CommunityProfile {
   topDevelopmentPriorities: string[];
   activeGrievanceCount: number;
   consultationsAttended: number;
-  coordinates: { x: number; y: number };
+  lat: number;
+  lng: number;
 }
 
 export interface ConsultationItem {
@@ -155,6 +180,7 @@ export interface TechnicalExpert {
   specializationArea: string;
   biographySnippet: string;
   yearsOfExperience: number;
+  accreditationStatus: 'Accredited' | 'Nominated' | 'Senior Fellow';
 }
 
 export interface WorkingGroup {
