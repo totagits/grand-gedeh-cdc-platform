@@ -1,9 +1,23 @@
-﻿export type UserRole = 
+export type UserRole = 
   | 'citizen' 
   | 'investor' 
   | 'expert' 
   | 'secretariat' 
-  | 'community_rep';
+  | 'community_rep'
+  | 'business'
+  | 'worker';
+
+export interface AuthenticatedUser {
+  id: string;
+  name: string;
+  email: string;
+  role: UserRole;
+  title: string;
+  organization: string;
+  avatarUrl?: string;
+  department?: string;
+  badgeLabel?: string;
+}
 
 export interface UploadedCredential {
   id: string;

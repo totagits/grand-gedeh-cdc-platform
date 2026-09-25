@@ -1,4 +1,4 @@
-﻿import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { 
   UserRole, 
   ConcessionProject, 
@@ -11,7 +11,8 @@ import {
   WorkingGroup, 
   DocumentItem, 
   OpportunityItem,
-  UploadedCredential
+  UploadedCredential,
+  AuthenticatedUser
 } from '../types';
 import { 
   CONCESSIONS_DATA, 
@@ -26,9 +27,97 @@ import {
   OPPORTUNITIES_DATA 
 } from '../data/mockData';
 
+export const DEMO_USERS: Record<UserRole, AuthenticatedUser> = {
+  secretariat: {
+    id: 'user-sec-01',
+    name: 'Hon. Emmanuel Clarke',
+    email: 'e.clarke@ggcdc.org',
+    role: 'secretariat',
+    title: 'Chief Verification & Compliance Officer',
+    organization: 'GGCDC Permanent Secretariat, Zwedru',
+    department: 'Accreditation & Legal Directorate',
+    badgeLabel: 'Secretariat Officer'
+  },
+  business: {
+    id: 'user-biz-01',
+    name: 'Kollie Mensah',
+    email: 'kmensah@zwedru-engineering.com',
+    role: 'business',
+    title: 'Managing Director & Founder',
+    organization: 'Zwedru Engineering & Heavy Civil Works Ltd.',
+    department: 'Commercial Contractors Guild',
+    badgeLabel: 'Accredited Supplier'
+  },
+  worker: {
+    id: 'user-wrk-01',
+    name: 'Jackson K. Doe',
+    email: 'jdoe.operator@gmail.com',
+    role: 'worker',
+    title: 'Master Heavy Equipment Operator & Certified TVET Specialist',
+    organization: 'Grand Gedeh Workforce Guild',
+    department: 'Mining Operations & Earthmoving',
+    badgeLabel: 'Certified Artisan'
+  },
+  expert: {
+    id: 'user-exp-01',
+    name: 'Dr. Florence Gaye',
+    email: 'fgaye.phd@earth-hydrology.org',
+    role: 'expert',
+    title: 'Senior Mining Hydrologist & Diaspora Fellow',
+    organization: 'Grand Gedeh Technical Advisory Network',
+    department: 'Environment & Tailings Management',
+    badgeLabel: 'Advisory Fellow'
+  },
+  community_rep: {
+    id: 'user-com-01',
+    name: 'Elder Gbarbo Tarpeh',
+    email: 'elder.tarpeh@putu-clan.org',
+    role: 'community_rep',
+    title: 'Customary Land Council Chair',
+    organization: 'Putu Customary Community Assembly',
+    department: 'Traditional Leadership Council',
+    badgeLabel: 'Customary Elder'
+  },
+  investor: {
+    id: 'user-inv-01',
+    name: 'Marcus Vance',
+    email: 'm.vance@putu-mining.com',
+    role: 'investor',
+    title: 'VP of Concession Operations & Government Relations',
+    organization: 'Putu Iron Ore Mining Corp',
+    department: 'Executive Concession Liaison',
+    badgeLabel: 'Concessionaire'
+  },
+  citizen: {
+    id: 'user-cit-01',
+    name: 'Evelyn Gaye',
+    email: 'evelyn.gaye@zwedru.lr',
+    role: 'citizen',
+    title: 'Youth Development Representative',
+    organization: 'Grand Gedeh Civic Forum, Zwedru City',
+    department: 'Public Advocacy',
+    badgeLabel: 'Citizen'
+  }
+};
+
 interface AppContextType {
   currentRole: UserRole;
   setCurrentRole: (role: UserRole) => void;
+  currentUser: AuthenticatedUser | null;
+  isSignedIn: boolean;
+  login: (role: UserRole, customUser?: Partial<AuthenticatedUser>) => void;
+  logout: () => void;
+  
+  isSidebarOpen: boolean;
+  setIsSidebarOpen: (open: boolean) => void;
+  toggleSidebar: () => void;
+
+  isSignInModalOpen: boolean;
+  setIsSignInModalOpen: (open: boolean) => void;
+
+  isContactModalOpen: boolean;
+  setIsContactModalOpen: (open: boolean) => void;
+
   activeView: string;
   setActiveView: (view: string) => void;
   selectedProjectId: string | null;
@@ -64,6 +153,11 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [currentRole, setCurrentRole] = useState<UserRole>('citizen');
+  const [currentUser, setCurrentUser] = useState<AuthenticatedUser | null>(DEMO_USERS.secretariat); // Default to authenticated demo or toggleable
+  const [isSignedIn, setIsSignedIn] = useState<boolean>(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
+  const [isSignInModalOpen, setIsSignInModalOpen] = useState<boolean>(false);
+  const [isContactModalOpen, setIsContactModalOpen] = useState<boolean>(false);
   const [activeView, setActiveView] = useState<string>('home');
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
   const [selectedCommunityId, setSelectedCommunityId] = useState<string | null>(null);
@@ -192,10 +286,45 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     }
   };
 
+  const login = (role: UserRole, customUser?: Partial<AuthenticatedUser>) => {
+    const base = DEMO_USERS[role] || DEMO_USERS.citizen;
+    const user: AuthenticatedUser = {
+      ...base,
+      ...customUser,
+      role
+    };
+    setCurrentRole(role);
+    setCurrentUser(user);
+    setIsSignedIn(true);
+    setIsSidebarOpen(true);
+    setIsSignInModalOpen(false);
+  };
+
+  const logout = () => {
+    setIsSignedIn(false);
+    setCurrentUser(null);
+    setIsSidebarOpen(false);
+  };
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(prev => !prev);
+  };
+
   return (
     <AppContext.Provider value={{
       currentRole,
       setCurrentRole,
+      currentUser,
+      isSignedIn,
+      login,
+      logout,
+      isSidebarOpen,
+      setIsSidebarOpen,
+      toggleSidebar,
+      isSignInModalOpen,
+      setIsSignInModalOpen,
+      isContactModalOpen,
+      setIsContactModalOpen,
       activeView,
       setActiveView,
       selectedProjectId,
