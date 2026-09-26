@@ -413,30 +413,35 @@ export const BusinessRegistry: React.FC = () => {
 
         {/* REGISTRATION MODAL WITH WORKING REAL FILE UPLOAD */}
         {showRegisterModal && (
-          <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
-            <div className="bg-slate-900 border border-emerald-500/60 rounded-2xl max-w-3xl w-full p-6 sm:p-8 shadow-2xl relative my-8">
+          <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4">
+            <div className="bg-slate-900 border border-emerald-500/60 rounded-2xl max-w-3xl w-full shadow-2xl relative my-auto max-h-[92vh] flex flex-col overflow-hidden">
               
-              <button
-                onClick={() => setShowRegisterModal(false)}
-                className="absolute top-5 right-5 p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              {/* Pinned Header */}
+              <div className="p-5 sm:p-6 pb-4 border-b border-slate-800 bg-slate-900 shrink-0 relative">
+                <button
+                  type="button"
+                  onClick={() => setShowRegisterModal(false)}
+                  className="absolute top-5 right-5 p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
 
-              <div className="mb-6 space-y-1">
-                <div className="inline-flex items-center space-x-2 text-xs font-bold text-emerald-400 uppercase tracking-wider bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-800/60">
-                  <ShieldCheck className="w-3.5 h-3.5" />
-                  <span>Grand Gedeh Local Content Protocol</span>
+                <div className="space-y-1 pr-10">
+                  <div className="inline-flex items-center space-x-2 text-xs font-bold text-emerald-400 uppercase tracking-wider bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-800/60">
+                    <ShieldCheck className="w-3.5 h-3.5" />
+                    <span>Grand Gedeh Local Content Protocol</span>
+                  </div>
+                  <h3 className="text-xl sm:text-2xl font-black text-white">
+                    Register Local Enterprise & Upload Credentials
+                  </h3>
+                  <p className="text-xs text-slate-300">
+                    All registrations are submitted directly to the GGCDC Central Secretariat for verification against the Liberia Business Registry (LBR) and LRA tax databases.
+                  </p>
                 </div>
-                <h3 className="text-2xl font-black text-white">
-                  Register Local Enterprise & Upload Credentials
-                </h3>
-                <p className="text-xs sm:text-sm text-slate-300">
-                  All registrations are submitted directly to the GGCDC Central Secretariat for verification against the Liberia Business Registry (LBR) and LRA tax databases.
-                </p>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-4 text-xs">
+              {/* Scrollable Form Body with Visible Scrollbar */}
+              <form id="enterprise-reg-form" onSubmit={handleSubmit} className="overflow-y-auto modal-scrollbar p-5 sm:p-6 space-y-4 text-xs flex-1">
                 
                 {/* Enterprise Name */}
                 <div>
@@ -661,31 +666,32 @@ export const BusinessRegistry: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="pt-4 flex items-center justify-between">
-                  <span className="text-[11px] text-slate-400">
-                    Status: <strong className="text-emerald-400">
-                      Ready for Secretarial Verification
-                    </strong>
-                  </span>
-
-                  <div className="flex space-x-3">
-                    <button
-                      type="button"
-                      onClick={() => setShowRegisterModal(false)}
-                      className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      className="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg shadow-lg flex items-center space-x-1.5 transition-transform hover:scale-105"
-                    >
-                      <span>Transmit to Secretariat Desk</span>
-                      <ShieldCheck className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
               </form>
+
+              {/* Pinned Bottom Footer with Always-Visible Submit Button */}
+              <div className="p-4 sm:px-6 bg-slate-950 border-t border-slate-800 flex items-center justify-between shrink-0 shadow-2xl">
+                <span className="text-[11px] text-slate-400 hidden sm:inline-block">
+                  Status: <strong className="text-emerald-400">Ready for Secretarial Verification</strong>
+                </span>
+
+                <div className="flex space-x-3 ml-auto">
+                  <button
+                    type="button"
+                    onClick={() => setShowRegisterModal(false)}
+                    className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl font-medium text-xs transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    form="enterprise-reg-form"
+                    className="px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-bold text-xs rounded-xl shadow-lg flex items-center space-x-2 transition-transform hover:scale-105"
+                  >
+                    <span>Transmit to Secretariat Desk</span>
+                    <ShieldCheck className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
 
             </div>
           </div>

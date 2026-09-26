@@ -411,27 +411,35 @@ export const WorkforceRegistry: React.FC = () => {
 
         {/* Modal: Register Workforce Profile with Credential Uploads */}
         {showRegisterModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm overflow-y-auto">
-            <div className="bg-slate-900 border border-slate-700 rounded-2xl max-w-xl w-full p-6 sm:p-8 shadow-2xl relative my-8">
-              <button
-                onClick={() => setShowRegisterModal(false)}
-                className="absolute top-5 right-5 text-slate-400 hover:text-white bg-slate-800 p-1.5 rounded-full"
-              >
-                ✕
-              </button>
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/80 backdrop-blur-sm">
+            <div className="bg-slate-900 border border-slate-700 rounded-2xl max-w-xl w-full shadow-2xl relative my-auto max-h-[92vh] flex flex-col overflow-hidden">
+              
+              {/* Pinned Header */}
+              <div className="p-5 sm:p-6 pb-4 border-b border-slate-800 bg-slate-900 shrink-0 relative">
+                <button
+                  type="button"
+                  onClick={() => setShowRegisterModal(false)}
+                  className="absolute top-5 right-5 text-slate-400 hover:text-white bg-slate-800 p-1.5 rounded-full"
+                >
+                  ✕
+                </button>
 
-              <div className="flex items-center space-x-2 text-xs font-bold text-emerald-400 uppercase tracking-wider mb-2">
-                <ShieldCheck className="w-4 h-4" />
-                <span>Countywide & Diaspora Talent Pool</span>
+                <div className="pr-10">
+                  <div className="flex items-center space-x-2 text-xs font-bold text-emerald-400 uppercase tracking-wider mb-2">
+                    <ShieldCheck className="w-4 h-4" />
+                    <span>Countywide & Diaspora Talent Pool</span>
+                  </div>
+                  <h2 className="text-xl font-extrabold text-white">
+                    Register Skills & Upload Credentials
+                  </h2>
+                  <p className="text-xs text-slate-300 mt-1">
+                    Accredited profiles are matched with concession jobs, TVET apprenticeships, and advisory panels.
+                  </p>
+                </div>
               </div>
-              <h2 className="text-xl font-extrabold text-white">
-                Register Skills & Upload Credentials
-              </h2>
-              <p className="text-xs text-slate-300 mt-1 mb-6">
-                Accredited profiles are matched with concession jobs, TVET apprenticeships, and advisory panels.
-              </p>
 
-              <form onSubmit={handleSubmit} className="space-y-4 text-xs">
+              {/* Scrollable Form Body with Visible Scrollbar */}
+              <form id="talent-reg-form" onSubmit={handleSubmit} className="overflow-y-auto modal-scrollbar p-5 sm:p-6 space-y-4 text-xs flex-1">
                 <div>
                   <label className="block text-slate-300 mb-1 font-medium">Full Legal Name</label>
                   <input
@@ -662,23 +670,32 @@ export const WorkforceRegistry: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="pt-4 flex justify-end space-x-3">
+              </form>
+
+              {/* Pinned Bottom Footer with Always-Visible Submit Button */}
+              <div className="p-4 sm:px-6 bg-slate-950 border-t border-slate-800 flex items-center justify-between shrink-0 shadow-2xl">
+                <span className="text-[11px] text-slate-400 hidden sm:inline-block">
+                  Status: <strong className="text-emerald-400">Ready for Secretarial Audit</strong>
+                </span>
+
+                <div className="flex space-x-3 ml-auto">
                   <button
                     type="button"
                     onClick={() => setShowRegisterModal(false)}
-                    className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg"
+                    className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl font-medium text-xs transition-colors"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg shadow-lg flex items-center space-x-1.5"
+                    form="talent-reg-form"
+                    className="px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-bold text-xs rounded-xl shadow-lg flex items-center space-x-2 transition-transform hover:scale-105"
                   >
                     <span>Transmit to Secretariat</span>
                     <ShieldCheck className="w-4 h-4" />
                   </button>
                 </div>
-              </form>
+              </div>
 
             </div>
           </div>
