@@ -1500,7 +1500,90 @@ export const DOCUMENTS_DATA: DocumentItem[] = [
     classification: 'Public Document',
     size: '14.2 MB',
     fileFormat: 'PDF',
-    summary: 'The complete legal agreement between the Republic of Liberia and Putu Iron Ore Mining Inc. detailing mineral rights, royalties, taxes, local employment clauses, and community obligations.'
+    concessionCode: 'MDA-PIOM-2010-09',
+    parties: 'Republic of Liberia & Putu Iron Ore Mining Inc. (PIOM) / Severstal',
+    ratificationStatus: 'Ratified by 52nd National Legislature & Enacted into Law',
+    statutoryBasis: 'Mining Law of 2000 & LEITI Mandatory Public Disclosure Protocol',
+    summary: 'The statutory 25-year concession agreement granting mineral exploration and commercial extraction rights over the Putu Mountain iron ore range (425 km²), establishing royalties, taxes, local employment quotas, and community development escrow.',
+    keyClauses: [
+      {
+        article: 'Article 12: Employment, Training & Local Content',
+        title: 'Local Workforce & Skill Transfer Mandate',
+        summary: 'Requires minimum 60% Liberian management/supervisory personnel and 70% unskilled labor recruited exclusively from Putu and Tchien Districts.',
+        statutoryDetail: 'PIOM shall give first priority in hiring to qualified Liberians. For unskilled positions, 100% shall be residents of Grand Gedeh County, with 70% from Putu District. The Concessionaire shall expend not less than $250,000 USD annually on technical training and scholarships for Grand Gedeh youth.'
+      },
+      {
+        article: 'Article 15: Local Procurement Preference',
+        title: 'Grand Gedean Business Procurement Quota',
+        summary: '25% of all non-specialized supply, transport, catering, and construction contracts must be awarded to certified Grand Gedeh businesses.',
+        statutoryDetail: 'The Concessionaire and its subcontractors shall procure goods and services from Liberian suppliers with physical presence in Grand Gedeh County, provided prices are competitive within a 10% tolerance margin.'
+      },
+      {
+        article: 'Article 18: Social Development Fund Escrow',
+        title: 'Annual County Development Contribution',
+        summary: 'Mandates $3,000,000 USD paid annually into the dedicated Grand Gedeh County Social Development Escrow Account.',
+        statutoryDetail: 'Commencing upon commercial production and escalating annually, PIOM shall disburse $3,000,000 USD directly to the Grand Gedeh County Social Development Fund escrow account administered jointly by the County Council and the Ministry of Finance.'
+      },
+      {
+        article: 'Article 22: Infrastructure Development Covenants',
+        title: 'Road, School & Hospital Infrastructure Obligations',
+        summary: 'Mandates construction of 35km Jarwodee-to-Zwedru paved haul road, 12-classroom high school, and expansion of Martha Tubman Hospital surgical wing.',
+        statutoryDetail: 'The Concessionaire covenants to construct and maintain an all-weather bituminous road connecting Jarwodee to the Zwedru corridor, construct a modern 12-classroom secondary school with laboratory in Jarwodee, and equip a specialized trauma wing at Martha Tubman Memorial Hospital.'
+      },
+      {
+        article: 'Article 26: Environmental Safeguards & Tailings Security',
+        title: 'Zero-Discharge Environmental Covenants',
+        summary: 'Continuous Cavalla River watershed testing, dust abatement, and international dam safety standards for tailings containment.',
+        statutoryDetail: 'PIOM shall maintain an ISO 14001 certified environmental management system. Toxic effluent discharge into Cavalla or Gee river tributaries is strictly prohibited. An environmental remediation bond of $15,000,000 USD shall be lodged with the Central Bank of Liberia.'
+      }
+    ],
+    fullContractText: `REPUBLIC OF LIBERIA
+MINERAL DEVELOPMENT AGREEMENT
+BETWEEN THE REPUBLIC OF LIBERIA
+AND PUTU IRON ORE MINING INC. (PIOM)
+
+RATIFIED BY THE HONORABLE SENATE AND HOUSE OF REPRESENTATIVES
+52ND LEGISLATURE OF THE REPUBLIC OF LIBERIA
+
+CONCESSION CODE: MDA-PIOM-2010-09
+LOCATION: PUTU MOUNTAIN RIDGE, GRAND GEDEH COUNTY
+CONCESSION FOOTPRINT: 425 SQUARE KILOMETERS
+
+PREAMBLE
+WHEREAS, under the Constitution and the Minerals and Mining Law of 2000 of the Republic of Liberia, all minerals situated on, under, or within the land and continental shelf of Liberia are the property of the Republic; and
+WHEREAS, the Republic desires to foster sustainable industrial development and maximize economic benefits for the people of Grand Gedeh County and Liberia as a whole; and
+WHEREAS, the Concessionaire possesses the technical competence and financial resources required to execute commercial iron ore exploration, extraction, processing, and exportation;
+
+NOW THEREFORE, the Parties hereby agree to the binding terms, articles, and enforceable covenants set forth herein:
+
+ARTICLE I - GRANT OF CONCESSION RIGHTS
+The Republic hereby grants to the Concessionaire the exclusive right and license to conduct Exploration and Commercial Operations within the Concession Area (Putu Range, Grand Gedeh County) for a term of twenty-five (25) years, subject to statutory renewal.
+
+ARTICLE XII - EMPLOYMENT, TRAINING AND LOCAL CONTENT
+1. The Concessionaire shall employ qualified Liberians in all job categories to the maximum extent feasible.
+2. In respect of unskilled positions, 100% of all personnel shall be citizens of the Republic residing in Grand Gedeh County, of which not less than 70% shall be recruited directly from Putu and Tchien Districts.
+3. Within five (5) years of commercial production, not less than 60% of supervisory and managerial staff shall be qualified Liberian citizens.
+4. An annual scholarship and TVET fund of $250,000 USD shall be deposited to the Grand Gedeh Community College (GGCC) technical endowment.
+
+ARTICLE XV - PROCUREMENT OF LOCAL GOODS AND SERVICES
+1. The Concessionaire and its first-tier subcontractors shall accord preference to registered Grand Gedean contractors and suppliers for all civil works, haulage, catering, security, uniform fabrication, and general consumables.
+2. A minimum target of 25% of all non-specialized procurement spend shall be allocated to enterprises certified by the GGCDC Local Business Registry.
+
+ARTICLE XVIII - SOCIAL DEVELOPMENT FUND AND COMMUNITY DIVIDENDS
+1. The Concessionaire shall pay into the Grand Gedeh County Social Development Fund (CSDF) an annual social contribution of Three Million United States Dollars ($3,000,000 USD).
+2. All disbursements shall be audited annually by the General Auditing Commission (GAC) and LEITI, with audit findings posted publicly in Zwedru and Monrovia.
+
+ARTICLE XXII - INFRASTRUCTURE COMMITMENTS
+1. Pave and maintain the 35km arterial feeder road connecting Jarwodee to the primary Ganta-Zwedru highway.
+2. Finance and erect a modern 12-classroom comprehensive high school with solar electrification in Jarwodee.
+3. Construct and fully equip an emergency surgical wing at Martha Tubman Memorial Hospital in Zwedru.
+
+ARTICLE XXVI - ENVIRONMENTAL PROTECTION & WATER SECURITY
+1. Continuous ambient air and water sampling across the Cavalla and Gee river basins.
+2. Tailings containment facilities shall strictly comply with Canadian Dam Association safety guidelines.
+3. Zero discharge of unneutralized acidic or metallurgical effluents into community water sources.
+
+IN WITNESS WHEREOF, the duly authorized representatives of the Parties have executed this Mineral Development Agreement in the City of Monrovia, Republic of Liberia.`
   },
   {
     id: 'doc-002',
@@ -1512,11 +1595,55 @@ export const DOCUMENTS_DATA: DocumentItem[] = [
     classification: 'Public Document',
     size: '4.8 MB',
     fileFormat: 'PDF',
-    summary: 'Tripartite agreement delineating annual social fund disbursements, local committee management, education, health, and road infrastructure requirements.'
+    concessionCode: 'CDA-PUTU-2024-R2',
+    parties: 'Putu Affected Communities Committee, Ministry of Mines & Energy, & PIOM',
+    ratificationStatus: 'Executed & Enacted into Community By-Laws',
+    statutoryBasis: 'Mining Law 2000 Section 6.2 & Community Rights Guidelines',
+    summary: 'Tripartite covenant delineating direct annual clan disbursements, local project committee governance, TVET scholarship quotas, clean water boreholes, and farm compensation schedules.',
+    keyClauses: [
+      {
+        article: 'Section 3: Clan Revenue Allocations',
+        title: 'Equitable Affected Clan Revenue Sharing',
+        summary: 'Prescribes percentage allocation formula among the 5 affected communities: Jarwodee (40%), Pennoken (25%), Tiama (15%), Polar Town (10%), Pewee (10%).',
+        statutoryDetail: 'All community social fund receipts shall be disbursed directly from escrow into community bank accounts co-signed by the District Superintendent, Paramount Chief, and Community Representative.'
+      },
+      {
+        article: 'Section 7: Water & Sanitation Program',
+        title: 'Solar Borehole Construction',
+        summary: 'Guarantees 6 modern solar-powered potable water boreholes across the concession catchment corridor.',
+        statutoryDetail: 'Water quality shall be verified quarterly by independent technicians against WHO drinking water guidelines.'
+      }
+    ],
+    fullContractText: `TRIPARTITE COMMUNITY DEVELOPMENT AGREEMENT (CDA)
+PUTU IRON ORE PROJECT - GRAND GEDEH COUNTY (2024-2028 REVISION)
+
+PARTIES:
+1. THE PUTU AFFECTED COMMUNITIES DEVELOPMENT COMMITTEE (PACDC)
+2. THE MINISTRY OF MINES & ENERGY, REPUBLIC OF LIBERIA
+3. PUTU IRON ORE MINING INC. (PIOM)
+
+PURPOSE:
+To guarantee that the host communities of Putu District directly receive statutory dividends, infrastructure, social investments, and employment opportunities arising from the commercial exploitation of Putu Mountain iron ore reserves.
+
+ARTICLE 3 - ALLOCATION OF COMMUNITY SOCIAL FUNDS
+The annual CDA social fund allocation of $3,000,000 USD shall be distributed transparently among host clans:
+- Putu Jarwodee Clan (Epicenter): 40% ($1,200,000 USD)
+- Pennoken Clan: 25% ($750,000 USD)
+- Tiama Town Clan: 15% ($450,000 USD)
+- Polar Town Clan: 10% ($300,000 USD)
+- Pewee Village & Outlying Settlements: 10% ($300,000 USD)
+
+ARTICLE 5 - COMMUNITY-DIRECTED INFRASTRUCTURE
+1. Construction of 6 industrial solar-powered water boreholes with overhead distribution tanks.
+2. Complete electrification of Jarwodee central clinic with 20kVA solar mini-grid.
+3. Establishment of Putu Youth Technical Vocational Center providing accredited mechanical and electrical certifications.
+
+ARTICLE 8 - GRIEVANCE AND REDRESS MECHANISM
+Host communities retain the right to lodge binding complaints before the Joint Tripartite Steering Committee. Decisions shall be rendered within 14 calendar days.`
   },
   {
     id: 'doc-003',
-    title: 'Environmental and Social Impact Assessment (ESIA) Executive Summary - Putu Project',
+    title: 'Environmental and Social Impact Assessment (ESIA) Executive Clearance - Putu Project',
     sector: 'Mining & Extractives',
     projectName: 'Putu Iron Ore Project',
     docType: 'ESIA / Environmental',
@@ -1524,22 +1651,331 @@ export const DOCUMENTS_DATA: DocumentItem[] = [
     classification: 'Public Document',
     size: '8.6 MB',
     fileFormat: 'PDF',
-    summary: 'EPA-approved assessment of biodiversity, hydrological systems, noise, dust, and social baseline studies for the Putu mountain open-pit development.'
+    concessionCode: 'EPA-ESIA-PIOM-2023-REV',
+    parties: 'Environmental Protection Agency of Liberia (EPA) & PIOM',
+    ratificationStatus: 'EPA Operating Permit Issued & Active',
+    statutoryBasis: 'Environment Protection and Management Law of Liberia (EPML)',
+    summary: 'Comprehensive scientific baseline study assessing biodiversity, hydrological security across the Cavalla drainage basin, ambient noise/dust thresholds, and resettlement frameworks.',
+    keyClauses: [
+      {
+        article: 'Clause 4: Cavalla Basin Hydrological Protection',
+        title: 'Strict Effluent Neutralization Limits',
+        summary: 'Zero untreated chemical discharge into Cavalla or Gee tributaries with weekly automated telemetry monitoring.',
+        statutoryDetail: 'All process water shall pass through multi-stage neutralizing and sedimentation clarifiers before release.'
+      },
+      {
+        article: 'Clause 9: Biological Buffer Zones',
+        title: 'Putu Ridge Endemic Habitat Sanctuary',
+        summary: 'Dedicates 85 km² of pristine high-elevation ridge forest as an undisturbed biodiversity sanctuary.',
+        statutoryDetail: 'No mining excavation, road building, or explosive blasting permitted within the designated high-conservation zone.'
+      }
+    ]
   },
   {
     id: 'doc-004',
-    title: 'FDA Commercial Forest Management Contract FMC Area "I" (Singbeh)',
-    sector: 'Forestry & Environment',
+    title: 'FDA Commercial Forest Management Contract FMC Area "I" (Singbeh Concession)',
+    sector: 'Forestry, Environment & Climate',
     projectName: 'Singbeh Forest Management Concession',
-    docType: 'Mineral Development Agreement (MDA)',
+    docType: 'Forest Management Contract (FMC)',
     date: 'June 2018',
     classification: 'Public Document',
     size: '6.1 MB',
     fileFormat: 'PDF',
-    summary: 'Forest concession contract detailing annual allowable cut, stumpage fees, social agreements, and environmental harvest guidelines.'
+    concessionCode: 'FDA-FMC-001-AREA-I',
+    parties: 'Forestry Development Authority (FDA) & Singbeh Timber Corporation (STC)',
+    ratificationStatus: 'Ratified by National Legislature (25-Year Lease 2018-2043)',
+    statutoryBasis: 'National Forestry Reform Law of 2006 (NFRL) & LEITI Forestry Matrix',
+    summary: '25-year commercial timber concession covering 118,500 hectares across B\'hai and Gbao Districts, detailing annual allowable cut, cubic meter fees, 30m riverbuffer preservation, and CFDC social agreements.',
+    keyClauses: [
+      {
+        article: 'Article 14: Community Social Benefits',
+        title: 'Cubic Meter Fee Direct Payments',
+        summary: 'Mandates $1.50 USD per cubic meter of timber felled paid directly to the B\'hai & Gbao Community Forest Development Committee (CFDC).',
+        statutoryDetail: 'Payments must be deposited quarterly into the designated community account. Failure to disburse within 30 days triggers an automatic halt to log export barcoding.'
+      },
+      {
+        article: 'Article 19: Environmental Harvest Guidelines',
+        title: 'Selective Felling and River Buffers',
+        summary: 'Strict prohibition on felling trees within 30 meters of perennial waterways; mandatory 30-year polycyclic harvest rotations.',
+        statutoryDetail: 'No harvesting of endangered tree species (e.g. Sipo, Entandrophragma utile) below statutory diameter-at-breast-height thresholds.'
+      },
+      {
+        article: 'Article 24: Local Workforce Quotas',
+        title: '80% Local Labor Reservation',
+        summary: '80% of all logging, trucking, yard operations, and sawmill personnel recruited from Grand Gedeh County.',
+        statutoryDetail: 'The concessionaire shall operate an on-site technical training facility in Toe Town for heavy machinery maintenance.'
+      }
+    ],
+    fullContractText: `REPUBLIC OF LIBERIA
+FORESTRY DEVELOPMENT AUTHORITY (FDA)
+FOREST MANAGEMENT CONTRACT (FMC) AREA "I"
+
+CONCESSIONAIRE: SINGBEH TIMBER CORPORATION (STC)
+LOCATION: B'HAI AND GBAO DISTRICTS, GRAND GEDEH COUNTY
+LAND AREA: 118,500 HECTARES
+CONCESSION CODE: FDA-FMC-001-AREA-I
+VALIDITY: 2018 - 2043 (25 YEARS)
+
+PART I - GRANT AND HARVEST RIGHTS
+The Republic of Liberia, through the Forestry Development Authority, grants to STC the commercial harvest rights over 118,500 hectares within FMC Area "I", adhering strictly to the National Forestry Reform Law of 2006 and the Liberfor Chain-of-Custody protocol.
+
+PART IV - STATUTORY FISCAL PAYMENTS
+1. Area Fee: $2.50 USD per hectare per annum, paid to the Liberia Revenue Authority.
+2. Stumpage and Export Fees: In accordance with FDA Regulation 107-07.
+3. Cubic Meter Fee to Communities: $1.50 USD per cubic meter felled paid directly to the joint B'hai and Gbao Community Forest Development Committee (CFDC).
+
+PART VII - COMMUNITY OBLIGATIONS & SOCIAL PACT
+1. Maintenance of 48km timber bypass route preventing heavy truck destruction of the Zwedru public corridor.
+2. Construction of 4 borehole clean water wells in Tuzon, Toe Town, B'hai Gorbo, and Zleh Town.
+3. Annual grant of $15,000 USD to Grand Gedeh Community College Forestry Department.
+
+PART IX - ENVIRONMENTAL SAFEGUARDS
+1. 30-meter no-harvest buffer along all rivers, creeks, and permanent water bodies.
+2. Maximum annual allowable cut of 3,950 hectares in compliance with the 30-year cutting cycle.
+3. Maintenance of indigenous reforestation nursery cultivating 50,000 saplings per year.`
   },
   {
     id: 'doc-005',
+    title: 'FDA Commercial Forest Management Contract FMC Area "K" (Grand Gedeh / River Gee Concession)',
+    sector: 'Forestry, Environment & Climate',
+    projectName: 'FMC Area "K" Commercial Forestry Concession',
+    docType: 'Forest Management Contract (FMC)',
+    date: 'April 2019',
+    classification: 'Public Document',
+    size: '5.7 MB',
+    fileFormat: 'PDF',
+    concessionCode: 'FDA-FMC-002-AREA-K',
+    parties: 'Forestry Development Authority (FDA) & Euro-Liberia Logging Corp.',
+    ratificationStatus: 'Ratified by National Legislature',
+    statutoryBasis: 'National Forestry Reform Law 2006 & FDA Regulation 104-07',
+    summary: '60,000-hectare commercial timber concession along the southern Grand Gedeh corridor, governing annual allowable cut, community cubic meter fees, and social development infrastructure.',
+    keyClauses: [
+      {
+        article: 'Article 11: Community Cubic Meter Fees',
+        title: 'Community Revenue Rights',
+        summary: '$2.00 USD per m³ felled paid directly to surrounding clan development committees in Tuzon and Barte-Jam.',
+        statutoryDetail: 'All log extractions logged electronically through Liberfor barcoding with quarterly reconciliation.'
+      },
+      {
+        article: 'Article 17: Local Infrastructure',
+        title: 'School & Clinic Rehabilitation',
+        summary: 'Mandates full renovation of Tuzon Public School and provision of medical supplies to Barte-Jam health clinic.',
+        statutoryDetail: 'Infrastructure deliverables verified annually by the County Forest Monitoring Taskforce.'
+      }
+    ]
+  },
+  {
+    id: 'doc-006',
+    title: 'B\'hai Authorized Community Forest Management Agreement (CFMA)',
+    sector: 'Forestry, Environment & Climate',
+    projectName: 'B\'hai Community Forest Governance',
+    docType: 'Community Forest Agreement (CFMA)',
+    date: 'October 2019',
+    classification: 'Public Document',
+    size: '3.9 MB',
+    fileFormat: 'PDF',
+    concessionCode: 'CFMA-BHAI-2019-FDA',
+    parties: 'B\'hai Community Forest Management Body (CFMB) & FDA',
+    ratificationStatus: 'Certified by FDA Board of Directors under Community Rights Law',
+    statutoryBasis: 'Community Rights Law of 2009 with Respect to Forest Lands (CRL)',
+    summary: '32,000-hectare customary forest agreement devolving complete legal ownership and management to the B\'hai Community Assembly, establishing conservation zones, non-timber forest product harvesting, and smallholder woodlot rights.',
+    keyClauses: [
+      {
+        article: 'Clause 6: Community Sovereignty & Revenues',
+        title: 'Direct Community Revenue Retention',
+        summary: '100% of all timber, carbon credit, and non-timber forest revenues retained and managed by the B\'hai Community Assembly.',
+        statutoryDetail: 'No third-party commercial logging agreements can be entered into without Free, Prior, and Informed Consent (FPIC) by two-thirds majority vote.'
+      },
+      {
+        article: 'Clause 12: Grebo-Krahn Buffer Protection',
+        title: 'Biodiversity Corridor Sanctuary',
+        summary: 'Establishes a 5,000-hectare buffer zone protecting endangered western chimpanzee and pygmy hippopotamus migration routes.',
+        statutoryDetail: 'Community ecoguards empowered to enforce anti-poaching ordinances across customary land boundaries.'
+      }
+    ]
+  },
+  {
+    id: 'doc-007',
+    title: 'Boe & Quilla Customary Community Forest Agreement (CFMA)',
+    sector: 'Forestry, Environment & Climate',
+    projectName: 'Boe & Quilla Community Forest',
+    docType: 'Community Forest Agreement (CFMA)',
+    date: 'January 2021',
+    classification: 'Public Document',
+    size: '3.2 MB',
+    fileFormat: 'PDF',
+    concessionCode: 'CFMA-BOE-QUILLA-2021',
+    parties: 'Boe & Quilla Community Forest Assembly & FDA',
+    ratificationStatus: 'Ratified by Community General Assembly & FDA',
+    statutoryBasis: 'Community Rights Law of 2009 & Land Rights Act of 2018',
+    summary: '24,500-hectare customary community forest in Gbarzon District recognizing customary ownership, sustainable agroforestry, and traditional sacred grove preservation.',
+    keyClauses: [
+      {
+        article: 'Section 4: Customary Land Boundary Demarcation',
+        title: 'Perimeter Boundary Demarcation',
+        summary: 'GPS-surveyed customary boundary legally validated against neighboring clan holdings.',
+        statutoryDetail: 'Boundary markers installed with participation of Land Authority and Council of Elders.'
+      }
+    ]
+  },
+  {
+    id: 'doc-008',
+    title: 'Hummingbird Resources / Avesoro Gold Exploration & Mineral Rights Accord',
+    sector: 'Mining & Extractives',
+    projectName: 'Konobo-Barwo Gold Exploration',
+    docType: 'Mineral Development Agreement (MDA)',
+    date: 'May 2021',
+    classification: 'Public Document',
+    size: '7.8 MB',
+    fileFormat: 'PDF',
+    concessionCode: 'MME-MEL-HB-2021-04',
+    parties: 'Ministry of Mines & Energy & Hummingbird Resources Liberia Ltd.',
+    ratificationStatus: 'Active Mineral Exploration License (MEL)',
+    statutoryBasis: 'Minerals and Mining Law of 2000 Section 5.1',
+    summary: 'Concession agreement covering core diamond drilling exploration rights across the Konobo and Barwo gold belts, mandating artisanal buffer demarcations, community water protection, and 75% local auxiliary workforce.',
+    keyClauses: [
+      {
+        article: 'Article 9: Artisanal Mining Buffer Zones',
+        title: 'Protection of Customary Miners',
+        summary: 'Mandates a 3km exclusion perimeter safeguarding existing artisanal alluvial diggings from exploration disturbance.',
+        statutoryDetail: 'Exploration activities shall not disrupt local community farming or traditional alluvial gold pits.'
+      },
+      {
+        article: 'Article 14: Community Water Basins',
+        title: 'Independent Water Sampling Protocol',
+        summary: 'Quarterly environmental water sampling across Barwo creek to ensure no cyanide or heavy metal runoff occurs.',
+        statutoryDetail: 'Independent laboratory reports shared with the Grand Gedeh County Mining Officer and local elders.'
+      }
+    ]
+  },
+  {
+    id: 'doc-009',
+    title: 'Grand Gedeh Artisanal Gold Mining Formalization Compact & Cooperatives Charter',
+    sector: 'Mining & Extractives',
+    projectName: 'Artisanal Mining Formalization Desk',
+    docType: 'Policy Resolution',
+    date: 'March 2025',
+    classification: 'Public Document',
+    size: '2.4 MB',
+    fileFormat: 'PDF',
+    concessionCode: 'GG-ARTISANAL-2025-ACT',
+    parties: 'Ministry of Mines & Energy, GGCDC Artisanal Desk, & Grand Gedeh Gold Miners Union',
+    ratificationStatus: 'Enacted by County Council & Ministry of Mines',
+    statutoryBasis: 'Artisanal & Small-Scale Mining (ASM) National Policy Framework',
+    summary: 'Countywide formalization agreement transitioning 14 informal artisanal alluvial pits into 4 registered Class-C mining cooperatives, establishing mercury-free gold wash systems, land reclamation bonds, and local youth dividends.',
+    keyClauses: [
+      {
+        article: 'Section 2: Mercury & Cyanide Ban',
+        title: 'Environmental Detoxification Mandate',
+        summary: 'Zero tolerance for mercury or cyanide use in river washings; deployment of gravity-based retorts and shaking tables.',
+        statutoryDetail: 'Any cooperative caught deploying toxic reagents shall have its Class-C license revoked immediately.'
+      },
+      {
+        article: 'Section 5: District Development Royalty',
+        title: '2% Local Gold Royalty Contribution',
+        summary: '2% of all certified gold sales paid into the District Development Committee for rural schools and clinics.',
+        statutoryDetail: 'Administered under the supervision of the Grand Gedeh County Mining Agent and GGCDC auditor.'
+      }
+    ]
+  },
+  {
+    id: 'doc-010',
+    title: 'Cavalla River Commercial Agro-Industrial Outgrower & Land Lease Concession Agreement',
+    sector: 'Agriculture & Food Systems',
+    projectName: 'Cavalla River Commercial Agro-Venture',
+    docType: 'Agro-Industrial Concession',
+    date: 'August 2021',
+    classification: 'Public Document',
+    size: '8.1 MB',
+    fileFormat: 'PDF',
+    concessionCode: 'MOA-NIC-CAVALLA-2021',
+    parties: 'Ministry of Agriculture, National Investment Commission, & Cavalla Agribusiness Corp',
+    ratificationStatus: 'Ratified by National Legislature (20-Year Lease 2021-2041)',
+    statutoryBasis: 'Public Lands Act & Investment Incentive Code of Liberia',
+    summary: '15,000-hectare agricultural concession along the Cavalla River corridor, establishing commercial oil palm and cocoa outgrower programs, 1,200 permanent farm jobs, an industrial processing mill in Tempo, and price floor guarantees.',
+    keyClauses: [
+      {
+        article: 'Article 8: Smallholder Outgrower Guaranteed Pricing',
+        title: 'Smallholder Price Floor & Offtake Covenant',
+        summary: 'Guarantees purchase of all cooperative cocoa and fresh fruit palm bunches at minimum benchmark international prices.',
+        statutoryDetail: 'The Concessionaire shall provide high-yielding Tenera oil palm seedlings and cocoa saplings at subsidized cost to 42 registered county cooperatives.'
+      },
+      {
+        article: 'Article 13: Local Labor Quota & Worker Welfare',
+        title: '85% Grand Gedean Workforce Obligation',
+        summary: '85% of all estate laborers, tractor drivers, processing mill technicians, and supervisors must be Grand Gedeh residents.',
+        statutoryDetail: 'Free healthcare provided at the estate clinic for all workers and their immediate dependents.'
+      },
+      {
+        article: 'Article 18: Tempo Industrial Mini-Mill',
+        title: 'Local Value-Addition Processing Hub',
+        summary: 'Construction of 10 MT/hour palm oil processing mill in Tempo accessible to local smallholders.',
+        statutoryDetail: 'Eliminates post-harvest spoilage and provides local farmers with direct industrial pressing capacity.'
+      }
+    ]
+  },
+  {
+    id: 'doc-011',
+    title: 'TRANSCO CLSG 225kV Cross-Border Power Interconnection Treaty & Zwedru PPA',
+    sector: 'Infrastructure & Public Utilities',
+    projectName: 'CLSG Zwedru 225kV Regional Substation & City Grid',
+    docType: 'Infrastructure & Energy Treaty',
+    date: 'October 2022',
+    classification: 'Public Document',
+    size: '6.4 MB',
+    fileFormat: 'PDF',
+    concessionCode: 'CLSG-LEC-PPA-ZWEDRU-2022',
+    parties: 'TRANSCO CLSG, West African Power Pool (WAPP), & Liberia Electricity Corporation (LEC)',
+    ratificationStatus: 'International Treaty Ratified by ECOWAS Heads of State & GoL',
+    statutoryBasis: 'ECOWAS Energy Protocol & Liberian Electricity Law 2015',
+    summary: 'Cross-border power purchase agreement governing 225kV high-voltage transmission from Man, Côte d\'Ivoire to the Zwedru Substation, establishing power supply quotas, commercial tariff ceilings, and grid expansion commitments.',
+    keyClauses: [
+      {
+        article: 'Article 5: Substation Supply Reliability',
+        title: 'Firm Power Commitment to Zwedru Grid',
+        summary: 'Guarantees continuous 15MW baseload allocation dedicated to Zwedru urban center, hospitals, and agro-processing hubs.',
+        statutoryDetail: 'Outages exceeding 12 aggregate hours per month trigger contractual compensation rebates.'
+      },
+      {
+        article: 'Article 11: Feeder Grid Expansion',
+        title: 'Rural Electrification Expansion Mandate',
+        summary: 'Obligates phase-two distribution extension to Toe Town, Tuzon, Pennoken, and Martha Tubman Hospital campus.',
+        statutoryDetail: 'Funded through the World Bank CLSG Rural Access Component with local civil works subcontracts.'
+      }
+    ]
+  },
+  {
+    id: 'doc-012',
+    title: 'Ganta-Tappita-Zwedru (Corridor 3) Asphalt Highway Civil Works Contract',
+    sector: 'Infrastructure & Public Utilities',
+    projectName: 'Ganta-Tapeta-Zwedru Asphalt Highway Corridor',
+    docType: 'Infrastructure & Energy Treaty',
+    date: 'February 2022',
+    classification: 'Public Document',
+    size: '11.5 MB',
+    fileFormat: 'PDF',
+    concessionCode: 'MPW-LRTF-CORRIDOR3-2022',
+    parties: 'Ministry of Public Works (MPW), Liberia Reconstruction Trust Fund (LRTF), & World Bank',
+    ratificationStatus: 'Executed National Public Works Contract',
+    statutoryBasis: 'Public Procurement and Concessions Act (PPCA) 2010',
+    summary: 'EPC contract governing the paving of the 112km Grand Gedeh section of Highway Corridor 3 with bituminous double surface dressing, reinforced concrete bridges, drainage culverts, and urban street lighting in Toe Town and Zwedru.',
+    keyClauses: [
+      {
+        article: 'Clause 8: Local Employment & Subcontracting',
+        title: '900 Local Construction Jobs',
+        summary: 'Minimum 900 local laborers hired for grading, masonry, culverts, and traffic management.',
+        statutoryDetail: '100% of crushed granite aggregate and river sand must be purchased from licensed Grand Gedeh quarries.'
+      },
+      {
+        article: 'Clause 14: Resettlement Action Plan (RAP)',
+        title: '$1,400,000 RAP Compensation Fund',
+        summary: 'Direct cash compensation for verified homeowners and farm plot owners within the 50-meter right-of-way.',
+        statutoryDetail: 'Every displaced household compensated prior to earthworks demolition under World Bank ESS5 standards.'
+      }
+    ]
+  },
+  {
+    id: 'doc-013',
     title: 'Grand Gedeh Feeder Road Quality & Asphalt Thickness Technical Audit 2026',
     sector: 'Infrastructure & Public Utilities',
     projectName: 'Ganta-Tapeta-Zwedru Asphalt Highway Corridor',
@@ -1548,10 +1984,52 @@ export const DOCUMENTS_DATA: DocumentItem[] = [
     classification: 'Public Document',
     size: '3.4 MB',
     fileFormat: 'PDF',
-    summary: 'Independent engineering evaluation prepared by GGCDC Infrastructure Working Group on civil works quality, culvert stability, and drainage along Corridor 3.'
+    concessionCode: 'AUDIT-GGCDC-ENG-2026-08',
+    parties: 'GGCDC Infrastructure Directorate & Independent Civil Engineering Bench',
+    ratificationStatus: 'Adopted by GGCDC Executive Council',
+    statutoryBasis: 'Civil Engineering Standards & Freedom of Information Act 2010',
+    summary: 'Independent technical evaluation examining core drill samples, asphalt compaction, culvert drainage durability, and bridge structural integrity across Corridor 3.',
+    keyClauses: [
+      {
+        article: 'Finding 3: Asphalt Compaction Deficiency',
+        title: 'Toe Town - Tuzon Sub-base Rectification',
+        summary: 'Core drilling revealed 14% insufficient compaction along Kilometer 42-48 requiring contractor resurfacing.',
+        statutoryDetail: 'Formal notice issued to MPW to withhold contractor retention payments pending core remediation.'
+      }
+    ]
   },
   {
-    id: 'doc-006',
+    id: 'doc-014',
+    title: 'County Social Development Fund (CSDF) Statutory Revenue Protocol & Escrow Act',
+    sector: 'Governance, Research & Citizen Participation',
+    projectName: 'County Social Development Fund (CSDF)',
+    docType: 'Policy Resolution',
+    date: 'May 2024',
+    classification: 'Public Document',
+    size: '2.8 MB',
+    fileFormat: 'PDF',
+    concessionCode: 'CSDF-STATUTE-ACT-2024',
+    parties: 'Grand Gedeh Legislative Caucus, Ministry of Finance (MFDP), & County Council',
+    ratificationStatus: 'Enacted into Law under National Budget Act & Local Governance Act 2018',
+    statutoryBasis: 'Local Governance Act of 2018 Section 18 & PFM Law',
+    summary: 'Statutory framework directing that 50% of all concession land rentals, forestry cubic meter fees, and mining royalties generated within Grand Gedeh must be paid directly into the County Treasury escrow account without central government diversion.',
+    keyClauses: [
+      {
+        article: 'Section 4: Direct County Remittance Mandate',
+        title: 'Anti-Sweeping Escrow Protection',
+        summary: 'Prohibits the Ministry of Finance from diverting or sweeping concession dividends earmarked for Grand Gedeh.',
+        statutoryDetail: 'Remittances must be made on the 15th of each month into the Grand Gedeh Development Escrow Account.'
+      },
+      {
+        article: 'Section 9: Mandatory Public Budget Hearing',
+        title: 'Annual Citizen Budget Assembly',
+        summary: 'All project allocations must be vetted and voted upon during open County Council meetings in Zwedru.',
+        statutoryDetail: 'No funds can be disbursed without prior public posting in all 8 district headquarters.'
+      }
+    ]
+  },
+  {
+    id: 'doc-015',
     title: 'GGCDC Legal Position Paper: Proposed Revisions to Mining Stabilization Terms',
     sector: 'Mining & Extractives',
     projectName: 'Putu Iron Ore Project',
@@ -1560,21 +2038,46 @@ export const DOCUMENTS_DATA: DocumentItem[] = [
     classification: 'GGCDC Confidential',
     size: '1.8 MB',
     fileFormat: 'PDF',
-    summary: 'Internal legal analysis by Cllr. Saydee M. Krahn advising the Executive Council and Legislative Caucus on protecting community revenue shares in future addenda.'
+    concessionCode: 'GGCDC-LEGAL-REV-2026',
+    parties: 'GGCDC Legal Advisory Directorate & Grand Gedeh Legislative Caucus',
+    ratificationStatus: 'Internal Working Document for Concession Review',
+    statutoryBasis: 'Liberian Constitution Article 22 & Minerals Law 2000',
+    summary: 'Strategic legal brief by Cllr. Saydee M. Krahn advising the County Council on protecting community revenue shares, indexing royalties to global benchmark iron ore prices, and shortening stabilization review windows.',
+    keyClauses: [
+      {
+        article: 'Recommendation 1: Price-Indexed Royalties',
+        title: 'Sliding Scale Royalty Mechanism',
+        summary: 'Proposes replacing fixed royalties with a progressive 3.5% to 7.0% sliding scale indexed to Platts 62% Fe CFR China index.',
+        statutoryDetail: 'Ensures Grand Gedeh captures windfalls during global commodity upswings while protecting mine viability.'
+      }
+    ]
   },
   {
-    id: 'doc-007',
-    title: 'Grand Gedeh County Multi-Sector Development Atlas & GIS Boundary Dataset',
+    id: 'doc-016',
+    title: 'Grand Gedeh County Multi-Sector Development Atlas & Spatial Concession Perimeters',
     sector: 'Governance, Research & Citizen Participation',
-    projectName: 'County Observatory',
+    projectName: 'County Observatory & Spatial Registry',
     docType: 'GIS Map',
     date: 'July 2026',
     classification: 'Public Document',
     size: '22.0 MB',
     fileFormat: 'GEOJSON',
-    summary: 'Complete digitized spatial dataset of district boundaries, concession perimeters, customary clan lands, healthcare facilities, and water distribution points.'
+    concessionCode: 'GIS-GGCDC-BOUNDARIES-2026',
+    parties: 'GGCDC Cartography Directorate & Liberia Land Authority (LLA)',
+    ratificationStatus: 'Certified Official GIS Dataset',
+    statutoryBasis: 'Land Rights Act 2018 & National Spatial Data Infrastructure',
+    summary: 'Complete digitized spatial dataset in GeoJSON and Shapefile formats detailing the 425 km² Putu concession perimeter, Singbeh FMC Area "I", Euro-Liberia FMC Area "K", B\'hai and Boe/Quilla Community Forests, CLSG 225kV transmission easement, health clinics, and schools.',
+    keyClauses: [
+      {
+        article: 'Layer 1: Concession Boundary Perimeters',
+        title: 'Accurate Polygon Geometry',
+        summary: 'WGS-84 UTM Zone 29N projected coordinates for all statutory concession leases in Grand Gedeh.',
+        statutoryDetail: 'Enables real-time satellite overlap verification and encroaching detection.'
+      }
+    ]
   }
 ];
+
 
 export const OPPORTUNITIES_DATA: OpportunityItem[] = [
   {

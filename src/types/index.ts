@@ -273,18 +273,45 @@ export interface WorkingGroup {
   meetingNotesSnippet: string;
 }
 
+export type DocumentType = 
+  | 'Mineral Development Agreement (MDA)'
+  | 'Forest Management Contract (FMC)'
+  | 'Community Forest Agreement (CFMA)'
+  | 'Community Development Agreement (CDA)'
+  | 'Agro-Industrial Concession'
+  | 'Infrastructure & Energy Treaty'
+  | 'ESIA / Environmental'
+  | 'Technical Audit'
+  | 'Policy Resolution'
+  | 'Meeting Minutes'
+  | 'GIS Map';
+
+export interface DocumentClause {
+  article: string;
+  title: string;
+  summary: string;
+  statutoryDetail: string;
+}
+
 export interface DocumentItem {
   id: string;
   title: string;
   sector: string;
   projectName: string;
-  docType: 'Mineral Development Agreement (MDA)' | 'Community Development Agreement (CDA)' | 'ESIA / Environmental' | 'Technical Audit' | 'Policy Resolution' | 'Meeting Minutes' | 'GIS Map';
+  docType: DocumentType;
   date: string;
   classification: 'Public Document' | 'GGCDC Confidential' | 'Executive Review Only';
   size: string;
-  fileFormat: 'PDF' | 'GEOJSON' | 'DOCX';
+  fileFormat: 'PDF' | 'GEOJSON' | 'DOCX' | 'TXT';
   summary: string;
+  concessionCode?: string;
+  parties?: string;
+  ratificationStatus?: string;
+  statutoryBasis?: string;
+  keyClauses?: DocumentClause[];
+  fullContractText?: string;
 }
+
 
 export interface OpportunityItem {
   id: string;

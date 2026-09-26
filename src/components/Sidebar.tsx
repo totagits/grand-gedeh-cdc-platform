@@ -136,7 +136,7 @@ export const Sidebar: React.FC = () => {
             items: [
               { id: 'communities', label: 'Customary Communities', icon: Layers },
               { id: 'consultations', label: 'Public Consultations Audit', icon: HelpCircle },
-              { id: 'documents', label: 'Official Disclosures Archive', icon: FileText },
+              { id: 'documents', label: 'Public Concessions & Treaties', icon: FileText, badge: 'LEITI Open', badgeColor: 'bg-emerald-600 text-white' },
               { id: 'governance', label: 'Institutional Charter', icon: Scale },
             ]
           }
@@ -256,10 +256,10 @@ export const Sidebar: React.FC = () => {
             ]
           },
           {
-            section: 'Public Transparency',
+            section: 'Public Transparency & Treaties',
             items: [
               { id: 'concessions', label: 'Concessions & Extractives', icon: Building2 },
-              { id: 'documents', label: 'Central Document Archive', icon: FileText },
+              { id: 'documents', label: 'Public Concessions & Treaties', icon: FileText, badge: 'LEITI Open', badgeColor: 'bg-emerald-600 text-white' },
               { id: 'governance', label: 'About GGCDC & Charter', icon: Scale },
             ]
           }

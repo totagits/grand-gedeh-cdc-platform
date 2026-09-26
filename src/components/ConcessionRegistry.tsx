@@ -323,11 +323,21 @@ export const ConcessionRegistry: React.FC = () => {
                 <button
                   onClick={() => {
                     setActiveModalProject(null);
+                    setActiveView('documents');
+                  }}
+                  className="bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 dark:bg-emerald-950/60 dark:hover:bg-emerald-900/60 dark:text-emerald-300 dark:border-emerald-700 text-xs font-bold px-4 py-2 rounded-lg flex items-center space-x-1.5"
+                >
+                  <FileText className="w-3.5 h-3.5" />
+                  <span>View &amp; Download Ratified Contracts</span>
+                </button>
+                <button
+                  onClick={() => {
+                    setActiveModalProject(null);
                     setActiveView('commitments');
                   }}
                   className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-4 py-2 rounded-lg"
                 >
-                  View All Commitments for this Concession
+                  View Commitments
                 </button>
                 <button
                   onClick={() => {
@@ -336,7 +346,7 @@ export const ConcessionRegistry: React.FC = () => {
                   }}
                   className="bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-300 text-xs font-semibold px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700"
                 >
-                  Open Dedicated Working Group
+                  Dedicated Working Group
                 </button>
               </div>
 

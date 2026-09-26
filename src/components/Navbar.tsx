@@ -291,6 +291,22 @@ export const Navbar: React.FC = () => {
                           <div className="text-[10px] text-slate-500 dark:text-slate-400">Putu mining, forestry, agriculture directorates</div>
                         </div>
                       </button>
+
+                      <button
+                        onClick={() => handleNav('documents')}
+                        className={`w-full text-left flex items-start space-x-2.5 p-2 rounded-xl text-xs transition-colors ${
+                          activeView === 'documents' ? 'bg-emerald-100 text-emerald-900 font-bold dark:bg-emerald-900 dark:text-white' : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white'
+                        }`}
+                      >
+                        <FileText className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 shrink-0" />
+                        <div>
+                          <div className="font-semibold text-xs text-slate-900 dark:text-white flex items-center gap-1.5">
+                            <span>Public Concessions &amp; Treaties</span>
+                            <span className="text-[9px] px-1.5 py-0.2 rounded bg-emerald-600 text-white font-bold">LEITI</span>
+                          </div>
+                          <div className="text-[10px] text-slate-500 dark:text-slate-400">Putu MDA, forestry FMCs, community forests, road contracts</div>
+                        </div>
+                      </button>
                     </div>
 
                     {/* Local Content & Governance Column */}
@@ -512,6 +528,9 @@ export const Navbar: React.FC = () => {
             </button>
             <button onClick={() => handleNav('concessions')} className="p-2 rounded hover:bg-slate-100 dark:hover:bg-slate-900 text-left text-slate-700 dark:text-slate-300">
               Concessions & Putu
+            </button>
+            <button onClick={() => handleNav('documents')} className="p-2 rounded hover:bg-slate-100 dark:hover:bg-slate-900 text-left text-emerald-800 dark:text-emerald-400 font-bold">
+              Public Concessions &amp; Treaties (LEITI)
             </button>
             <button onClick={() => handleNav('commitments')} className="p-2 rounded hover:bg-slate-100 dark:hover:bg-slate-900 text-left text-slate-700 dark:text-slate-300">
               Commitments Tracker
