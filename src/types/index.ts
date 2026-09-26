@@ -122,7 +122,7 @@ export interface BusinessSupplier {
   workforceSize: number;
   equipmentSummary: string;
   verifiedLocal: boolean;
-  verificationStatus: 'Approved & Accredited' | 'Pending Secretarial Audit' | 'Under Review' | 'Information Required' | 'Requires Re-upload';
+  verificationStatus: 'Approved & Accredited' | 'Pending Secretarial Audit' | 'Under Review' | 'Information Required' | 'Requires Re-upload' | 'Denied & Disqualified';
   registrationDate: string;
   pastContracts: string[];
   uploadedCredentials: UploadedCredential[];
@@ -153,7 +153,7 @@ export interface WorkforceProfile {
   yearsExperience: number;
   currentStatus: 'Available for Immediate Hire' | 'Currently Employed' | 'Available for Advisory';
   verifiedSkills: string[];
-  verificationStatus: 'Approved & Accredited' | 'Pending Secretarial Audit' | 'Under Review' | 'Information Required';
+  verificationStatus: 'Approved & Accredited' | 'Pending Secretarial Audit' | 'Under Review' | 'Information Required' | 'Denied & Disqualified';
   uploadedCredentials: UploadedCredential[];
   secretariatAuditNotes?: string;
   accreditedBy?: string;
@@ -281,6 +281,7 @@ export type NotificationChannel = 'SMS' | 'Email' | 'Dual (SMS & Email)';
 export type NotificationEventType = 
   | 'Registration Submitted' 
   | 'Secretariat Approved & Accredited' 
+  | 'Application Denied & Disqualified'
   | 'Tender Prequalification Issued' 
   | 'Information Required'
   | 'Concession Dispatch Issued';

@@ -778,6 +778,40 @@ export const BUSINESSES_DATA: BusinessSupplier[] = [
         verificationNotes: 'Articles of Incorporation pending legal verification by Secretariat.'
       }
     ]
+  },
+  {
+    id: 'biz-007',
+    trackingNumber: 'GG-BIZ-2026-089',
+    name: 'Monrovia Consolidated Logistics Ltd.',
+    sector: 'Logistics',
+    ownership: 'Corporation / LLC',
+    location: 'Bushrod Island, Monrovia / Satellite Office Zwedru',
+    services: ['Freight forwarding', 'Customs clearing', 'Container hauling'],
+    contactPerson: 'Koffi A. Mensah',
+    contactPhone: '+231 886 521 900',
+    contactEmail: 'compliance@monrovia-logistics.lr',
+    legalStatus: 'LBR Registered',
+    taxStatus: 'LRA Tax Compliant',
+    workforceSize: 28,
+    equipmentSummary: '6 Flatbed trucks, 2 forklifts',
+    verifiedLocal: false,
+    verificationStatus: 'Denied & Disqualified',
+    registrationDate: '2026-09-10',
+    pastContracts: [],
+    secretariatAuditNotes: 'Disqualified under Section 13 Beneficial Ownership Mandate. Corporate filings show 0% Grand Gedean indigenous ownership.',
+    accreditedBy: 'Cllr. Saydee M. Krahn (Secretariat Legal Counsel)',
+    uploadedCredentials: [
+      {
+        id: 'cred-b07-1',
+        name: 'Articles of Incorporation (Monrovia)',
+        docType: 'LBR Business Registration',
+        fileName: 'MCL_Articles_Monrovia.pdf',
+        fileSize: '1.9 MB',
+        uploadedAt: '2026-09-10',
+        status: 'Requires Re-upload',
+        verificationNotes: 'Articles demonstrate 0% Grand Gedean indigenous ownership.'
+      }
+    ]
   }
 ];
 
@@ -938,6 +972,35 @@ export const WORKFORCE_DATA: WorkforceProfile[] = [
         uploadedAt: '2026-09-15',
         status: 'Pending Verification',
         verificationNotes: 'Pending secretarial background validation.'
+      }
+    ]
+  },
+  {
+    id: 'wf-006',
+    trackingNumber: 'GG-TALENT-2026-006',
+    fullName: 'David K. Broh',
+    gender: 'Male',
+    district: 'Tchien District',
+    isDiaspora: false,
+    tradeCategory: 'Heavy Equipment Operators',
+    specialization: 'Excavator & Bulldozer Operator',
+    qualificationLevel: 'Trade Certified',
+    yearsExperience: 4,
+    currentStatus: 'Currently Employed',
+    verifiedSkills: ['Earthmoving'],
+    verificationStatus: 'Denied & Disqualified',
+    secretariatAuditNotes: 'Disqualified due to forged / non-verifiable trade certificate. TVET certification serial number rejected by BWI accreditation database.',
+    accreditedBy: 'Secretariat Technical Review Board',
+    uploadedCredentials: [
+      {
+        id: 'cred-w06-1',
+        name: 'Operator Certificate (Unverifiable)',
+        docType: 'TVET Trade Certificate',
+        fileName: 'Heavy_Equip_Cert_Unverified.pdf',
+        fileSize: '1.2 MB',
+        uploadedAt: '2026-09-08',
+        status: 'Requires Re-upload',
+        verificationNotes: 'Serial number could not be validated with issuing institution.'
       }
     ]
   }

@@ -13,7 +13,8 @@ import {
   OpportunityItem,
   UploadedCredential,
   AuthenticatedUser,
-  NotificationDispatchRecord
+  NotificationDispatchRecord,
+  NotificationEventType
 } from '../types';
 import { 
   CONCESSIONS_DATA, 
@@ -58,6 +59,22 @@ export const INITIAL_NOTIFICATIONS: NotificationDispatchRecord[] = [
     emailSubject: '[OFFICIAL GGCDC NOTICE] Certificate of Beneficial Ownership & Prequalification Approved - Ref: GG-BIZ-2026-001',
     emailBody: 'To the Management of Zwedru Engineering & Heavy Civil Works Ltd.,\n\nFollowing forensic audit of your corporate filings and operational yard, GGCDC has officially issued your Certificate of Grand Gedean Beneficial Ownership & Contractor Prequalification.\n\nClassification: Tier 1 Priority (100% Grand Gedean Owned)\nAudit Ref: GG-BIZ-2026-001\nAuthorized Sectors: Civil Engineering, Earthmoving & Camp Works.',
     timestamp: '2026-09-25 09:15 GMT',
+    gatewayStatus: 'Delivered via Orange/Lonestar GSM',
+    verificationUrl: 'https://totagits.github.io/grand-gedeh-cdc-platform/'
+  },
+  {
+    id: 'notif-003',
+    recipientName: 'Monrovia Consolidated Logistics Ltd.',
+    recipientPhone: '+231 886 521 900',
+    recipientEmail: 'compliance@monrovia-logistics.lr',
+    entityType: 'business',
+    entityId: 'biz-007',
+    trackingNumber: 'GG-BIZ-2026-089',
+    eventType: 'Application Denied & Disqualified',
+    smsMessage: 'GGCDC-GOV NOTICE: Application for Monrovia Consolidated Logistics was DISQUALIFIED. Grounds: Failed Sec 13 Beneficial Ownership Mandate (<51% Grand Gedean ownership). Appeal within 14 days at Zwedru Admin Complex. Ref: GG-BIZ-2026-089',
+    emailSubject: '[OFFICIAL GGCDC DISQUALIFICATION ORDER] Status: Denied & Disqualified - Monrovia Consolidated Logistics Ltd.',
+    emailBody: 'OFFICIAL SECRETARIAT DISQUALIFICATION ORDER\n\nEnterprise: Monrovia Consolidated Logistics Ltd.\nTracking Ref: GG-BIZ-2026-089\nDecision: Denied & Disqualified from Local Content Prequalification\n\nAdministrative Grounds & Audit Findings:\nForensic inspection of Articles of Incorporation and corporate registry reveals 0% Grand Gedean beneficial ownership and lack of verified permanent operational base in Grand Gedeh County. Disqualified pursuant to Section 13 of Putu MDA and Section 44 of the PPCA.\n\nAppeals Process:\nIf you believe this decision was rendered in error, a formal Petition for Reconsideration may be lodged with the GGCDC Secretariat Review Board within 14 working days at the Zwedru Administrative Complex.',
+    timestamp: '2026-09-25 11:20 GMT',
     gatewayStatus: 'Delivered via Orange/Lonestar GSM',
     verificationUrl: 'https://totagits.github.io/grand-gedeh-cdc-platform/'
   }
@@ -327,6 +344,29 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     const targetBiz = businesses.find(b => b.id === id);
     if (targetBiz) {
       const isApproved = status === 'Approved & Accredited';
+      const isDenied = status === 'Denied & Disqualified';
+      const eventType: NotificationEventType = isApproved 
+        ? 'Secretariat Approved & Accredited' 
+        : isDenied 
+        ? 'Application Denied & Disqualified' 
+        : 'Information Required';
+
+      const smsMessage = isApproved
+        ? `GGCDC-GOV: CONGRATULATIONS! ${targetBiz.name} is ACCREDITED by Secretariat as Tier 1 Contractor under Sec 13 Putu MDA. Audited by ${auditor}. Ref: ${targetBiz.trackingNumber}`
+        : isDenied
+        ? `GGCDC-GOV NOTICE: Application for ${targetBiz.name} was NOT APPROVED / DISQUALIFIED by Secretariat. Grounds: "${notes}". Right of appeal within 14 days at Zwedru Admin Complex. Ref: ${targetBiz.trackingNumber}`
+        : `GGCDC-GOV: ATTENTION ${targetBiz.name}: Secretariat audit requires additional documentation: "${notes}". Log in to update. Ref: ${targetBiz.trackingNumber}`;
+
+      const emailSubject = isApproved
+        ? `[OFFICIAL GGCDC AUDIT NOTICE] Status: Approved & Accredited - ${targetBiz.name}`
+        : isDenied
+        ? `[OFFICIAL GGCDC DISQUALIFICATION ORDER] Status: Denied & Disqualified - ${targetBiz.name}`
+        : `[OFFICIAL GGCDC AUDIT NOTICE] Information Required - ${targetBiz.name}`;
+
+      const emailBody = isDenied
+        ? `OFFICIAL SECRETARIAT DISQUALIFICATION ORDER\n\nEnterprise: ${targetBiz.name}\nTracking Ref: ${targetBiz.trackingNumber}\nAuditor: ${auditor}\nDecision: Denied & Disqualified from Local Content Prequalification\n\nAdministrative Grounds & Audit Findings:\n${notes}\n\nStatutory Citation: Pursuant to Section 13 (Local Content & Beneficial Ownership Mandate) of Putu Iron Ore Mining MDA and Section 44 of the PPCA.\n\nAppeals Process:\nIf you believe this decision was rendered in error or have certified supplementary documents from the Liberian Business Registry (LBR) or Clan Elder Council, you may submit a formal petition to the GGCDC Secretariat Review Board within 14 working days at the Zwedru Administrative Complex.`
+        : `Official Secretariat Audit Notice:\n\nEnterprise: ${targetBiz.name}\nAuditor: ${auditor}\nStatus: ${status}\nNotes: ${notes}\n\nReference: ${targetBiz.trackingNumber}`;
+
       sendDispatchNotification({
         recipientName: targetBiz.contactPerson || targetBiz.name,
         recipientPhone: targetBiz.contactPhone,
@@ -334,12 +374,10 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         entityType: 'business',
         entityId: targetBiz.id,
         trackingNumber: targetBiz.trackingNumber,
-        eventType: isApproved ? 'Secretariat Approved & Accredited' : 'Information Required',
-        smsMessage: isApproved
-          ? `GGCDC-GOV: CONGRATULATIONS! ${targetBiz.name} is ACCREDITED by Secretariat as Tier 1 Contractor under Sec 13 Putu MDA. Audited by ${auditor}. Ref: ${targetBiz.trackingNumber}`
-          : `GGCDC-GOV: ATTENTION ${targetBiz.name}: Secretariat audit requires additional documentation: "${notes}". Log in to update. Ref: ${targetBiz.trackingNumber}`,
-        emailSubject: `[OFFICIAL GGCDC AUDIT NOTICE] Status: ${status} - ${targetBiz.name}`,
-        emailBody: `Official Secretariat Audit Notice:\n\nEnterprise: ${targetBiz.name}\nAuditor: ${auditor}\nStatus: ${status}\nNotes: ${notes}\n\nReference: ${targetBiz.trackingNumber}`
+        eventType,
+        smsMessage,
+        emailSubject,
+        emailBody
       });
     }
   };
@@ -360,6 +398,29 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     const targetWf = workforce.find(w => w.id === id);
     if (targetWf) {
       const isApproved = status === 'Approved & Accredited';
+      const isDenied = status === 'Denied & Disqualified';
+      const eventType: NotificationEventType = isApproved 
+        ? 'Secretariat Approved & Accredited' 
+        : isDenied 
+        ? 'Application Denied & Disqualified' 
+        : 'Information Required';
+
+      const smsMessage = isApproved
+        ? `GGCDC-GOV: CONGRATULATIONS! ${targetWf.fullName}, your credentials have been ACCREDITED by Secretariat for direct hire. Audited by ${auditor}. Ref: ${targetWf.trackingNumber}`
+        : isDenied
+        ? `GGCDC-GOV NOTICE: Application for ${targetWf.fullName} was NOT APPROVED / DISQUALIFIED by Secretariat. Grounds: "${notes}". Right of appeal within 14 days at Zwedru Admin Complex. Ref: ${targetWf.trackingNumber}`
+        : `GGCDC-GOV: ATTENTION ${targetWf.fullName}: Secretariat audit notice: "${notes}". Ref: ${targetWf.trackingNumber}`;
+
+      const emailSubject = isApproved
+        ? `[OFFICIAL GGCDC AUDIT NOTICE] Accreditation Status: Approved & Accredited - ${targetWf.fullName}`
+        : isDenied
+        ? `[OFFICIAL GGCDC DISQUALIFICATION NOTICE] Candidate Profile Not Approved - ${targetWf.fullName}`
+        : `[OFFICIAL GGCDC AUDIT NOTICE] Information Required - ${targetWf.fullName}`;
+
+      const emailBody = isDenied
+        ? `OFFICIAL SECRETARIAT DISQUALIFICATION NOTICE\n\nCandidate: ${targetWf.fullName}\nTracking Ref: ${targetWf.trackingNumber}\nTrade Category: ${targetWf.tradeCategory}\nAuditor: ${auditor}\nDecision: Denied & Disqualified from Direct-Hire Roster\n\nAdministrative Grounds & Audit Findings:\n${notes}\n\nRight of Appeal:\nYou may lodge a formal appeal with supporting proof of qualifications and clan indigeneity at the GGCDC Secretariat Desk, Zwedru Administrative Hall within 14 working days.`
+        : `Official Secretariat Audit Notice:\n\nCandidate: ${targetWf.fullName}\nTrade: ${targetWf.tradeCategory}\nAuditor: ${auditor}\nStatus: ${status}\nNotes: ${notes}\n\nReference: ${targetWf.trackingNumber}`;
+
       sendDispatchNotification({
         recipientName: targetWf.fullName,
         recipientPhone: targetWf.contactPhone || '+231 770 000 000',
@@ -367,12 +428,10 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         entityType: 'workforce',
         entityId: targetWf.id,
         trackingNumber: targetWf.trackingNumber,
-        eventType: isApproved ? 'Secretariat Approved & Accredited' : 'Information Required',
-        smsMessage: isApproved
-          ? `GGCDC-GOV: CONGRATULATIONS! ${targetWf.fullName}, your credentials have been ACCREDITED by Secretariat for direct hire. Audited by ${auditor}. Ref: ${targetWf.trackingNumber}`
-          : `GGCDC-GOV: ATTENTION ${targetWf.fullName}: Secretariat audit notice: "${notes}". Ref: ${targetWf.trackingNumber}`,
-        emailSubject: `[OFFICIAL GGCDC AUDIT NOTICE] Accreditation Status: ${status} - ${targetWf.fullName}`,
-        emailBody: `Official Secretariat Audit Notice:\n\nCandidate: ${targetWf.fullName}\nTrade: ${targetWf.tradeCategory}\nAuditor: ${auditor}\nStatus: ${status}\nNotes: ${notes}\n\nReference: ${targetWf.trackingNumber}`
+        eventType,
+        smsMessage,
+        emailSubject,
+        emailBody
       });
     }
   };

@@ -19,7 +19,8 @@ import {
   ExternalLink,
   MessageSquare,
   Copy,
-  Filter
+  Filter,
+  XCircle
 } from 'lucide-react';
 import { useApp } from '../utils/context';
 import { BusinessSupplier, WorkforceProfile, UploadedCredential, NotificationDispatchRecord } from '../types';
@@ -95,9 +96,23 @@ export const SecretariatVerificationDesk: React.FC = () => {
     setTimeout(() => setActionSuccessNotice(null), 6000);
   };
 
+  const handleDenyBusiness = (biz: BusinessSupplier) => {
+    const reason = auditNotes || 'Failed Section 13 Grand Gedean Beneficial Ownership Mandate (<51% indigenous ownership) or non-verifiable operational presence.';
+    updateBusinessVerification(biz.id, 'Denied & Disqualified', reason, auditorName);
+    setActionSuccessNotice(`Enterprise ${biz.name} has been formally DISQUALIFIED & DENIED. Formal Disqualification Order & Right to Appeal dispatched via SMS and Email.`);
+    setTimeout(() => setActionSuccessNotice(null), 6000);
+  };
+
   const handleApproveWorkforce = (wf: WorkforceProfile) => {
     updateWorkforceVerification(wf.id, 'Approved & Accredited', auditNotes || 'Trade certificates and professional licenses verified.', auditorName);
     setActionSuccessNotice(`Professional ${wf.fullName} has been ACCREDITED into the Grand Gedeh Talent Roster! Instant GSM SMS notification dispatched.`);
+    setTimeout(() => setActionSuccessNotice(null), 6000);
+  };
+
+  const handleDenyWorkforce = (wf: WorkforceProfile) => {
+    const reason = auditNotes || 'Credentials failed verification protocol or counterfeit certification detected.';
+    updateWorkforceVerification(wf.id, 'Denied & Disqualified', reason, auditorName);
+    setActionSuccessNotice(`Candidate ${wf.fullName} has been DISQUALIFIED & DENIED. Formal Denial Notice dispatched via GSM SMS and Email.`);
     setTimeout(() => setActionSuccessNotice(null), 6000);
   };
 
@@ -128,7 +143,7 @@ export const SecretariatVerificationDesk: React.FC = () => {
         </div>
 
         {/* Global Statistics Ticker */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-8">
           <div className="bg-slate-900 border border-slate-800 rounded-xl p-4">
             <span className="text-xs text-slate-400 block mb-1">Registered Enterprises</span>
             <span className="text-2xl font-black text-white">{businesses.length}</span>
@@ -159,6 +174,15 @@ export const SecretariatVerificationDesk: React.FC = () => {
               {workforce.filter(w => w.verificationStatus === 'Pending Secretarial Audit').length}
             </span>
             <span className="text-[11px] text-slate-400 block mt-1">Trade/Degree Validation</span>
+          </div>
+
+          <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 col-span-2 sm:col-span-1">
+            <span className="text-xs text-slate-400 block mb-1">Disqualified / Denied</span>
+            <span className="text-2xl font-black text-rose-400">
+              {businesses.filter(b => b.verificationStatus === 'Denied & Disqualified').length +
+               workforce.filter(w => w.verificationStatus === 'Denied & Disqualified').length}
+            </span>
+            <span className="text-[11px] text-rose-400/80 block mt-1">Appeals Window Active</span>
           </div>
         </div>
 
@@ -232,7 +256,7 @@ export const SecretariatVerificationDesk: React.FC = () => {
               </div>
 
               <div className="flex items-center space-x-1 overflow-x-auto pb-1 text-[11px]">
-                {['All', 'Pending Secretarial Audit', 'Approved & Accredited', 'Information Required'].map((st) => (
+                {['All', 'Pending Secretarial Audit', 'Approved & Accredited', 'Information Required', 'Denied & Disqualified'].map((st) => (
                   <button
                     key={st}
                     onClick={() => setFilterStatus(st)}
@@ -240,7 +264,7 @@ export const SecretariatVerificationDesk: React.FC = () => {
                       filterStatus === st ? 'bg-amber-600 text-slate-950 font-bold' : 'bg-slate-950 text-slate-400 hover:text-white'
                     }`}
                   >
-                    {st === 'Pending Secretarial Audit' ? 'Pending' : st === 'Approved & Accredited' ? 'Accredited' : st}
+                    {st === 'Pending Secretarial Audit' ? 'Pending' : st === 'Approved & Accredited' ? 'Accredited' : st === 'Denied & Disqualified' ? 'Disqualified' : st}
                   </button>
                 ))}
               </div>
@@ -249,6 +273,7 @@ export const SecretariatVerificationDesk: React.FC = () => {
                 {filteredBusinesses.map((biz) => {
                   const isSelected = selectedBiz?.id === biz.id;
                   const isApproved = biz.verificationStatus === 'Approved & Accredited';
+                  const isDenied = biz.verificationStatus === 'Denied & Disqualified';
 
                   return (
                     <div
@@ -262,8 +287,12 @@ export const SecretariatVerificationDesk: React.FC = () => {
                     >
                       <div className="flex items-center justify-between text-[11px] mb-1">
                         <span className="font-mono text-amber-400 font-semibold">{biz.trackingNumber}</span>
-                        <span className={`px-2 py-0.2 rounded-full font-bold ${
-                          isApproved ? 'bg-emerald-950 text-emerald-300 border border-emerald-700' : 'bg-amber-950 text-amber-300 border border-amber-700'
+                        <span className={`px-2 py-0.2 rounded-full font-bold text-[10px] ${
+                          isApproved 
+                            ? 'bg-emerald-950 text-emerald-300 border border-emerald-700' 
+                            : isDenied 
+                            ? 'bg-rose-950 text-rose-300 border border-rose-700' 
+                            : 'bg-amber-950 text-amber-300 border border-amber-700'
                         }`}>
                           {biz.verificationStatus}
                         </span>
@@ -304,8 +333,8 @@ export const SecretariatVerificationDesk: React.FC = () => {
                     <span className={`self-start sm:self-center px-3 py-1 rounded-full text-xs font-bold ${
                       selectedBiz.verificationStatus === 'Approved & Accredited'
                         ? 'bg-emerald-950 text-emerald-300 border border-emerald-600'
-                        : selectedBiz.verificationStatus === 'Information Required' || selectedBiz.verificationStatus === 'Requires Re-upload'
-                        ? 'bg-red-950 text-red-300 border border-red-600'
+                        : selectedBiz.verificationStatus === 'Denied & Disqualified'
+                        ? 'bg-rose-950 text-rose-300 border border-rose-600'
                         : 'bg-amber-950 text-amber-300 border border-amber-600'
                     }`}>
                       {selectedBiz.verificationStatus}
@@ -437,16 +466,26 @@ export const SecretariatVerificationDesk: React.FC = () => {
                     </div>
 
                     <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-800">
-                      <button
-                        onClick={() => handleFlagBusiness(selectedBiz)}
-                        className="bg-amber-950 hover:bg-amber-900 text-amber-300 border border-amber-700 text-xs font-semibold px-4 py-2 rounded-lg"
-                      >
-                        Request Additional Documents
-                      </button>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <button
+                          onClick={() => handleFlagBusiness(selectedBiz)}
+                          className="bg-amber-950 hover:bg-amber-900 text-amber-300 border border-amber-700 text-xs font-semibold px-3 py-2 rounded-lg transition-colors"
+                        >
+                          Request Documents
+                        </button>
+
+                        <button
+                          onClick={() => handleDenyBusiness(selectedBiz)}
+                          className="bg-rose-950 hover:bg-rose-900 text-rose-300 border border-rose-700 text-xs font-bold px-3 py-2 rounded-lg flex items-center space-x-1.5 transition-colors"
+                        >
+                          <XCircle className="w-4 h-4 text-rose-400" />
+                          <span>Deny & Disqualify</span>
+                        </button>
+                      </div>
 
                       <button
                         onClick={() => handleApproveBusiness(selectedBiz)}
-                        className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-5 py-2 rounded-lg shadow-lg flex items-center space-x-1.5"
+                        className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-5 py-2 rounded-lg shadow-lg flex items-center space-x-1.5 transition-colors"
                       >
                         <ShieldCheck className="w-4 h-4" />
                         <span>Issue Official Accreditation Badge</span>
@@ -487,10 +526,25 @@ export const SecretariatVerificationDesk: React.FC = () => {
                 />
               </div>
 
+              <div className="flex items-center space-x-1 overflow-x-auto pb-1 text-[11px]">
+                {['All', 'Pending Secretarial Audit', 'Approved & Accredited', 'Information Required', 'Denied & Disqualified'].map((st) => (
+                  <button
+                    key={st}
+                    onClick={() => setFilterStatus(st)}
+                    className={`px-2.5 py-1 rounded-lg whitespace-nowrap transition-colors ${
+                      filterStatus === st ? 'bg-amber-600 text-slate-950 font-bold' : 'bg-slate-950 text-slate-400 hover:text-white'
+                    }`}
+                  >
+                    {st === 'Pending Secretarial Audit' ? 'Pending' : st === 'Approved & Accredited' ? 'Accredited' : st === 'Denied & Disqualified' ? 'Disqualified' : st}
+                  </button>
+                ))}
+              </div>
+
               <div className="space-y-2 max-h-[500px] overflow-y-auto pr-1">
                 {filteredWorkforce.map((person) => {
                   const isSelected = selectedWf?.id === person.id;
                   const isApproved = person.verificationStatus === 'Approved & Accredited';
+                  const isDenied = person.verificationStatus === 'Denied & Disqualified';
 
                   return (
                     <div
@@ -504,8 +558,12 @@ export const SecretariatVerificationDesk: React.FC = () => {
                     >
                       <div className="flex items-center justify-between text-[11px] mb-1">
                         <span className="font-mono text-amber-400 font-semibold">{person.trackingNumber}</span>
-                        <span className={`px-2 py-0.2 rounded-full font-bold ${
-                          isApproved ? 'bg-emerald-950 text-emerald-300 border border-emerald-700' : 'bg-amber-950 text-amber-300 border border-amber-700'
+                        <span className={`px-2 py-0.2 rounded-full font-bold text-[10px] ${
+                          isApproved 
+                            ? 'bg-emerald-950 text-emerald-300 border border-emerald-700' 
+                            : isDenied 
+                            ? 'bg-rose-950 text-rose-300 border border-rose-700' 
+                            : 'bg-amber-950 text-amber-300 border border-amber-700'
                         }`}>
                           {person.verificationStatus}
                         </span>
@@ -551,6 +609,8 @@ export const SecretariatVerificationDesk: React.FC = () => {
                     <span className={`self-start sm:self-center px-3 py-1 rounded-full text-xs font-bold ${
                       selectedWf.verificationStatus === 'Approved & Accredited'
                         ? 'bg-emerald-950 text-emerald-300 border border-emerald-600'
+                        : selectedWf.verificationStatus === 'Denied & Disqualified'
+                        ? 'bg-rose-950 text-rose-300 border border-rose-600'
                         : 'bg-amber-950 text-amber-300 border border-amber-600'
                     }`}>
                       {selectedWf.verificationStatus}
@@ -608,17 +668,51 @@ export const SecretariatVerificationDesk: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="p-4 bg-slate-950 border border-amber-500/40 rounded-xl space-y-3">
-                    <span className="text-xs font-bold text-amber-400 uppercase tracking-wider block">
-                      Accreditation Certification
+                  <div className="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-3">
+                    <span className="text-xs font-bold text-slate-300 uppercase tracking-wider block">
+                      Secretariat Decision & Accreditation Order
                     </span>
-                    <button
-                      onClick={() => handleApproveWorkforce(selectedWf)}
-                      className="w-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold py-2.5 rounded-lg shadow-lg flex items-center justify-center space-x-1.5"
-                    >
-                      <ShieldCheck className="w-4 h-4" />
-                      <span>Accredit Professional into Grand Gedeh Concession Roster</span>
-                    </button>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs mb-2">
+                      <div>
+                        <label className="block text-slate-400 mb-1">Auditing Officer:</label>
+                        <input
+                          type="text"
+                          value={auditorName}
+                          onChange={(e) => setAuditorName(e.target.value)}
+                          className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-amber-500"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-slate-400 mb-1">Audit Notes / Decision Reason:</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. Validated trade license or disqualification reason."
+                          value={auditNotes}
+                          onChange={(e) => setAuditNotes(e.target.value)}
+                          className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-amber-500"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-800">
+                      <button
+                        onClick={() => handleDenyWorkforce(selectedWf)}
+                        className="bg-rose-950 hover:bg-rose-900 text-rose-300 border border-rose-700 text-xs font-bold px-4 py-2.5 rounded-lg flex items-center space-x-1.5 transition-colors"
+                      >
+                        <XCircle className="w-4 h-4 text-rose-400" />
+                        <span>Deny & Disqualify Candidate</span>
+                      </button>
+
+                      <button
+                        onClick={() => handleApproveWorkforce(selectedWf)}
+                        className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-5 py-2.5 rounded-lg shadow-lg flex items-center space-x-1.5 transition-colors"
+                      >
+                        <ShieldCheck className="w-4 h-4" />
+                        <span>Accredit Professional into Grand Gedeh Concession Roster</span>
+                      </button>
+                    </div>
                   </div>
 
                 </div>
@@ -652,19 +746,27 @@ export const SecretariatVerificationDesk: React.FC = () => {
 
               {/* Quick Summary Badges */}
               <div className="flex flex-wrap gap-2">
-                <div className="bg-slate-950 border border-slate-800 px-3 py-2 rounded-xl text-center min-w-[90px]">
+                <div className="bg-slate-950 border border-slate-800 px-3 py-2 rounded-xl text-center min-w-[85px]">
                   <span className="text-[10px] text-slate-400 block">Total Alerts</span>
                   <span className="text-lg font-black text-white">{notifications.length}</span>
                 </div>
-                <div className="bg-slate-950 border border-amber-900/40 px-3 py-2 rounded-xl text-center min-w-[90px]">
+                <div className="bg-slate-950 border border-emerald-900/40 px-3 py-2 rounded-xl text-center min-w-[85px]">
+                  <span className="text-[10px] text-emerald-400 block">Accredited</span>
+                  <span className="text-lg font-black text-emerald-400">
+                    {notifications.filter(n => n.eventType === 'Secretariat Approved & Accredited' || n.eventType === 'Tender Prequalification Issued').length}
+                  </span>
+                </div>
+                <div className="bg-slate-950 border border-rose-900/40 px-3 py-2 rounded-xl text-center min-w-[85px]">
+                  <span className="text-[10px] text-rose-400 block">Disqualified</span>
+                  <span className="text-lg font-black text-rose-400">
+                    {notifications.filter(n => n.eventType === 'Application Denied & Disqualified').length}
+                  </span>
+                </div>
+                <div className="bg-slate-950 border border-amber-900/40 px-3 py-2 rounded-xl text-center min-w-[85px]">
                   <span className="text-[10px] text-amber-400 block">GSM SMS</span>
                   <span className="text-lg font-black text-amber-400">{notifications.length}</span>
                 </div>
-                <div className="bg-slate-950 border border-sky-900/40 px-3 py-2 rounded-xl text-center min-w-[90px]">
-                  <span className="text-[10px] text-sky-400 block">Emails</span>
-                  <span className="text-lg font-black text-sky-400">{notifications.length}</span>
-                </div>
-                <div className="bg-emerald-950/70 border border-emerald-800/80 px-3 py-2 rounded-xl text-center min-w-[90px]">
+                <div className="bg-emerald-950/70 border border-emerald-800/80 px-3 py-2 rounded-xl text-center min-w-[85px]">
                   <span className="text-[10px] text-emerald-400 block">Carrier Health</span>
                   <span className="text-xs font-black text-emerald-300 block mt-1">100% OK</span>
                 </div>
@@ -717,11 +819,14 @@ export const SecretariatVerificationDesk: React.FC = () => {
                   const isCopied = copiedNotificationId === notif.id;
                   const showSms = notificationChannelFilter === 'All' || notificationChannelFilter === 'sms';
                   const showEmail = notificationChannelFilter === 'All' || notificationChannelFilter === 'email';
+                  const isDeniedNotice = notif.eventType === 'Application Denied & Disqualified';
 
                   return (
                     <div 
                       key={notif.id}
-                      className="bg-slate-900/90 border border-slate-800 hover:border-slate-700 rounded-2xl p-5 shadow-lg transition-all space-y-4"
+                      className={`bg-slate-900/90 border rounded-2xl p-5 shadow-lg transition-all space-y-4 ${
+                        isDeniedNotice ? 'border-rose-900/60 hover:border-rose-700' : 'border-slate-800 hover:border-slate-700'
+                      }`}
                     >
                       {/* Top Meta Line */}
                       <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-800 text-xs">
@@ -770,31 +875,57 @@ export const SecretariatVerificationDesk: React.FC = () => {
                         </div>
 
                         <span className={`self-start sm:self-center px-3 py-1 rounded-full text-[11px] font-bold ${
-                          notif.eventType === 'Secretariat Approved & Accredited'
+                          notif.eventType === 'Secretariat Approved & Accredited' || notif.eventType === 'Tender Prequalification Issued'
                             ? 'bg-emerald-950 text-emerald-300 border border-emerald-700'
+                            : notif.eventType === 'Application Denied & Disqualified'
+                            ? 'bg-rose-950 text-rose-300 border border-rose-700'
                             : notif.eventType === 'Registration Submitted'
                             ? 'bg-blue-950 text-blue-300 border border-blue-700'
                             : 'bg-amber-950 text-amber-300 border border-amber-700'
                         }`}>
-                          {notif.eventType === 'Secretariat Approved & Accredited' ? '✓ Accreditation Approved' : notif.eventType === 'Registration Submitted' ? '📝 Application Filed' : notif.eventType}
+                          {notif.eventType === 'Secretariat Approved & Accredited' 
+                            ? '✓ Accreditation Approved' 
+                            : notif.eventType === 'Tender Prequalification Issued'
+                            ? '📜 Prequalification Issued'
+                            : notif.eventType === 'Application Denied & Disqualified'
+                            ? '❌ Application Disqualified / Denied'
+                            : notif.eventType === 'Registration Submitted' 
+                            ? '📝 Application Filed' 
+                            : notif.eventType}
                         </span>
                       </div>
 
                       {/* Message Content Container */}
                       <div className="space-y-3">
                         {showSms && (
-                          <div className="bg-slate-950 border border-amber-900/40 rounded-xl p-4 font-mono text-xs text-amber-200/90 space-y-1 shadow-inner">
-                            <div className="flex items-center justify-between text-[10px] text-amber-400/80 uppercase font-bold tracking-wider pb-1 border-b border-amber-900/30">
+                          <div className={`bg-slate-950 rounded-xl p-4 font-mono text-xs space-y-1 shadow-inner border ${
+                            isDeniedNotice
+                              ? 'border-rose-900/60 text-rose-200/90'
+                              : 'border-amber-900/40 text-amber-200/90'
+                          }`}>
+                            <div className={`flex items-center justify-between text-[10px] uppercase font-bold tracking-wider pb-1 border-b ${
+                              isDeniedNotice
+                                ? 'text-rose-400 border-rose-900/40'
+                                : 'text-amber-400/80 border-amber-900/30'
+                            }`}>
                               <span>Liberian GSM SMS Broadcast (077 / 088 Relay)</span>
-                              <span>Handshake Confirmed ✓✓</span>
+                              <span>{isDeniedNotice ? 'Disqualification Notice Served ✓✓' : 'Handshake Confirmed ✓✓'}</span>
                             </div>
                             <p className="pt-1 whitespace-pre-line leading-relaxed">{notif.smsMessage}</p>
                           </div>
                         )}
 
                         {showEmail && (
-                          <div className="bg-slate-950 border border-sky-900/40 rounded-xl p-4 text-xs text-slate-200 space-y-2 shadow-inner">
-                            <div className="font-bold text-sky-300 pb-1 border-b border-sky-900/30 flex items-center justify-between">
+                          <div className={`bg-slate-950 rounded-xl p-4 text-xs space-y-2 shadow-inner border ${
+                            isDeniedNotice
+                              ? 'border-rose-900/60 text-slate-200'
+                              : 'border-sky-900/40 text-slate-200'
+                          }`}>
+                            <div className={`font-bold pb-1 border-b flex items-center justify-between ${
+                              isDeniedNotice
+                                ? 'text-rose-300 border-rose-900/40'
+                                : 'text-sky-300 border-sky-900/30'
+                            }`}>
                               <span>Subject: {notif.emailSubject}</span>
                               <span className="text-[10px] text-slate-400 font-mono">From: secretariat@ggcdc-liberia.org</span>
                             </div>
