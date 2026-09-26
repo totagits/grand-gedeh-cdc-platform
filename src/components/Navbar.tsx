@@ -73,38 +73,49 @@ export const Navbar: React.FC = () => {
     <header className="sticky top-0 z-40 bg-white/95 dark:bg-slate-950/95 border-b border-slate-200 dark:border-amber-500/40 shadow-sm dark:shadow-2xl backdrop-blur-md transition-colors">
       
       {/* Top Sovereignty Header Bar */}
-      <div className="bg-gradient-to-r from-emerald-900 via-slate-900 to-emerald-900 dark:from-emerald-950 dark:via-slate-950 dark:to-emerald-950 text-slate-200 dark:text-slate-300 text-xs py-1 px-4 border-b border-emerald-800 dark:border-emerald-900/60">
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+      <div className="bg-gradient-to-r from-emerald-950 via-slate-950 to-emerald-950 text-slate-200 text-xs py-1.5 px-4 border-b border-emerald-800/60 dark:border-emerald-900/80">
+        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
           
-          <div className="flex items-center space-x-2">
-            <span className="inline-block w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse shadow-emerald-400"></span>
-            <span className="font-bold tracking-wider text-amber-400 uppercase text-[11px]">
+          <div className="flex items-center space-x-2.5">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            <span className="font-bold tracking-widest text-amber-400 uppercase text-[10.5px]">
               Grand Gedeh Citizens Development Council
             </span>
-            <span className="text-slate-500 hidden sm:inline">|</span>
-            <span className="hidden sm:inline italic text-slate-300 dark:text-slate-400 text-[11px]">
-              Republic of Liberia • Permanent County Development Institution
+            <span className="text-slate-600 hidden sm:inline">•</span>
+            <span className="hidden sm:inline text-slate-300 dark:text-slate-400 text-[11px] font-medium">
+              Republic of Liberia • Permanent County Institution
+            </span>
+            <span className="hidden lg:inline text-slate-600">•</span>
+            <span className="hidden lg:inline-flex items-center space-x-1 text-[10px] text-emerald-400 font-mono bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-800/70">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+              <span>Live Registry Sync</span>
             </span>
           </div>
 
           <div className="flex items-center space-x-3 text-xs">
             {isSignedIn && currentUser ? (
               <div className="flex items-center space-x-2">
-                <span className="text-[11px] text-slate-300 dark:text-slate-400 hidden md:inline">Logged in as:</span>
-                <span className="text-[11px] font-bold text-amber-300 bg-slate-900/90 px-2 py-0.5 rounded border border-amber-500/40">
+                <span className="text-[11px] text-slate-400 hidden md:inline">Authenticated Session:</span>
+                <span className="text-[11px] font-bold text-amber-300 bg-slate-900/90 px-2.5 py-0.5 rounded-full border border-amber-500/50 shadow-sm">
                   {currentUser.name} ({currentUser.badgeLabel || currentUser.role})
                 </span>
                 <button
                   onClick={() => setIsSignInModalOpen(true)}
-                  className="text-[11px] text-emerald-300 hover:text-emerald-200 underline font-medium"
+                  className="text-[11px] text-emerald-300 hover:text-emerald-200 underline font-semibold transition-colors"
                 >
                   Switch Role
                 </button>
               </div>
             ) : (
-              <span className="text-[11px] text-slate-300 dark:text-slate-400">
-                Official Public Portal
-              </span>
+              <div className="flex items-center space-x-2 text-[11px] text-slate-300">
+                <span className="bg-slate-900/80 text-emerald-400 px-2 py-0.5 rounded text-[10px] font-mono border border-emerald-900/80">
+                  SECURE 256-BIT AUDIT
+                </span>
+                <span className="text-slate-400 hidden sm:inline">Official Public Portal</span>
+              </div>
             )}
           </div>
 

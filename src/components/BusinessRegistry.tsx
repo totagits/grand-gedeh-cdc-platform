@@ -617,57 +617,82 @@ export const BusinessRegistry: React.FC = () => {
       )}
 
       {/* ENGINE HERO HEADER */}
-      <div className="bg-gradient-to-r from-[#0d2a24] via-[#133e36] to-[#1c5046] text-white p-6 md:p-8 rounded-2xl shadow-xl border border-emerald-800/40 relative overflow-hidden">
-        <div className="relative z-10 max-w-3xl">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-xs font-bold uppercase tracking-wider mb-3">
-            <Building2 className="w-3.5 h-3.5" />
-            <span>Local Procurement &amp; Enterprise Prequalification</span>
+      <div className="bg-gradient-to-br from-emerald-950 via-[#0d2a24] to-slate-950 text-white p-6 md:p-8 rounded-3xl shadow-xl border border-emerald-800/40 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute bottom-0 left-1/3 w-80 h-80 bg-amber-500/5 rounded-full blur-2xl pointer-events-none"></div>
+
+        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div className="max-w-2xl">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-xs font-bold uppercase tracking-wider mb-3 backdrop-blur-md">
+              <Building2 className="w-3.5 h-3.5 text-amber-400" />
+              <span>Directorate of Local Content &amp; Commerce</span>
+            </div>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight mb-2.5">
+              Grand Gedeh Business &amp; Local Contractor Registry
+            </h1>
+            <p className="text-emerald-100/85 text-xs sm:text-sm md:text-base leading-relaxed">
+              Mandatory priority rights under Section 13 (Local Content) of the Putu Mineral Development Agreement (MDA) and Section 44 of the PPCA. Enforcing Grand Gedean beneficial ownership thresholds and prequalifying local civil contractors, haulage fleets, and commercial suppliers.
+            </p>
           </div>
-          <h1 className="text-2xl md:text-4xl font-black text-white tracking-tight mb-2">
-            Grand Gedeh Business &amp; Local Contractor Registry
-          </h1>
-          <p className="text-emerald-100/90 text-sm md:text-base leading-relaxed">
-            Mandatory priority right under Section 13 (Local Content) of the Putu Mineral Development Agreement (MDA) and Section 44 of the PPCA. Enforcing Grand Gedean beneficial ownership thresholds and prequalifying local civil contractors, haulage fleets, and commercial suppliers.
-          </p>
+
+          {/* Executive KPI Stat Badges */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-1 gap-2.5 shrink-0">
+            <div className="bg-slate-900/80 border border-emerald-500/30 rounded-2xl p-3 backdrop-blur-md">
+              <div className="text-[10px] text-emerald-400 font-bold uppercase tracking-wider">Verified Registry</div>
+              <div className="text-lg font-black text-white font-mono">{businesses.length} Enterprises</div>
+              <div className="text-[10px] text-slate-400">100% Beneficial Vetted</div>
+            </div>
+            <div className="bg-slate-900/80 border border-amber-500/30 rounded-2xl p-3 backdrop-blur-md">
+              <div className="text-[10px] text-amber-400 font-bold uppercase tracking-wider">Section 13 Quota</div>
+              <div className="text-lg font-black text-white font-mono">Tier 1 Active</div>
+              <div className="text-[10px] text-slate-400">Putu MDA Protected</div>
+            </div>
+          </div>
         </div>
 
         {/* ENGINE TABS */}
-        <div className="flex gap-2 mt-6 border-b border-emerald-700/50 pb-2 relative z-10 overflow-x-auto">
+        <div className="flex flex-wrap gap-2 mt-8 pt-4 border-t border-emerald-800/50 relative z-10">
           <button
             type="button"
             onClick={() => setActiveEngineTab('register')}
-            className={`px-4 py-2 rounded-xl text-xs md:text-sm font-bold flex items-center gap-2 transition-all ${
+            className={`px-4 py-2.5 rounded-xl text-xs md:text-sm font-bold flex items-center gap-2 transition-all shadow-sm ${
               activeEngineTab === 'register'
-                ? 'bg-emerald-500 text-slate-950 shadow-lg font-black'
-                : 'bg-emerald-950/40 text-emerald-200 hover:bg-emerald-900/60'
+                ? 'bg-gradient-to-r from-amber-500 to-amber-400 text-slate-950 font-black shadow-md ring-2 ring-amber-400/30'
+                : 'bg-emerald-950/60 text-emerald-200 hover:bg-emerald-900/80 border border-emerald-800/60'
             }`}
           >
             <Award className="w-4 h-4" />
-            Register Local Enterprise / Apply for Prequalification
+            <span>Register Local Enterprise</span>
           </button>
           <button
             type="button"
             onClick={() => setActiveEngineTab('directory')}
-            className={`px-4 py-2 rounded-xl text-xs md:text-sm font-bold flex items-center gap-2 transition-all ${
+            className={`px-4 py-2.5 rounded-xl text-xs md:text-sm font-bold flex items-center gap-2 transition-all shadow-sm ${
               activeEngineTab === 'directory'
-                ? 'bg-emerald-500 text-slate-950 shadow-lg font-black'
-                : 'bg-emerald-950/40 text-emerald-200 hover:bg-emerald-900/60'
+                ? 'bg-gradient-to-r from-amber-500 to-amber-400 text-slate-950 font-black shadow-md ring-2 ring-amber-400/30'
+                : 'bg-emerald-950/60 text-emerald-200 hover:bg-emerald-900/80 border border-emerald-800/60'
             }`}
           >
             <Building2 className="w-4 h-4" />
-            Certified Local Contractor Directory ({businesses.length})
+            <span>Verified Contractor Directory</span>
+            <span className="bg-slate-900/90 text-amber-300 text-[11px] font-mono px-2 py-0.5 rounded-full ml-1 border border-amber-500/40">
+              {businesses.length}
+            </span>
           </button>
           <button
             type="button"
             onClick={() => setActiveEngineTab('tenders')}
-            className={`px-4 py-2 rounded-xl text-xs md:text-sm font-bold flex items-center gap-2 transition-all ${
+            className={`px-4 py-2.5 rounded-xl text-xs md:text-sm font-bold flex items-center gap-2 transition-all shadow-sm ${
               activeEngineTab === 'tenders'
-                ? 'bg-emerald-500 text-slate-950 shadow-lg font-black'
-                : 'bg-emerald-950/40 text-emerald-200 hover:bg-emerald-900/60'
+                ? 'bg-gradient-to-r from-amber-500 to-amber-400 text-slate-950 font-black shadow-md ring-2 ring-amber-400/30'
+                : 'bg-emerald-950/60 text-emerald-200 hover:bg-emerald-900/80 border border-emerald-800/60'
             }`}
           >
             <FileText className="w-4 h-4" />
-            Concession Tenders &amp; Local Quotas (3)
+            <span>Concession Tenders &amp; Quotas</span>
+            <span className="bg-emerald-900/90 text-emerald-300 text-[11px] font-mono px-2 py-0.5 rounded-full ml-1 border border-emerald-700/60">
+              3 Active
+            </span>
           </button>
         </div>
       </div>
@@ -949,21 +974,21 @@ export const BusinessRegistry: React.FC = () => {
       {activeEngineTab === 'directory' && (
         <div className="space-y-6">
           {/* SEARCH & FILTERS BAR */}
-          <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col md:flex-row gap-3 items-center">
+          <div className="bg-white/95 dark:bg-slate-900/90 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col md:flex-row gap-3 items-center backdrop-blur-md">
             <div className="relative flex-1 w-full">
-              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+              <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
               <input
                 type="text"
-                placeholder="Search by business name, commercial sector, location, or contact..."
+                placeholder="Search by enterprise name, commercial sector, location, or registration code..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-3 py-2 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-xs sm:text-sm bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-600 transition-colors"
               />
             </div>
             <select
               value={selectedSector}
               onChange={(e) => setSelectedSector(e.target.value)}
-              className="w-full md:w-64 px-3 py-2 rounded-lg border border-slate-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="w-full md:w-72 px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-xs sm:text-sm bg-white dark:bg-slate-950 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-600 transition-colors"
             >
               {sectors.map(s => (
                 <option key={s} value={s}>{s === 'All' ? 'All Commercial Sectors' : s}</option>
@@ -976,40 +1001,54 @@ export const BusinessRegistry: React.FC = () => {
             {filteredBusinesses.map((b) => (
               <div
                 key={b.id}
-                className="bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow p-5 flex flex-col justify-between"
+                className="bg-white/95 dark:bg-slate-900/95 rounded-2xl border border-slate-200/90 dark:border-slate-800/90 shadow-sm hover:shadow-lg hover:border-emerald-500/50 dark:hover:border-amber-500/50 transition-all duration-300 p-5 flex flex-col justify-between group"
               >
                 <div>
-                  <div className="flex justify-between items-start mb-2">
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
-                      Tier 1 Local Content Priority
+                  <div className="flex justify-between items-start gap-2 mb-3">
+                    <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60 uppercase tracking-wider">
+                      Tier 1 Indigenous Priority
                     </span>
-                    <span className="text-[10px] text-emerald-700 bg-emerald-50 border border-emerald-200 font-bold px-1.5 py-0.5 rounded">
+                    <span className="text-[10px] text-amber-800 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/80 border border-amber-300 dark:border-amber-700/60 font-bold px-2 py-0.5 rounded-md flex items-center gap-1 font-mono">
                       ✓ Audited
                     </span>
                   </div>
 
-                  <h3 className="font-bold text-base text-slate-900">{b.name}</h3>
-                  <div className="text-xs text-slate-500 mt-0.5 flex items-center gap-1">
-                    <MapPin className="w-3 h-3 text-slate-400" />
+                  <h3 className="font-extrabold text-base text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-amber-300 transition-colors">
+                    {b.name}
+                  </h3>
+                  <div className="text-xs text-slate-500 dark:text-slate-400 mt-1 flex items-center gap-1.5">
+                    <MapPin className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
                     <span>{b.location}</span>
                   </div>
 
-                  <div className="mt-3 bg-slate-50 rounded-lg p-2.5 text-xs space-y-1">
-                    <div><strong className="text-slate-700">Sector:</strong> {b.sector}</div>
-                    <div><strong className="text-slate-700">Entity:</strong> {b.ownership}</div>
-                    <div><strong className="text-slate-700">Workforce:</strong> {b.workforceSize} personnel</div>
-                    <div><strong className="text-slate-700">Audit Code:</strong> <span className="font-mono text-emerald-800 font-bold">{b.trackingNumber}</span></div>
+                  <div className="mt-3.5 bg-slate-50/90 dark:bg-slate-950/70 border border-slate-200/70 dark:border-slate-800/80 rounded-xl p-3 text-xs space-y-1.5">
+                    <div className="flex justify-between text-slate-700 dark:text-slate-300">
+                      <span className="text-slate-500 dark:text-slate-400">Sector:</span>
+                      <span className="font-semibold text-slate-900 dark:text-white">{b.sector}</span>
+                    </div>
+                    <div className="flex justify-between text-slate-700 dark:text-slate-300">
+                      <span className="text-slate-500 dark:text-slate-400">Ownership:</span>
+                      <span className="font-semibold text-slate-900 dark:text-white">{b.ownership}</span>
+                    </div>
+                    <div className="flex justify-between text-slate-700 dark:text-slate-300">
+                      <span className="text-slate-500 dark:text-slate-400">Workforce:</span>
+                      <span className="font-semibold text-slate-900 dark:text-white">{b.workforceSize} personnel</span>
+                    </div>
+                    <div className="flex justify-between items-center text-slate-700 dark:text-slate-300 pt-1 border-t border-slate-200/60 dark:border-slate-800">
+                      <span className="text-slate-500 dark:text-slate-400">Audit Code:</span>
+                      <span className="font-mono text-emerald-700 dark:text-emerald-400 font-bold">{b.trackingNumber}</span>
+                    </div>
                   </div>
                 </div>
 
-                <div className="mt-5 pt-3 border-t border-slate-100">
+                <div className="mt-5 pt-3.5 border-t border-slate-100 dark:border-slate-800">
                   <button
                     type="button"
                     onClick={() => setBusinessModalVendor(b)}
-                    className="w-full py-2 px-3 rounded-lg bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 text-emerald-900 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors"
+                    className="w-full py-2.5 px-3.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/60 dark:hover:bg-emerald-900/80 border border-emerald-300 dark:border-emerald-700/80 text-emerald-900 dark:text-emerald-200 font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-sm hover:shadow"
                   >
-                    <Award className="w-3.5 h-3.5 text-emerald-700" />
-                    View GGCDC Certificate &amp; Procurement Endorsement →
+                    <Award className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+                    <span>View GGCDC Certificate &amp; Procurement Endorsement →</span>
                   </button>
                 </div>
               </div>

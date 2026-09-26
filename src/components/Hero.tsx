@@ -115,60 +115,60 @@ export const Hero: React.FC = () => {
         </div>
 
         {/* Live Metrics Ticker */}
-        <div className="mt-10 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+        <div className="mt-10 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
           
-          <div className="bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-xl p-3.5 shadow-sm hover:border-emerald-600 transition-colors">
-            <div className="flex items-center justify-between text-slate-500 dark:text-slate-400 text-xs mb-1">
-              <span>Concession Cap</span>
-              <TrendingUp className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+          <div className="bg-white/90 dark:bg-slate-900/90 border border-slate-200/90 dark:border-slate-800/90 hover:border-emerald-500/50 dark:hover:border-amber-500/50 rounded-2xl p-4 shadow-sm hover:shadow-md transition-all duration-300 group">
+            <div className="flex items-center justify-between text-slate-500 dark:text-slate-400 text-xs mb-1.5">
+              <span className="font-semibold text-[11px] uppercase tracking-wider text-slate-600 dark:text-slate-400">Pipeline</span>
+              <TrendingUp className="w-4 h-4 text-emerald-600 dark:text-emerald-400 group-hover:scale-110 transition-transform" />
             </div>
-            <div className="text-lg font-black text-slate-900 dark:text-white">$2.4 Billion</div>
-            <div className="text-[11px] text-emerald-700 dark:text-emerald-400 font-medium mt-0.5">Pipeline Monitored</div>
+            <div className="text-xl font-black text-slate-900 dark:text-white font-mono tracking-tight">$2.4B</div>
+            <div className="text-[11px] text-emerald-700 dark:text-emerald-400 font-medium mt-1">Concessions Monitored</div>
           </div>
 
-          <div className="bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-xl p-3.5 shadow-sm hover:border-emerald-600 transition-colors">
-            <div className="flex items-center justify-between text-slate-500 dark:text-slate-400 text-xs mb-1">
-              <span>Directorates</span>
-              <Building2 className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+          <div className="bg-white/90 dark:bg-slate-900/90 border border-slate-200/90 dark:border-slate-800/90 hover:border-amber-500/50 rounded-2xl p-4 shadow-sm hover:shadow-md transition-all duration-300 group">
+            <div className="flex items-center justify-between text-slate-500 dark:text-slate-400 text-xs mb-1.5">
+              <span className="font-semibold text-[11px] uppercase tracking-wider text-slate-600 dark:text-slate-400">Governance</span>
+              <Building2 className="w-4 h-4 text-amber-600 dark:text-amber-400 group-hover:scale-110 transition-transform" />
             </div>
-            <div className="text-lg font-black text-slate-900 dark:text-white">8 Directorates</div>
-            <div className="text-[11px] text-amber-700 dark:text-amber-300 font-medium mt-0.5">Permanent Arms</div>
+            <div className="text-xl font-black text-slate-900 dark:text-white font-mono tracking-tight">8 Directorates</div>
+            <div className="text-[11px] text-amber-700 dark:text-amber-300 font-medium mt-1">Permanent State Arms</div>
           </div>
 
-          <div className="bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-xl p-3.5 shadow-sm hover:border-emerald-600 transition-colors">
-            <div className="flex items-center justify-between text-slate-500 dark:text-slate-400 text-xs mb-1">
-              <span>Communities</span>
-              <Users className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+          <div className="bg-white/90 dark:bg-slate-900/90 border border-slate-200/90 dark:border-slate-800/90 hover:border-blue-500/50 rounded-2xl p-4 shadow-sm hover:shadow-md transition-all duration-300 group">
+            <div className="flex items-center justify-between text-slate-500 dark:text-slate-400 text-xs mb-1.5">
+              <span className="font-semibold text-[11px] uppercase tracking-wider text-slate-600 dark:text-slate-400">Customary</span>
+              <Users className="w-4 h-4 text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-transform" />
             </div>
-            <div className="text-lg font-black text-slate-900 dark:text-white">46 Towns</div>
-            <div className="text-[11px] text-blue-700 dark:text-blue-300 font-medium mt-0.5">Customary Profiles</div>
+            <div className="text-xl font-black text-slate-900 dark:text-white font-mono tracking-tight">46 Towns</div>
+            <div className="text-[11px] text-blue-700 dark:text-blue-300 font-medium mt-1">FPIC & Clan Profiles</div>
           </div>
 
-          <div className="bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-xl p-3.5 shadow-sm hover:border-emerald-600 transition-colors">
-            <div className="flex items-center justify-between text-slate-500 dark:text-slate-400 text-xs mb-1">
-              <span>Local Suppliers</span>
-              <Sparkles className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+          <div className="bg-white/90 dark:bg-slate-900/90 border border-slate-200/90 dark:border-slate-800/90 hover:border-emerald-500/50 rounded-2xl p-4 shadow-sm hover:shadow-md transition-all duration-300 group">
+            <div className="flex items-center justify-between text-slate-500 dark:text-slate-400 text-xs mb-1.5">
+              <span className="font-semibold text-[11px] uppercase tracking-wider text-slate-600 dark:text-slate-400">Suppliers</span>
+              <Sparkles className="w-4 h-4 text-emerald-600 dark:text-emerald-400 group-hover:scale-110 transition-transform" />
             </div>
-            <div className="text-lg font-black text-slate-900 dark:text-white">184 Verified</div>
-            <div className="text-[11px] text-emerald-700 dark:text-emerald-300 font-medium mt-0.5">13 Industrial Sectors</div>
+            <div className="text-xl font-black text-slate-900 dark:text-white font-mono tracking-tight">184 Verified</div>
+            <div className="text-[11px] text-emerald-700 dark:text-emerald-300 font-medium mt-1">13 Industrial Sectors</div>
           </div>
 
-          <div className="bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-xl p-3.5 shadow-sm hover:border-emerald-600 transition-colors">
-            <div className="flex items-center justify-between text-slate-500 dark:text-slate-400 text-xs mb-1">
-              <span>Workforce Skills</span>
-              <Users className="w-3.5 h-3.5 text-purple-600 dark:text-purple-400" />
+          <div className="bg-white/90 dark:bg-slate-900/90 border border-slate-200/90 dark:border-slate-800/90 hover:border-purple-500/50 rounded-2xl p-4 shadow-sm hover:shadow-md transition-all duration-300 group">
+            <div className="flex items-center justify-between text-slate-500 dark:text-slate-400 text-xs mb-1.5">
+              <span className="font-semibold text-[11px] uppercase tracking-wider text-slate-600 dark:text-slate-400">Human Capital</span>
+              <Users className="w-4 h-4 text-purple-600 dark:text-purple-400 group-hover:scale-110 transition-transform" />
             </div>
-            <div className="text-lg font-black text-slate-900 dark:text-white">2,450 Registered</div>
-            <div className="text-[11px] text-purple-700 dark:text-purple-300 font-medium mt-0.5">Countywide & Diaspora</div>
+            <div className="text-xl font-black text-slate-900 dark:text-white font-mono tracking-tight">2,450 Talent</div>
+            <div className="text-[11px] text-purple-700 dark:text-purple-300 font-medium mt-1">Countywide & Diaspora</div>
           </div>
 
-          <div className="bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-xl p-3.5 shadow-sm hover:border-emerald-600 transition-colors">
-            <div className="flex items-center justify-between text-slate-500 dark:text-slate-400 text-xs mb-1">
-              <span>Commitments</span>
-              <FileCheck2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+          <div className="bg-white/90 dark:bg-slate-900/90 border border-slate-200/90 dark:border-slate-800/90 hover:border-emerald-500/50 rounded-2xl p-4 shadow-sm hover:shadow-md transition-all duration-300 group">
+            <div className="flex items-center justify-between text-slate-500 dark:text-slate-400 text-xs mb-1.5">
+              <span className="font-semibold text-[11px] uppercase tracking-wider text-slate-600 dark:text-slate-400">Compliance</span>
+              <FileCheck2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 group-hover:scale-110 transition-transform" />
             </div>
-            <div className="text-lg font-black text-slate-900 dark:text-white">68 Tracked</div>
-            <div className="text-[11px] text-emerald-700 dark:text-emerald-300 font-medium mt-0.5">Audited & Verified</div>
+            <div className="text-xl font-black text-slate-900 dark:text-white font-mono tracking-tight">68 Tracked</div>
+            <div className="text-[11px] text-emerald-700 dark:text-emerald-300 font-medium mt-1">Audited Obligations</div>
           </div>
 
         </div>

@@ -863,45 +863,67 @@ Verify Online: https://totagits.github.io/grand-gedeh-cdc-platform/`;
       )}
 
       {/* ENGINE HERO HEADER */}
-      <div className="bg-gradient-to-r from-[#0d2a24] via-[#133e36] to-[#1c5046] text-white p-6 md:p-8 rounded-2xl shadow-xl border border-emerald-800/40 relative overflow-hidden">
-        <div className="relative z-10 max-w-3xl">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-xs font-bold uppercase tracking-wider mb-3">
-            <Users className="w-3.5 h-3.5" />
-            <span>County Human Capital &amp; Local Content Repository</span>
+      <div className="bg-gradient-to-br from-emerald-950 via-[#0d2a24] to-slate-950 text-white p-6 md:p-8 rounded-3xl shadow-xl border border-emerald-800/40 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute bottom-0 left-1/3 w-80 h-80 bg-purple-500/5 rounded-full blur-2xl pointer-events-none"></div>
+
+        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div className="max-w-2xl">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-xs font-bold uppercase tracking-wider mb-3 backdrop-blur-md">
+              <Users className="w-3.5 h-3.5 text-purple-400" />
+              <span>Directorate of Human Capital &amp; Labor Quotas</span>
+            </div>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight mb-2.5">
+              Grand Gedeh Talent Pool &amp; TVET Apprenticeship Engine
+            </h1>
+            <p className="text-emerald-100/85 text-xs sm:text-sm md:text-base leading-relaxed">
+              Direct-hire local employment quotas under Section 11 &amp; TVET workforce sponsorship under Section 12 of the Putu Mineral Development Agreement (MDA). Defeating &ldquo;no local talent&rdquo; excuses through verifiable accreditation.
+            </p>
           </div>
-          <h1 className="text-2xl md:text-4xl font-black text-white tracking-tight mb-2">
-            Grand Gedeh Talent Pool &amp; TVET Apprenticeship Engine
-          </h1>
-          <p className="text-emerald-100/90 text-sm md:text-base leading-relaxed">
-            Direct-hire local employment quotas under Section 11 &amp; TVET workforce sponsorship under Section 12 of the Putu Mineral Development Agreement (MDA). Defeating &ldquo;no local talent&rdquo; excuses through verifiable accreditation.
-          </p>
+
+          {/* Executive KPI Stat Badges */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-1 gap-2.5 shrink-0">
+            <div className="bg-slate-900/80 border border-emerald-500/30 rounded-2xl p-3 backdrop-blur-md">
+              <div className="text-[10px] text-emerald-400 font-bold uppercase tracking-wider">Accredited Talent</div>
+              <div className="text-lg font-black text-white font-mono">{workforce.length} Candidates</div>
+              <div className="text-[10px] text-slate-400">100% Clan Verified</div>
+            </div>
+            <div className="bg-slate-900/80 border border-purple-500/30 rounded-2xl p-3 backdrop-blur-md">
+              <div className="text-[10px] text-purple-400 font-bold uppercase tracking-wider">Section 11 &amp; 12</div>
+              <div className="text-lg font-black text-white font-mono">Direct Hire &amp; TVET</div>
+              <div className="text-[10px] text-slate-400">Concession Sponsored</div>
+            </div>
+          </div>
         </div>
 
         {/* ENGINE TABS */}
-        <div className="flex gap-2 mt-6 border-b border-emerald-700/50 pb-2 relative z-10 overflow-x-auto">
+        <div className="flex flex-wrap gap-2 mt-8 pt-4 border-t border-emerald-800/50 relative z-10">
           <button
             type="button"
             onClick={() => setActiveEngineTab('register')}
-            className={`px-4 py-2 rounded-xl text-xs md:text-sm font-bold flex items-center gap-2 transition-all ${
+            className={`px-4 py-2.5 rounded-xl text-xs md:text-sm font-bold flex items-center gap-2 transition-all shadow-sm ${
               activeEngineTab === 'register'
-                ? 'bg-emerald-500 text-slate-950 shadow-lg font-black'
-                : 'bg-emerald-950/40 text-emerald-200 hover:bg-emerald-900/60'
+                ? 'bg-gradient-to-r from-amber-500 to-amber-400 text-slate-950 font-black shadow-md ring-2 ring-amber-400/30'
+                : 'bg-emerald-950/60 text-emerald-200 hover:bg-emerald-900/80 border border-emerald-800/60'
             }`}
           >
             <Award className="w-4 h-4" />
-            Register Talent / Apply for TVET Sponsorship
+            <span>Register Talent / Apply for TVET</span>
           </button>
           <button
             type="button"
             onClick={() => setActiveEngineTab('directory')}
-            className={`px-4 py-2 rounded-xl text-xs md:text-sm font-bold flex items-center gap-2 transition-all ${
+            className={`px-4 py-2.5 rounded-xl text-xs md:text-sm font-bold flex items-center gap-2 transition-all shadow-sm ${
               activeEngineTab === 'directory'
-                ? 'bg-emerald-500 text-slate-950 shadow-lg font-black'
-                : 'bg-emerald-950/40 text-emerald-200 hover:bg-emerald-900/60'
+                ? 'bg-gradient-to-r from-amber-500 to-amber-400 text-slate-950 font-black shadow-md ring-2 ring-amber-400/30'
+                : 'bg-emerald-950/60 text-emerald-200 hover:bg-emerald-900/80 border border-emerald-800/60'
             }`}
           >
             <Users className="w-4 h-4" />
-            Public Talent Registry &amp; Directory ({workforce.length})
+            <span>Public Talent Registry &amp; Directory</span>
+            <span className="bg-slate-900/90 text-amber-300 text-[11px] font-mono px-2 py-0.5 rounded-full ml-1 border border-amber-500/40">
+              {workforce.length}
+            </span>
           </button>
         </div>
       </div>
@@ -1262,21 +1284,21 @@ Verify Online: https://totagits.github.io/grand-gedeh-cdc-platform/`;
           </div>
 
           {/* SEARCH & FILTERS BAR */}
-          <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col md:flex-row gap-3 items-center">
+          <div className="bg-white/95 dark:bg-slate-900/90 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col md:flex-row gap-3 items-center backdrop-blur-md">
             <div className="relative flex-1 w-full">
-              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+              <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
               <input
                 type="text"
                 placeholder="Search by candidate name, trade, clan, or machinery..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-3 py-2 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-xs sm:text-sm bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-600 transition-colors"
               />
             </div>
             <select
               value={selectedTrade}
               onChange={(e) => setSelectedTrade(e.target.value)}
-              className="w-full md:w-56 px-3 py-2 rounded-lg border border-slate-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="w-full md:w-60 px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-xs sm:text-sm bg-white dark:bg-slate-950 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-600 transition-colors"
             >
               {trades.map(t => (
                 <option key={t} value={t}>{t === 'All' ? 'All Trade Categories' : t}</option>
@@ -1285,7 +1307,7 @@ Verify Online: https://totagits.github.io/grand-gedeh-cdc-platform/`;
             <select
               value={selectedDistrict}
               onChange={(e) => setSelectedDistrict(e.target.value)}
-              className="w-full md:w-48 px-3 py-2 rounded-lg border border-slate-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="w-full md:w-52 px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-xs sm:text-sm bg-white dark:bg-slate-950 text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-600 transition-colors"
             >
               {districts.map(d => (
                 <option key={d} value={d}>{d === 'All' ? 'All Districts' : d}</option>
@@ -1300,52 +1322,65 @@ Verify Online: https://totagits.github.io/grand-gedeh-cdc-platform/`;
               return (
                 <div
                   key={c.id}
-                  className="bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow p-5 flex flex-col justify-between"
+                  className="bg-white/95 dark:bg-slate-900/95 rounded-2xl border border-slate-200/90 dark:border-slate-800/90 shadow-sm hover:shadow-lg hover:border-emerald-500/50 dark:hover:border-purple-500/50 transition-all duration-300 p-5 flex flex-col justify-between group"
                 >
                   <div>
-                    <div className="flex justify-between items-start mb-2">
-                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                        isTrackA ? 'bg-indigo-100 text-indigo-800' : 'bg-amber-100 text-amber-800'
+                    <div className="flex justify-between items-start gap-2 mb-3">
+                      <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider ${
+                        isTrackA 
+                          ? 'bg-indigo-50 dark:bg-indigo-950/80 text-indigo-800 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800/60' 
+                          : 'bg-amber-50 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-700/60'
                       }`}>
-                        {isTrackA ? 'Track A: Certified Professional' : 'Track B: TVET Trainee'}
+                        {isTrackA ? 'Track A: Certified Pro' : 'Track B: TVET Trainee'}
                       </span>
-                      <span className="text-[10px] text-emerald-700 bg-emerald-50 border border-emerald-200 font-bold px-1.5 py-0.5 rounded">
+                      <span className="text-[10px] text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-300 dark:border-emerald-700/60 font-bold px-2 py-0.5 rounded-md flex items-center gap-1 font-mono">
                         ✓ Verified
                       </span>
                     </div>
 
-                    <h3 className="font-bold text-base text-slate-900">{c.fullName}</h3>
-                    <div className="text-xs text-slate-500 mt-0.5">
-                      {c.district}, Grand Gedeh
+                    <h3 className="font-extrabold text-base text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-amber-300 transition-colors">
+                      {c.fullName}
+                    </h3>
+                    <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                      {c.district}, Grand Gedeh County
                     </div>
 
-                    <div className="mt-3 bg-slate-50 rounded-lg p-2.5 text-xs space-y-1">
-                      <div><strong className="text-slate-700">Specialization:</strong> {c.specialization}</div>
-                      <div><strong className="text-slate-700">Experience:</strong> {c.yearsExperience} Years Verified</div>
-                      <div><strong className="text-slate-700">Tracking Ref:</strong> <span className="font-mono text-emerald-800 font-bold">{c.trackingNumber}</span></div>
+                    <div className="mt-3.5 bg-slate-50/90 dark:bg-slate-950/70 border border-slate-200/70 dark:border-slate-800/80 rounded-xl p-3 text-xs space-y-1.5">
+                      <div className="flex justify-between text-slate-700 dark:text-slate-300">
+                        <span className="text-slate-500 dark:text-slate-400">Trade:</span>
+                        <span className="font-semibold text-slate-900 dark:text-white">{c.specialization}</span>
+                      </div>
+                      <div className="flex justify-between text-slate-700 dark:text-slate-300">
+                        <span className="text-slate-500 dark:text-slate-400">Experience:</span>
+                        <span className="font-semibold text-slate-900 dark:text-white">{c.yearsExperience} Years Verified</span>
+                      </div>
+                      <div className="flex justify-between items-center text-slate-700 dark:text-slate-300 pt-1 border-t border-slate-200/60 dark:border-slate-800">
+                        <span className="text-slate-500 dark:text-slate-400">Ref Code:</span>
+                        <span className="font-mono text-emerald-700 dark:text-emerald-400 font-bold">{c.trackingNumber}</span>
+                      </div>
                     </div>
 
                     {/* SKILLS PILLS */}
-                    <div className="flex flex-wrap gap-1 mt-3">
+                    <div className="flex flex-wrap gap-1.5 mt-3.5">
                       {c.verifiedSkills.slice(0, 3).map((skill, idx) => (
-                        <span key={idx} className="bg-slate-100 text-slate-600 text-[10.5px] px-2 py-0.5 rounded">
+                        <span key={idx} className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[10.5px] px-2.5 py-0.5 rounded-lg border border-slate-200 dark:border-slate-700 font-medium">
                           {skill}
                         </span>
                       ))}
                     </div>
                   </div>
 
-                  <div className="mt-5 pt-3 border-t border-slate-100">
+                  <div className="mt-5 pt-3.5 border-t border-slate-100 dark:border-slate-800">
                     <button
                       type="button"
                       onClick={() => {
                         setRecommendationModalCandidate(c);
                         setRecommendationViewTab('letter');
                       }}
-                      className="w-full py-2 px-3 rounded-lg bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 text-emerald-900 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors"
+                      className="w-full py-2.5 px-3.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/60 dark:hover:bg-emerald-900/80 border border-emerald-300 dark:border-emerald-700/80 text-emerald-900 dark:text-emerald-200 font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-sm hover:shadow"
                     >
-                      <Award className="w-3.5 h-3.5 text-emerald-700" />
-                      View Official GGCDC Recommendation Letter →
+                      <Award className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+                      <span>View Official Recommendation Letter →</span>
                     </button>
                   </div>
                 </div>
