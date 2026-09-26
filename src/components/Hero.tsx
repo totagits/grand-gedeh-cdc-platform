@@ -49,11 +49,12 @@ export const Hero: React.FC = () => {
         {/* Main Hero Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center pt-8 pb-4">
           
-          <div className="lg:col-span-6 space-y-6">
+          <div className="lg:col-span-7 space-y-6">
             <div className="space-y-2">
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
-                Grand Gedeh Citizens <br className="hidden sm:inline" />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-800 via-emerald-700 to-amber-700 dark:from-emerald-300 dark:via-amber-200 dark:to-amber-400">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
+                <span className="inline-block sm:whitespace-nowrap">Grand Gedeh Citizens</span>{' '}
+                <br className="hidden sm:inline" />
+                <span className="inline-block sm:whitespace-nowrap text-transparent bg-clip-text bg-gradient-to-r from-emerald-800 via-emerald-700 to-amber-700 dark:from-emerald-300 dark:via-amber-200 dark:to-amber-400">
                   Development Council
                 </span>
               </h1>
@@ -107,7 +108,7 @@ export const Hero: React.FC = () => {
           </div>
 
           {/* Right Column: Interactive Photo Carousel */}
-          <div className="lg:col-span-6 flex flex-col items-center justify-center">
+          <div className="lg:col-span-5 flex flex-col items-center justify-center">
             <PhotoCarousel />
           </div>
 
