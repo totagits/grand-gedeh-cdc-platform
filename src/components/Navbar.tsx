@@ -1,4 +1,4 @@
-﻿import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { 
   Building2, 
   MapPin, 
@@ -20,7 +20,9 @@ import {
   Scale,
   PanelLeftClose,
   PanelLeft,
-  UserCheck
+  UserCheck,
+  Sun,
+  Moon
 } from 'lucide-react';
 import { useApp } from '../utils/context';
 import logoImg from '../assets/logo.jpg';
@@ -35,6 +37,8 @@ export const Navbar: React.FC = () => {
     setIsContactModalOpen,
     isSidebarOpen,
     toggleSidebar,
+    theme,
+    toggleTheme,
     businesses,
     workforce
   } = useApp();
@@ -66,10 +70,10 @@ export const Navbar: React.FC = () => {
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-slate-950/95 border-b border-amber-500/40 shadow-2xl backdrop-blur-md">
+    <header className="sticky top-0 z-40 bg-white/95 dark:bg-slate-950/95 border-b border-slate-200 dark:border-amber-500/40 shadow-sm dark:shadow-2xl backdrop-blur-md transition-colors">
       
       {/* Top Sovereignty Header Bar */}
-      <div className="bg-gradient-to-r from-emerald-950 via-slate-950 to-emerald-950 text-slate-300 text-xs py-1 px-4 border-b border-emerald-900/60">
+      <div className="bg-gradient-to-r from-emerald-900 via-slate-900 to-emerald-900 dark:from-emerald-950 dark:via-slate-950 dark:to-emerald-950 text-slate-200 dark:text-slate-300 text-xs py-1 px-4 border-b border-emerald-800 dark:border-emerald-900/60">
         <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
           
           <div className="flex items-center space-x-2">
@@ -77,8 +81,8 @@ export const Navbar: React.FC = () => {
             <span className="font-bold tracking-wider text-amber-400 uppercase text-[11px]">
               Grand Gedeh Citizens Development Council
             </span>
-            <span className="text-slate-600 hidden sm:inline">|</span>
-            <span className="hidden sm:inline italic text-slate-400 text-[11px]">
+            <span className="text-slate-500 hidden sm:inline">|</span>
+            <span className="hidden sm:inline italic text-slate-300 dark:text-slate-400 text-[11px]">
               Republic of Liberia • Permanent County Development Institution
             </span>
           </div>
@@ -86,19 +90,19 @@ export const Navbar: React.FC = () => {
           <div className="flex items-center space-x-3 text-xs">
             {isSignedIn && currentUser ? (
               <div className="flex items-center space-x-2">
-                <span className="text-[11px] text-slate-400 hidden md:inline">Logged in as:</span>
-                <span className="text-[11px] font-bold text-amber-400 bg-slate-900 px-2 py-0.5 rounded border border-amber-500/40">
+                <span className="text-[11px] text-slate-300 dark:text-slate-400 hidden md:inline">Logged in as:</span>
+                <span className="text-[11px] font-bold text-amber-300 bg-slate-900/90 px-2 py-0.5 rounded border border-amber-500/40">
                   {currentUser.name} ({currentUser.badgeLabel || currentUser.role})
                 </span>
                 <button
                   onClick={() => setIsSignInModalOpen(true)}
-                  className="text-[11px] text-emerald-400 hover:text-emerald-300 underline font-medium"
+                  className="text-[11px] text-emerald-300 hover:text-emerald-200 underline font-medium"
                 >
                   Switch Role
                 </button>
               </div>
             ) : (
-              <span className="text-[11px] text-slate-400">
+              <span className="text-[11px] text-slate-300 dark:text-slate-400">
                 Official Public Portal
               </span>
             )}
@@ -121,7 +125,7 @@ export const Navbar: React.FC = () => {
               <img 
                 src={logoImg} 
                 alt="Grand Gedeh Citizens Development Council Official Crest" 
-                className="h-16 w-16 sm:h-20 sm:w-20 rounded-full border-2 border-amber-400 shadow-2xl object-cover group-hover:scale-105 transition-transform ring-4 ring-emerald-900/60"
+                className="h-16 w-16 sm:h-20 sm:w-20 rounded-full border-2 border-amber-500 shadow-xl object-cover group-hover:scale-105 transition-transform ring-4 ring-emerald-900/30 dark:ring-emerald-900/60"
               />
               <span className="absolute -bottom-1 -right-1 bg-amber-500 text-slate-950 font-black text-[10px] px-2 py-0.5 rounded-full shadow border border-amber-300">
                 GG
@@ -131,18 +135,18 @@ export const Navbar: React.FC = () => {
             {/* Typography */}
             <div>
               <div className="flex items-center space-x-2">
-                <span className="text-white font-black text-lg sm:text-xl md:text-2xl tracking-tight leading-tight group-hover:text-emerald-300 transition-colors">
+                <span className="text-slate-900 dark:text-white font-black text-lg sm:text-xl md:text-2xl tracking-tight leading-tight group-hover:text-emerald-700 dark:group-hover:text-emerald-300 transition-colors">
                   Grand Gedeh Citizens Development Council
                 </span>
-                <span className="hidden lg:inline-block bg-emerald-950 text-emerald-300 text-xs font-black px-2 py-0.5 rounded border border-emerald-700/80">
+                <span className="hidden lg:inline-block bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-xs font-black px-2 py-0.5 rounded border border-emerald-300 dark:border-emerald-700/80">
                   GGCDC
                 </span>
               </div>
-              <p className="text-amber-400 text-xs font-semibold tracking-wide flex items-center space-x-1.5 mt-0.5">
+              <p className="text-amber-600 dark:text-amber-400 text-xs font-semibold tracking-wide flex items-center space-x-1.5 mt-0.5">
                 <span>One County</span>
-                <span className="text-emerald-500">•</span>
+                <span className="text-emerald-600 dark:text-emerald-500">•</span>
                 <span>One Voice</span>
-                <span className="text-emerald-500">•</span>
+                <span className="text-emerald-600 dark:text-emerald-500">•</span>
                 <span>Shared Development</span>
               </p>
             </div>
@@ -156,8 +160,8 @@ export const Navbar: React.FC = () => {
               onClick={() => handleNav('home')}
               className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${
                 activeView === 'home'
-                  ? 'bg-emerald-800 text-white shadow-inner ring-1 ring-emerald-500'
-                  : 'text-slate-200 hover:text-white hover:bg-slate-900'
+                  ? 'bg-emerald-700 text-white shadow-sm ring-1 ring-emerald-600'
+                  : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-200 dark:hover:text-white dark:hover:bg-slate-900'
               }`}
             >
               Home
@@ -168,8 +172,8 @@ export const Navbar: React.FC = () => {
               onClick={() => handleNav('governance')}
               className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${
                 activeView === 'governance'
-                  ? 'bg-emerald-800 text-white shadow-inner ring-1 ring-emerald-500'
-                  : 'text-slate-200 hover:text-white hover:bg-slate-900'
+                  ? 'bg-emerald-700 text-white shadow-sm ring-1 ring-emerald-600'
+                  : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-200 dark:hover:text-white dark:hover:bg-slate-900'
               }`}
             >
               About Us
@@ -181,153 +185,153 @@ export const Navbar: React.FC = () => {
                 onClick={() => setPlatformsDropdownOpen(!platformsDropdownOpen)}
                 className={`flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${
                   platformsDropdownOpen || ['gismap', 'concessions', 'commitments', 'businesses', 'workforce', 'verification', 'communities', 'consultations', 'experts', 'working-groups', 'opportunities', 'documents'].includes(activeView)
-                    ? 'bg-slate-800 text-amber-400 border border-amber-500/50 shadow'
-                    : 'text-slate-200 hover:text-white hover:bg-slate-900'
+                    ? 'bg-emerald-50 text-emerald-800 border border-emerald-300 shadow-sm dark:bg-slate-800 dark:text-amber-400 dark:border-amber-500/50'
+                    : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-200 dark:hover:text-white dark:hover:bg-slate-900'
                 }`}
               >
                 <span>Platforms & Portals</span>
-                <ChevronDown className={`w-3.5 h-3.5 transition-transform ${platformsDropdownOpen ? 'rotate-180 text-amber-400' : 'text-slate-400'}`} />
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform ${platformsDropdownOpen ? 'rotate-180 text-amber-500' : 'text-slate-400'}`} />
               </button>
 
               {/* Master Dropdown Megamenu */}
               {platformsDropdownOpen && (
-                <div className="absolute right-0 top-full mt-2 w-[540px] bg-slate-900 border border-amber-500/40 rounded-2xl shadow-2xl p-4 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                <div className="absolute right-0 top-full mt-2 w-[540px] bg-white dark:bg-slate-900 border border-slate-200 dark:border-amber-500/40 rounded-2xl shadow-2xl p-4 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
                   <div className="grid grid-cols-2 gap-4">
                     
                     {/* Spatial & Resources Column */}
                     <div className="space-y-1">
-                      <div className="text-[10px] font-black uppercase tracking-wider text-amber-400 px-2 py-1 bg-amber-950/40 rounded border border-amber-800/40">
+                      <div className="text-[10px] font-black uppercase tracking-wider text-emerald-800 dark:text-amber-400 px-2 py-1 bg-emerald-50 dark:bg-amber-950/40 rounded border border-emerald-200 dark:border-amber-800/40">
                         Spatial & Resources
                       </div>
                       
                       <button
                         onClick={() => handleNav('gismap')}
                         className={`w-full text-left flex items-start space-x-2.5 p-2 rounded-xl text-xs transition-colors ${
-                          activeView === 'gismap' ? 'bg-emerald-900 text-white font-bold' : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+                          activeView === 'gismap' ? 'bg-emerald-100 text-emerald-900 font-bold dark:bg-emerald-900 dark:text-white' : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white'
                         }`}
                       >
-                        <MapPin className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
+                        <MapPin className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 shrink-0" />
                         <div>
-                          <div className="font-semibold text-xs text-white">Interactive GIS Development Map</div>
-                          <div className="text-[10px] text-slate-400">Putu mountain, corridor 3, clinics, CLSG grid</div>
+                          <div className="font-semibold text-xs text-slate-900 dark:text-white">Interactive GIS Development Map</div>
+                          <div className="text-[10px] text-slate-500 dark:text-slate-400">Putu mountain, corridor 3, clinics, CLSG grid</div>
                         </div>
                       </button>
 
                       <button
                         onClick={() => handleNav('concessions')}
                         className={`w-full text-left flex items-start space-x-2.5 p-2 rounded-xl text-xs transition-colors ${
-                          activeView === 'concessions' ? 'bg-emerald-900 text-white font-bold' : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+                          activeView === 'concessions' ? 'bg-emerald-100 text-emerald-900 font-bold dark:bg-emerald-900 dark:text-white' : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white'
                         }`}
                       >
-                        <Building2 className="w-4 h-4 text-amber-400 mt-0.5 shrink-0" />
+                        <Building2 className="w-4 h-4 text-amber-600 dark:text-amber-400 mt-0.5 shrink-0" />
                         <div>
-                          <div className="font-semibold text-xs text-white">Concessions & Extractives Registry</div>
-                          <div className="text-[10px] text-slate-400">Putu Iron Ore case study, forestry & rubber</div>
+                          <div className="font-semibold text-xs text-slate-900 dark:text-white">Concessions & Extractives Registry</div>
+                          <div className="text-[10px] text-slate-500 dark:text-slate-400">Putu Iron Ore case study, forestry & rubber</div>
                         </div>
                       </button>
 
                       <button
                         onClick={() => handleNav('commitments')}
                         className={`w-full text-left flex items-start space-x-2.5 p-2 rounded-xl text-xs transition-colors ${
-                          activeView === 'commitments' ? 'bg-emerald-900 text-white font-bold' : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+                          activeView === 'commitments' ? 'bg-emerald-100 text-emerald-900 font-bold dark:bg-emerald-900 dark:text-white' : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white'
                         }`}
                       >
-                        <ShieldCheck className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
+                        <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 shrink-0" />
                         <div>
-                          <div className="font-semibold text-xs text-white">Commitments & Benefits Tracker</div>
-                          <div className="text-[10px] text-slate-400">68 tracked obligations, escrow & social funds</div>
+                          <div className="font-semibold text-xs text-slate-900 dark:text-white">Commitments & Benefits Tracker</div>
+                          <div className="text-[10px] text-slate-500 dark:text-slate-400">68 tracked obligations, escrow & social funds</div>
                         </div>
                       </button>
 
                       <button
                         onClick={() => handleNav('working-groups')}
                         className={`w-full text-left flex items-start space-x-2.5 p-2 rounded-xl text-xs transition-colors ${
-                          activeView === 'working-groups' ? 'bg-emerald-900 text-white font-bold' : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+                          activeView === 'working-groups' ? 'bg-emerald-100 text-emerald-900 font-bold dark:bg-emerald-900 dark:text-white' : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white'
                         }`}
                       >
-                        <Users className="w-4 h-4 text-sky-400 mt-0.5 shrink-0" />
+                        <Users className="w-4 h-4 text-sky-600 dark:text-sky-400 mt-0.5 shrink-0" />
                         <div>
-                          <div className="font-semibold text-xs text-white">Specialized Working Groups</div>
-                          <div className="text-[10px] text-slate-400">Putu mining, forestry, agriculture directorates</div>
+                          <div className="font-semibold text-xs text-slate-900 dark:text-white">Specialized Working Groups</div>
+                          <div className="text-[10px] text-slate-500 dark:text-slate-400">Putu mining, forestry, agriculture directorates</div>
                         </div>
                       </button>
                     </div>
 
                     {/* Local Content & Governance Column */}
                     <div className="space-y-1">
-                      <div className="text-[10px] font-black uppercase tracking-wider text-emerald-400 px-2 py-1 bg-emerald-950/40 rounded border border-emerald-800/40">
+                      <div className="text-[10px] font-black uppercase tracking-wider text-emerald-800 dark:text-emerald-400 px-2 py-1 bg-emerald-50 dark:bg-emerald-950/40 rounded border border-emerald-200 dark:border-emerald-800/40">
                         Local Content & Civic Governance
                       </div>
 
                       <button
                         onClick={() => handleNav('businesses')}
                         className={`w-full text-left flex items-start space-x-2.5 p-2 rounded-xl text-xs transition-colors ${
-                          activeView === 'businesses' ? 'bg-emerald-900 text-white font-bold' : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+                          activeView === 'businesses' ? 'bg-emerald-100 text-emerald-900 font-bold dark:bg-emerald-900 dark:text-white' : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white'
                         }`}
                       >
-                        <Briefcase className="w-4 h-4 text-blue-400 mt-0.5 shrink-0" />
+                        <Briefcase className="w-4 h-4 text-blue-600 dark:text-blue-400 mt-0.5 shrink-0" />
                         <div>
-                          <div className="font-semibold text-xs text-white">Verified Business Directory</div>
-                          <div className="text-[10px] text-slate-400">LBR and tax verified local contractors</div>
+                          <div className="font-semibold text-xs text-slate-900 dark:text-white">Verified Business Directory</div>
+                          <div className="text-[10px] text-slate-500 dark:text-slate-400">LBR and tax verified local contractors</div>
                         </div>
                       </button>
 
                       <button
                         onClick={() => handleNav('workforce')}
                         className={`w-full text-left flex items-start space-x-2.5 p-2 rounded-xl text-xs transition-colors ${
-                          activeView === 'workforce' ? 'bg-emerald-900 text-white font-bold' : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+                          activeView === 'workforce' ? 'bg-emerald-100 text-emerald-900 font-bold dark:bg-emerald-900 dark:text-white' : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white'
                         }`}
                       >
-                        <Users className="w-4 h-4 text-amber-400 mt-0.5 shrink-0" />
+                        <Users className="w-4 h-4 text-amber-600 dark:text-amber-400 mt-0.5 shrink-0" />
                         <div>
-                          <div className="font-semibold text-xs text-white">Skills Registry & Gap Modeler</div>
-                          <div className="text-[10px] text-slate-400">TVET certified artisans & diaspora talent</div>
+                          <div className="font-semibold text-xs text-slate-900 dark:text-white">Skills Registry & Gap Modeler</div>
+                          <div className="text-[10px] text-slate-500 dark:text-slate-400">TVET certified artisans & diaspora talent</div>
                         </div>
                       </button>
 
                       <button
                         onClick={() => handleNav('verification')}
                         className={`w-full text-left flex items-start space-x-2.5 p-2 rounded-xl text-xs transition-colors ${
-                          activeView === 'verification' ? 'bg-emerald-900 text-white font-bold' : 'text-amber-300 hover:bg-amber-950/40'
+                          activeView === 'verification' ? 'bg-emerald-100 text-emerald-900 font-bold dark:bg-emerald-900 dark:text-white' : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900 dark:text-amber-300 dark:hover:bg-amber-950/40'
                         }`}
                       >
-                        <FileCheck2 className="w-4 h-4 text-amber-400 mt-0.5 shrink-0" />
+                        <FileCheck2 className="w-4 h-4 text-emerald-600 dark:text-amber-400 mt-0.5 shrink-0" />
                         <div className="flex-1">
                           <div className="flex items-center justify-between">
-                            <span className="font-bold text-xs text-amber-300">Secretariat Verification Desk</span>
+                            <span className="font-bold text-xs text-slate-900 dark:text-amber-300">Secretariat Verification Desk</span>
                             {pendingCount > 0 && (
                               <span className="bg-red-600 text-white font-black text-[9px] px-1.5 rounded-full">
                                 {pendingCount}
                               </span>
                             )}
                           </div>
-                          <div className="text-[10px] text-slate-400">Credential check & accreditation issuance</div>
+                          <div className="text-[10px] text-slate-500 dark:text-slate-400">Credential check & accreditation issuance</div>
                         </div>
                       </button>
 
                       <button
                         onClick={() => handleNav('opportunities')}
                         className={`w-full text-left flex items-start space-x-2.5 p-2 rounded-xl text-xs transition-colors ${
-                          activeView === 'opportunities' ? 'bg-emerald-900 text-white font-bold' : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+                          activeView === 'opportunities' ? 'bg-emerald-100 text-emerald-900 font-bold dark:bg-emerald-900 dark:text-white' : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white'
                         }`}
                       >
-                        <Sparkles className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
+                        <Sparkles className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 shrink-0" />
                         <div>
-                          <div className="font-semibold text-xs text-white">Opportunities & Tenders Hub</div>
-                          <div className="text-[10px] text-slate-400">Concession procurement and jobs</div>
+                          <div className="font-semibold text-xs text-slate-900 dark:text-white">Opportunities & Tenders Hub</div>
+                          <div className="text-[10px] text-slate-500 dark:text-slate-400">Concession procurement and jobs</div>
                         </div>
                       </button>
 
                       <button
                         onClick={() => handleNav('communities')}
                         className={`w-full text-left flex items-start space-x-2.5 p-2 rounded-xl text-xs transition-colors ${
-                          activeView === 'communities' ? 'bg-emerald-900 text-white font-bold' : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+                          activeView === 'communities' ? 'bg-emerald-100 text-emerald-900 font-bold dark:bg-emerald-900 dark:text-white' : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white'
                         }`}
                       >
-                        <Layers className="w-4 h-4 text-purple-400 mt-0.5 shrink-0" />
+                        <Layers className="w-4 h-4 text-purple-600 dark:text-purple-400 mt-0.5 shrink-0" />
                         <div>
-                          <div className="font-semibold text-xs text-white">Customary Communities</div>
-                          <div className="text-[10px] text-slate-400">Clan boundaries & customary rights</div>
+                          <div className="font-semibold text-xs text-slate-900 dark:text-white">Customary Communities</div>
+                          <div className="text-[10px] text-slate-500 dark:text-slate-400">Clan boundaries & customary rights</div>
                         </div>
                       </button>
                     </div>
@@ -340,15 +344,35 @@ export const Navbar: React.FC = () => {
             {/* 4. Contact */}
             <button
               onClick={() => setIsContactModalOpen(true)}
-              className="px-3.5 py-2 rounded-xl text-xs font-bold text-slate-200 hover:text-white hover:bg-slate-900 transition-colors"
+              className="px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-200 dark:hover:text-white dark:hover:bg-slate-900 transition-colors"
             >
               Contact
             </button>
 
           </nav>
 
-          {/* Right Header Actions: Sign In / RBAC Sidebar Toggle */}
-          <div className="hidden lg:flex items-center space-x-3">
+          {/* Right Header Actions: Theme Toggle, Sign In / RBAC Sidebar Toggle */}
+          <div className="hidden lg:flex items-center space-x-2.5">
+            {/* Visual Theme Toggle Button (Light / Dark) */}
+            <button
+              onClick={toggleTheme}
+              className="px-2.5 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-100/90 hover:bg-slate-200 dark:bg-slate-900 dark:hover:bg-slate-800 text-slate-700 dark:text-amber-400 transition-all shadow-sm flex items-center space-x-1.5"
+              title={theme === 'light' ? 'Switch to Dark Theme' : 'Switch to Light Theme'}
+              aria-label="Toggle visual theme"
+            >
+              {theme === 'light' ? (
+                <>
+                  <Moon className="w-4 h-4 text-slate-700" />
+                  <span className="text-[11px] font-bold text-slate-700 hidden xl:inline">Dark Mode</span>
+                </>
+              ) : (
+                <>
+                  <Sun className="w-4 h-4 text-amber-400" />
+                  <span className="text-[11px] font-bold text-amber-400 hidden xl:inline">Light Mode</span>
+                </>
+              )}
+            </button>
+
             {isSignedIn && currentUser ? (
               <div className="flex items-center space-x-2">
                 {/* Sidebar Toggle Button */}
@@ -356,8 +380,8 @@ export const Navbar: React.FC = () => {
                   onClick={toggleSidebar}
                   className={`flex items-center space-x-1.5 px-3 py-2 rounded-xl text-xs font-bold transition-all shadow-md ${
                     isSidebarOpen 
-                      ? 'bg-amber-500 hover:bg-amber-400 text-slate-950' 
-                      : 'bg-slate-900 hover:bg-slate-800 text-amber-400 border border-amber-500/50'
+                      ? 'bg-amber-500 hover:bg-amber-400 text-slate-950 font-black' 
+                      : 'bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 dark:bg-slate-900 dark:hover:bg-slate-800 dark:text-amber-400 dark:border-amber-500/50'
                   }`}
                   title={isSidebarOpen ? 'Close Role Sidebar' : 'Open Role Sidebar'}
                 >
@@ -376,12 +400,21 @@ export const Navbar: React.FC = () => {
             )}
           </div>
 
-          {/* Mobile Menu Button */}
-          <div className="flex lg:hidden items-center space-x-2">
+          {/* Mobile Menu & Theme Buttons */}
+          <div className="flex lg:hidden items-center space-x-1.5">
+            {/* Mobile Theme Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-amber-400"
+              title="Toggle Theme"
+            >
+              {theme === 'light' ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4 text-amber-400" />}
+            </button>
+
             {isSignedIn && (
               <button
                 onClick={toggleSidebar}
-                className="p-2 rounded-lg text-amber-400 bg-slate-900 border border-slate-700"
+                className="p-2 rounded-lg text-amber-600 dark:text-amber-400 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700"
                 title="Toggle Sidebar"
               >
                 <PanelLeft className="w-5 h-5" />
@@ -389,7 +422,7 @@ export const Navbar: React.FC = () => {
             )}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900"
+              className="p-2 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-300 dark:hover:text-white dark:hover:bg-slate-900"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -400,17 +433,17 @@ export const Navbar: React.FC = () => {
 
       {/* Mobile Menu Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-slate-950 border-b border-slate-800 px-4 pt-3 pb-6 space-y-2">
-          <div className="grid grid-cols-2 gap-2 pb-3 border-b border-slate-800">
+        <div className="lg:hidden bg-white dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 px-4 pt-3 pb-6 space-y-2 shadow-xl">
+          <div className="grid grid-cols-2 gap-2 pb-3 border-b border-slate-200 dark:border-slate-800">
             <button
               onClick={() => handleNav('home')}
-              className="p-2 rounded-lg bg-slate-900 text-left text-xs font-bold text-white hover:bg-slate-800"
+              className="p-2 rounded-lg bg-slate-100 dark:bg-slate-900 text-left text-xs font-bold text-slate-900 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-800"
             >
               Home
             </button>
             <button
               onClick={() => handleNav('governance')}
-              className="p-2 rounded-lg bg-slate-900 text-left text-xs font-bold text-white hover:bg-slate-800"
+              className="p-2 rounded-lg bg-slate-100 dark:bg-slate-900 text-left text-xs font-bold text-slate-900 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-800"
             >
               About Us
             </button>
@@ -419,7 +452,7 @@ export const Navbar: React.FC = () => {
                 setMobileMenuOpen(false);
                 setIsContactModalOpen(true);
               }}
-              className="p-2 rounded-lg bg-slate-900 text-left text-xs font-bold text-white hover:bg-slate-800"
+              className="p-2 rounded-lg bg-slate-100 dark:bg-slate-900 text-left text-xs font-bold text-slate-900 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-800"
             >
               Contact Us
             </button>
@@ -434,26 +467,26 @@ export const Navbar: React.FC = () => {
             </button>
           </div>
 
-          <div className="text-[11px] font-black uppercase text-amber-400 pt-1">
+          <div className="text-[11px] font-black uppercase text-emerald-800 dark:text-amber-400 pt-1">
             Platforms & Portals
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 text-xs">
-            <button onClick={() => handleNav('gismap')} className="p-2 rounded hover:bg-slate-900 text-left text-slate-300">
+            <button onClick={() => handleNav('gismap')} className="p-2 rounded hover:bg-slate-100 dark:hover:bg-slate-900 text-left text-slate-700 dark:text-slate-300">
               Interactive GIS Map
             </button>
-            <button onClick={() => handleNav('concessions')} className="p-2 rounded hover:bg-slate-900 text-left text-slate-300">
+            <button onClick={() => handleNav('concessions')} className="p-2 rounded hover:bg-slate-100 dark:hover:bg-slate-900 text-left text-slate-700 dark:text-slate-300">
               Concessions & Putu
             </button>
-            <button onClick={() => handleNav('commitments')} className="p-2 rounded hover:bg-slate-900 text-left text-slate-300">
+            <button onClick={() => handleNav('commitments')} className="p-2 rounded hover:bg-slate-100 dark:hover:bg-slate-900 text-left text-slate-700 dark:text-slate-300">
               Commitments Tracker
             </button>
-            <button onClick={() => handleNav('businesses')} className="p-2 rounded hover:bg-slate-900 text-left text-slate-300">
+            <button onClick={() => handleNav('businesses')} className="p-2 rounded hover:bg-slate-100 dark:hover:bg-slate-900 text-left text-slate-700 dark:text-slate-300">
               Verified Business Directory
             </button>
-            <button onClick={() => handleNav('workforce')} className="p-2 rounded hover:bg-slate-900 text-left text-slate-300">
+            <button onClick={() => handleNav('workforce')} className="p-2 rounded hover:bg-slate-100 dark:hover:bg-slate-900 text-left text-slate-700 dark:text-slate-300">
               Workforce & Skills Registry
             </button>
-            <button onClick={() => handleNav('verification')} className="p-2 rounded hover:bg-slate-900 text-left text-amber-300 font-semibold">
+            <button onClick={() => handleNav('verification')} className="p-2 rounded hover:bg-slate-100 dark:hover:bg-slate-900 text-left text-emerald-800 dark:text-amber-300 font-semibold">
               Secretariat Verification Desk
             </button>
           </div>

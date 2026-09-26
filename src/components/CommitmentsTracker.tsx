@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { 
   ShieldCheck, 
   Search, 
@@ -37,39 +37,39 @@ export const CommitmentsTracker: React.FC = () => {
   const getStatusBadge = (status: CommitmentStatus) => {
     switch (status) {
       case 'Completed':
-        return <span className="bg-emerald-950 text-emerald-300 border border-emerald-700 text-xs px-2.5 py-0.5 rounded-full font-semibold flex items-center space-x-1"><CheckCircle className="w-3 h-3 text-emerald-400 mr-1" />Completed</span>;
+        return <span className="bg-emerald-50 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700 text-xs px-2.5 py-0.5 rounded-full font-semibold flex items-center space-x-1"><CheckCircle className="w-3 h-3 text-emerald-600 dark:text-emerald-400 mr-1" />Completed</span>;
       case 'In Progress':
-        return <span className="bg-blue-950 text-blue-300 border border-blue-700 text-xs px-2.5 py-0.5 rounded-full font-semibold flex items-center space-x-1"><Clock className="w-3 h-3 text-blue-400 mr-1" />In Progress</span>;
+        return <span className="bg-blue-50 dark:bg-blue-950 text-blue-800 dark:text-blue-300 border border-blue-300 dark:border-blue-700 text-xs px-2.5 py-0.5 rounded-full font-semibold flex items-center space-x-1"><Clock className="w-3 h-3 text-blue-600 dark:text-blue-400 mr-1" />In Progress</span>;
       case 'Delayed':
-        return <span className="bg-red-950 text-red-300 border border-red-700 text-xs px-2.5 py-0.5 rounded-full font-semibold flex items-center space-x-1"><AlertTriangle className="w-3 h-3 text-red-400 mr-1" />Delayed</span>;
+        return <span className="bg-rose-50 dark:bg-rose-950 text-rose-800 dark:text-rose-300 border border-rose-300 dark:border-rose-700 text-xs px-2.5 py-0.5 rounded-full font-semibold flex items-center space-x-1"><AlertTriangle className="w-3 h-3 text-rose-600 dark:text-rose-400 mr-1" />Delayed</span>;
       case 'Awaiting Verification':
-        return <span className="bg-amber-950 text-amber-300 border border-amber-700 text-xs px-2.5 py-0.5 rounded-full font-semibold flex items-center space-x-1"><HelpCircle className="w-3 h-3 text-amber-400 mr-1" />Awaiting Verification</span>;
+        return <span className="bg-amber-50 dark:bg-amber-950 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-700 text-xs px-2.5 py-0.5 rounded-full font-semibold flex items-center space-x-1"><HelpCircle className="w-3 h-3 text-amber-600 dark:text-amber-400 mr-1" />Awaiting Verification</span>;
       default:
-        return <span className="bg-slate-800 text-slate-300 border border-slate-700 text-xs px-2.5 py-0.5 rounded-full font-semibold">Not Started</span>;
+        return <span className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700 text-xs px-2.5 py-0.5 rounded-full font-semibold">Not Started</span>;
     }
   };
 
   return (
-    <section className="py-12 bg-slate-950 text-slate-100 min-h-[85vh]">
+    <section className="py-12 bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-[85vh]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header */}
         <div className="mb-8">
-          <div className="inline-flex items-center space-x-2 text-xs font-semibold text-emerald-400 bg-emerald-950/80 border border-emerald-800 px-3 py-1 rounded-full uppercase tracking-wider mb-2">
-            <ShieldCheck className="w-3.5 h-3.5" />
+          <div className="inline-flex items-center space-x-2 text-xs font-semibold text-emerald-800 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-200 dark:border-emerald-800 px-3 py-1 rounded-full uppercase tracking-wider mb-2">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
             <span>Factual Accountability Ledger</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
             Grand Gedeh Commitments & Benefits Tracker
           </h2>
-          <p className="text-xs sm:text-sm text-slate-300 max-w-3xl mt-1">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-3xl mt-1">
             Tracking every material promise made to the people of Grand Gedeh across mining, forestry, agriculture, 
             and road projects. Statuses are strictly factual, supported by documented evidence and field audits.
           </p>
         </div>
 
         {/* Filter Toolbar */}
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 mb-6 flex flex-col lg:flex-row items-center justify-between gap-4">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 mb-6 flex flex-col lg:flex-row items-center justify-between gap-4 shadow-sm">
           <div className="relative w-full lg:w-72">
             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
             <input
@@ -77,7 +77,7 @@ export const CommitmentsTracker: React.FC = () => {
               placeholder="Search commitment, obligor, beneficiary..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-slate-950 border border-slate-700 rounded-lg pl-9 pr-4 py-2 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-emerald-500"
+              className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 rounded-lg pl-9 pr-4 py-2 text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-emerald-500"
             />
           </div>
 
@@ -86,7 +86,7 @@ export const CommitmentsTracker: React.FC = () => {
             <select
               value={selectedProjectFilter}
               onChange={(e) => setSelectedProjectFilter(e.target.value)}
-              className="bg-slate-950 border border-slate-700 text-xs text-slate-200 rounded-lg px-3 py-2 focus:outline-none focus:border-emerald-500"
+              className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 text-xs text-slate-800 dark:text-slate-200 rounded-lg px-3 py-2 focus:outline-none focus:border-emerald-500"
             >
               <option value="All">All Concession Projects</option>
               {concessions.map(c => (
@@ -103,7 +103,7 @@ export const CommitmentsTracker: React.FC = () => {
                   className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
                     selectedStatus === st
                       ? 'bg-emerald-600 text-white font-semibold shadow'
-                      : 'bg-slate-950 text-slate-400 hover:text-white'
+                      : 'bg-slate-100 dark:bg-slate-950 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-transparent'
                   }`}
                 >
                   {st}
@@ -121,7 +121,7 @@ export const CommitmentsTracker: React.FC = () => {
             return (
               <div
                 key={item.id}
-                className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden hover:border-slate-700 transition-all shadow-md"
+                className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden hover:border-slate-300 dark:hover:border-slate-700 transition-all shadow-sm"
               >
                 {/* Main Row Summary */}
                 <div 
@@ -130,77 +130,77 @@ export const CommitmentsTracker: React.FC = () => {
                 >
                   <div className="space-y-1.5 flex-1">
                     <div className="flex flex-wrap items-center gap-2 text-xs">
-                      <span className="font-mono text-slate-400 font-semibold">{item.id.toUpperCase()}</span>
-                      <span className="text-slate-600">•</span>
-                      <span className="text-amber-400 font-medium">{item.projectName}</span>
-                      <span className="text-slate-600">•</span>
-                      <span className="text-slate-400">{item.sector}</span>
+                      <span className="font-mono text-slate-500 dark:text-slate-400 font-semibold">{item.id.toUpperCase()}</span>
+                      <span className="text-slate-300 dark:text-slate-600">•</span>
+                      <span className="text-amber-700 dark:text-amber-400 font-semibold">{item.projectName}</span>
+                      <span className="text-slate-300 dark:text-slate-600">•</span>
+                      <span className="text-slate-500 dark:text-slate-400">{item.sector}</span>
                     </div>
 
-                    <h3 className="text-base font-bold text-white leading-snug">
+                    <h3 className="text-base font-bold text-slate-900 dark:text-white leading-snug">
                       {item.title}
                     </h3>
 
-                    <div className="flex flex-wrap items-center gap-4 text-xs text-slate-400 pt-1">
+                    <div className="flex flex-wrap items-center gap-4 text-xs text-slate-600 dark:text-slate-400 pt-1">
                       <div>
                         <span className="text-slate-500">Obligor: </span>
-                        <span className="text-slate-200">{item.obligor}</span>
+                        <span className="text-slate-800 dark:text-slate-200 font-medium">{item.obligor}</span>
                       </div>
                       <div>
                         <span className="text-slate-500">Beneficiary: </span>
-                        <span className="text-slate-200">{item.beneficiary}</span>
+                        <span className="text-slate-800 dark:text-slate-200 font-medium">{item.beneficiary}</span>
                       </div>
                       <div>
                         <span className="text-slate-500">Deadline: </span>
-                        <span className="text-amber-300 font-mono">{item.deadline}</span>
+                        <span className="text-amber-700 dark:text-amber-300 font-mono font-medium">{item.deadline}</span>
                       </div>
                       <div>
                         <span className="text-slate-500">Value: </span>
-                        <span className="text-emerald-400 font-semibold">{item.monetaryValue}</span>
+                        <span className="text-emerald-700 dark:text-emerald-400 font-bold">{item.monetaryValue}</span>
                       </div>
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between md:justify-end space-x-3 pt-2 md:pt-0 border-t md:border-t-0 border-slate-800">
+                  <div className="flex items-center justify-between md:justify-end space-x-3 pt-2 md:pt-0 border-t md:border-t-0 border-slate-200 dark:border-slate-800">
                     <div>{getStatusBadge(item.status)}</div>
-                    <ChevronDown className={`w-5 h-5 text-slate-400 transition-transform ${isExpanded ? 'rotate-180 text-emerald-400' : ''}`} />
+                    <ChevronDown className={`w-5 h-5 text-slate-400 transition-transform ${isExpanded ? 'rotate-180 text-emerald-600 dark:text-emerald-400' : ''}`} />
                   </div>
                 </div>
 
                 {/* Expanded Detailed Audit Record */}
                 {isExpanded && (
-                  <div className="p-4 sm:p-6 bg-slate-950/80 border-t border-slate-800 space-y-4 text-xs">
+                  <div className="p-4 sm:p-6 bg-slate-50 dark:bg-slate-950/80 border-t border-slate-200 dark:border-slate-800 space-y-4 text-xs">
                     
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-slate-900/90 p-4 rounded-xl border border-slate-800">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-white dark:bg-slate-900/90 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
                       <div>
-                        <div className="text-[11px] text-slate-400 uppercase font-semibold">Source Document:</div>
-                        <div className="text-slate-200 font-medium mt-1">{item.sourceDoc}</div>
-                        <div className="text-amber-400 text-[11px] mt-0.5 font-mono">{item.clauseRef}</div>
+                        <div className="text-[11px] text-slate-500 dark:text-slate-400 uppercase font-semibold">Source Document:</div>
+                        <div className="text-slate-800 dark:text-slate-200 font-medium mt-1">{item.sourceDoc}</div>
+                        <div className="text-amber-700 dark:text-amber-400 text-[11px] mt-0.5 font-mono">{item.clauseRef}</div>
                       </div>
 
                       <div>
-                        <div className="text-[11px] text-slate-400 uppercase font-semibold">Supervising Agency:</div>
-                        <div className="text-slate-200 font-medium mt-1">{item.responsibleAgency}</div>
-                        <div className="text-slate-400 text-[11px] mt-0.5">Location: {item.location}</div>
+                        <div className="text-[11px] text-slate-500 dark:text-slate-400 uppercase font-semibold">Supervising Agency:</div>
+                        <div className="text-slate-800 dark:text-slate-200 font-medium mt-1">{item.responsibleAgency}</div>
+                        <div className="text-slate-500 dark:text-slate-400 text-[11px] mt-0.5">Location: {item.location}</div>
                       </div>
 
                       <div>
-                        <div className="text-[11px] text-slate-400 uppercase font-semibold">Last Audited by GGCDC:</div>
-                        <div className="text-emerald-400 font-medium mt-1">{item.lastAudited}</div>
-                        <div className="text-slate-400 text-[11px] mt-0.5">Formal Field Inspection</div>
+                        <div className="text-[11px] text-slate-500 dark:text-slate-400 uppercase font-semibold">Last Audited by GGCDC:</div>
+                        <div className="text-emerald-700 dark:text-emerald-400 font-semibold mt-1">{item.lastAudited}</div>
+                        <div className="text-slate-500 dark:text-slate-400 text-[11px] mt-0.5">Formal Field Inspection</div>
                       </div>
                     </div>
 
-                    <div className="bg-slate-900/60 p-4 rounded-xl border border-slate-800 space-y-2">
-                      <div className="text-[11px] font-bold text-emerald-300 uppercase tracking-wider">
+                    <div className="bg-white dark:bg-slate-900/60 p-4 rounded-xl border border-slate-200 dark:border-slate-800 space-y-2 shadow-sm">
+                      <div className="text-[11px] font-bold text-emerald-800 dark:text-emerald-300 uppercase tracking-wider">
                         Documented Evidence of Completion:
                       </div>
-                      <p className="text-slate-200 leading-relaxed">
+                      <p className="text-slate-700 dark:text-slate-200 leading-relaxed">
                         {item.evidence}
                       </p>
                     </div>
 
-                    <div className="bg-amber-950/30 p-3 rounded-lg border border-amber-800/40 text-amber-200">
+                    <div className="bg-amber-50 dark:bg-amber-950/30 p-3 rounded-lg border border-amber-200 dark:border-amber-800/40 text-amber-900 dark:text-amber-200">
                       <span className="font-bold">GGCDC Independent Verification Audit Note: </span>
                       {item.verificationNotes}
                     </div>

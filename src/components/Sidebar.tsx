@@ -48,52 +48,52 @@ export const Sidebar: React.FC = () => {
   // Role Badge Styling
   const roleThemes: Record<UserRole, { border: string; bg: string; text: string; badge: string; pill: string }> = {
     secretariat: {
-      border: 'border-red-600/60',
-      bg: 'bg-red-950/40',
-      text: 'text-red-400',
-      badge: 'bg-red-900/80 text-red-200 border border-red-700',
+      border: 'border-red-300 dark:border-red-600/60',
+      bg: 'bg-red-50 dark:bg-red-950/40',
+      text: 'text-red-700 dark:text-red-400',
+      badge: 'bg-red-100 text-red-800 border border-red-300 dark:bg-red-900/80 dark:text-red-200 dark:border-red-700',
       pill: 'bg-red-600 text-white'
     },
     business: {
-      border: 'border-blue-600/60',
-      bg: 'bg-blue-950/40',
-      text: 'text-blue-400',
-      badge: 'bg-blue-900/80 text-blue-200 border border-blue-700',
+      border: 'border-blue-300 dark:border-blue-600/60',
+      bg: 'bg-blue-50 dark:bg-blue-950/40',
+      text: 'text-blue-700 dark:text-blue-400',
+      badge: 'bg-blue-100 text-blue-800 border border-blue-300 dark:bg-blue-900/80 dark:text-blue-200 dark:border-blue-700',
       pill: 'bg-blue-600 text-white'
     },
     worker: {
-      border: 'border-amber-600/60',
-      bg: 'bg-amber-950/40',
-      text: 'text-amber-400',
-      badge: 'bg-amber-900/80 text-amber-200 border border-amber-700',
-      pill: 'bg-amber-600 text-slate-950'
+      border: 'border-amber-300 dark:border-amber-600/60',
+      bg: 'bg-amber-50 dark:bg-amber-950/40',
+      text: 'text-amber-700 dark:text-amber-400',
+      badge: 'bg-amber-100 text-amber-900 border border-amber-300 dark:bg-amber-900/80 dark:text-amber-200 dark:border-amber-700',
+      pill: 'bg-amber-500 text-slate-950 font-bold'
     },
     expert: {
-      border: 'border-emerald-600/60',
-      bg: 'bg-emerald-950/40',
-      text: 'text-emerald-400',
-      badge: 'bg-emerald-900/80 text-emerald-200 border border-emerald-700',
+      border: 'border-emerald-300 dark:border-emerald-600/60',
+      bg: 'bg-emerald-50 dark:bg-emerald-950/40',
+      text: 'text-emerald-700 dark:text-emerald-400',
+      badge: 'bg-emerald-100 text-emerald-900 border border-emerald-300 dark:bg-emerald-900/80 dark:text-emerald-200 dark:border-emerald-700',
       pill: 'bg-emerald-600 text-white'
     },
     community_rep: {
-      border: 'border-purple-600/60',
-      bg: 'bg-purple-950/40',
-      text: 'text-purple-400',
-      badge: 'bg-purple-900/80 text-purple-200 border border-purple-700',
+      border: 'border-purple-300 dark:border-purple-600/60',
+      bg: 'bg-purple-50 dark:bg-purple-950/40',
+      text: 'text-purple-700 dark:text-purple-400',
+      badge: 'bg-purple-100 text-purple-900 border border-purple-300 dark:bg-purple-900/80 dark:text-purple-200 dark:border-purple-700',
       pill: 'bg-purple-600 text-white'
     },
     investor: {
-      border: 'border-cyan-600/60',
-      bg: 'bg-cyan-950/40',
-      text: 'text-cyan-400',
-      badge: 'bg-cyan-900/80 text-cyan-200 border border-cyan-700',
-      pill: 'bg-cyan-600 text-slate-950'
+      border: 'border-cyan-300 dark:border-cyan-600/60',
+      bg: 'bg-cyan-50 dark:bg-cyan-950/40',
+      text: 'text-cyan-700 dark:text-cyan-400',
+      badge: 'bg-cyan-100 text-cyan-900 border border-cyan-300 dark:bg-cyan-900/80 dark:text-cyan-200 dark:border-cyan-700',
+      pill: 'bg-cyan-600 text-white'
     },
     citizen: {
-      border: 'border-teal-600/60',
-      bg: 'bg-teal-950/40',
-      text: 'text-teal-400',
-      badge: 'bg-teal-900/80 text-teal-200 border border-teal-700',
+      border: 'border-teal-300 dark:border-teal-600/60',
+      bg: 'bg-teal-50 dark:bg-teal-950/40',
+      text: 'text-teal-700 dark:text-teal-400',
+      badge: 'bg-teal-100 text-teal-900 border border-teal-300 dark:bg-teal-900/80 dark:text-teal-200 dark:border-teal-700',
       pill: 'bg-teal-600 text-white'
     }
   };
@@ -261,13 +261,13 @@ export const Sidebar: React.FC = () => {
 
   return (
     <aside 
-      className={`bg-slate-950 border-r border-slate-800 flex flex-col transition-all duration-300 relative z-30 shrink-0 select-none shadow-2xl ${
+      className={`bg-white dark:bg-slate-950 border-r border-slate-200 dark:border-slate-800 flex flex-col transition-all duration-300 relative z-30 shrink-0 select-none shadow-md dark:shadow-2xl ${
         isCollapsed ? 'w-16' : 'w-64 sm:w-72'
       }`}
       aria-label="Role-Based Workspace Sidebar"
     >
       {/* Top Header: User Profile Card */}
-      <div className={`p-4 border-b border-slate-800 ${currentTheme.bg}`}>
+      <div className={`p-4 border-b border-slate-200 dark:border-slate-800 ${currentTheme.bg}`}>
         <div className="flex items-center justify-between">
           {!isCollapsed && (
             <div className="flex items-center space-x-3 overflow-hidden">
@@ -276,10 +276,10 @@ export const Sidebar: React.FC = () => {
               </div>
               <div className="truncate">
                 <div className="flex items-center space-x-1.5">
-                  <span className="text-xs font-bold text-white truncate block">
+                  <span className="text-xs font-bold text-slate-900 dark:text-white truncate block">
                     {currentUser.name}
                   </span>
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0" title="Active Verified Session" />
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" title="Active Verified Session" />
                 </div>
                 <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full inline-block mt-0.5 ${currentTheme.badge}`}>
                   {currentUser.badgeLabel || currentUser.role.toUpperCase()}
@@ -291,17 +291,17 @@ export const Sidebar: React.FC = () => {
           {/* Collapse Button */}
           <button
             onClick={() => setIsCollapsed(!isCollapsed)}
-            className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors ml-auto"
+            className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 dark:hover:text-white dark:hover:bg-slate-800 rounded-lg transition-colors ml-auto"
             title={isCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
           >
-            {isCollapsed ? <ChevronRight className="w-4 h-4 text-amber-400" /> : <ChevronLeft className="w-4 h-4" />}
+            {isCollapsed ? <ChevronRight className="w-4 h-4 text-amber-600 dark:text-amber-400" /> : <ChevronLeft className="w-4 h-4" />}
           </button>
         </div>
 
         {!isCollapsed && (
-          <div className="mt-2.5 pt-2 border-t border-slate-800/80 text-[11px] text-slate-400 truncate">
-            <span className="block truncate font-medium text-slate-300">{currentUser.title}</span>
-            <span className="block truncate text-[10px] text-slate-400 mt-0.5">{currentUser.organization}</span>
+          <div className="mt-2.5 pt-2 border-t border-slate-200 dark:border-slate-800/80 text-[11px] text-slate-500 dark:text-slate-400 truncate">
+            <span className="block truncate font-medium text-slate-700 dark:text-slate-300">{currentUser.title}</span>
+            <span className="block truncate text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">{currentUser.organization}</span>
           </div>
         )}
       </div>
@@ -311,7 +311,7 @@ export const Sidebar: React.FC = () => {
         {menuSections.map((sec, idx) => (
           <div key={idx}>
             {!isCollapsed && (
-              <h4 className="px-2.5 mb-1.5 text-[10px] font-black uppercase tracking-wider text-slate-300">
+              <h4 className="px-2.5 mb-1.5 text-[10px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">
                 {sec.section}
               </h4>
             )}
@@ -332,17 +332,17 @@ export const Sidebar: React.FC = () => {
                         isCollapsed ? 'justify-center p-2.5' : 'px-3 py-2 space-x-2.5'
                       } ${
                         isActive
-                          ? 'bg-emerald-900/90 text-white font-bold border border-emerald-500/80 shadow-md'
-                          : 'text-slate-300 hover:text-white hover:bg-slate-900/80'
+                          ? 'bg-emerald-50 text-emerald-900 font-bold border border-emerald-300 shadow-sm dark:bg-emerald-900/90 dark:text-white dark:border-emerald-500/80'
+                          : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-300 dark:hover:text-white dark:hover:bg-slate-900/80'
                       }`}
                     >
-                      <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-amber-400' : 'text-emerald-400'}`} />
+                      <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-amber-600 dark:text-amber-400' : 'text-emerald-600 dark:text-emerald-400'}`} />
                       
                       {!isCollapsed && (
                         <div className="flex-1 flex items-center justify-between overflow-hidden">
                           <span className="truncate">{item.label}</span>
                           {item.badge !== undefined && (
-                            <span className={`text-[10px] font-black px-1.5 py-0.2 rounded-full ml-1 shrink-0 ${item.badgeColor || 'bg-slate-800 text-slate-300'}`}>
+                            <span className={`text-[10px] font-black px-1.5 py-0.2 rounded-full ml-1 shrink-0 ${item.badgeColor || 'bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-300'}`}>
                               {item.badge}
                             </span>
                           )}
@@ -358,26 +358,26 @@ export const Sidebar: React.FC = () => {
       </div>
 
       {/* Footer Actions: Switch Role & Logout */}
-      <div className="p-2 border-t border-slate-800 bg-slate-950/80 space-y-1">
+      <div className="p-2 border-t border-slate-200 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-950/80 space-y-1">
         <button
           onClick={() => setIsSignInModalOpen(true)}
-          className={`w-full flex items-center text-xs text-amber-400 hover:text-amber-300 hover:bg-slate-900 rounded-lg transition-colors ${
+          className={`w-full flex items-center text-xs text-amber-700 dark:text-amber-400 hover:bg-slate-100 dark:hover:bg-slate-900 rounded-lg transition-colors ${
             isCollapsed ? 'justify-center p-2' : 'px-3 py-2 space-x-2'
           }`}
           title="Switch RBAC Persona"
         >
-          <UserCheck className="w-4 h-4 shrink-0 text-amber-400" />
+          <UserCheck className="w-4 h-4 shrink-0 text-amber-600 dark:text-amber-400" />
           {!isCollapsed && <span className="font-semibold text-xs truncate">Switch Role</span>}
         </button>
 
         <button
           onClick={logout}
-          className={`w-full flex items-center text-xs text-red-400 hover:text-red-300 hover:bg-slate-900 rounded-lg transition-colors ${
+          className={`w-full flex items-center text-xs text-red-600 dark:text-red-400 hover:bg-slate-100 dark:hover:bg-slate-900 rounded-lg transition-colors ${
             isCollapsed ? 'justify-center p-2' : 'px-3 py-2 space-x-2'
           }`}
           title="Sign Out"
         >
-          <LogOut className="w-4 h-4 shrink-0 text-red-400" />
+          <LogOut className="w-4 h-4 shrink-0 text-red-600 dark:text-red-400" />
           {!isCollapsed && <span className="font-semibold text-xs truncate">Sign Out</span>}
         </button>
       </div>

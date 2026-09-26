@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { 
   UserRole, 
   ConcessionProject, 
@@ -165,6 +165,10 @@ interface AppContextType {
   setIsSidebarOpen: (open: boolean) => void;
   toggleSidebar: () => void;
 
+  theme: 'light' | 'dark';
+  setTheme: (theme: 'light' | 'dark') => void;
+  toggleTheme: () => void;
+
   isSignInModalOpen: boolean;
   setIsSignInModalOpen: (open: boolean) => void;
 
@@ -213,6 +217,35 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const [currentUser, setCurrentUser] = useState<AuthenticatedUser | null>(null);
   const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
+  const [theme, setThemeState] = useState<'light' | 'dark'>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('ggcdc_theme');
+      if (saved === 'dark' || saved === 'light') return saved;
+    }
+    return 'light'; // Light theme is default!
+  });
+
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    }
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('ggcdc_theme', theme);
+    }
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setThemeState(prev => (prev === 'light' ? 'dark' : 'light'));
+  };
+
+  const setTheme = (t: 'light' | 'dark') => {
+    setThemeState(t);
+  };
+
   const [isSignInModalOpen, setIsSignInModalOpen] = useState<boolean>(false);
   const [isContactModalOpen, setIsContactModalOpen] = useState<boolean>(false);
   const [activeView, setActiveView] = useState<string>('home');
@@ -505,6 +538,9 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       isSidebarOpen,
       setIsSidebarOpen,
       toggleSidebar,
+      theme,
+      setTheme,
+      toggleTheme,
       isSignInModalOpen,
       setIsSignInModalOpen,
       isContactModalOpen,

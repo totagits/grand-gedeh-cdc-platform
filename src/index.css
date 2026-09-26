@@ -10,17 +10,23 @@
   }
 }
 
-/* Custom scrollbar styling for dark dialogs and dashboards */
+/* Custom scrollbar styling for dialogs and dashboards */
 .modal-scrollbar {
   scrollbar-width: thin;
+  scrollbar-color: #059669 #f1f5f9;
+}
+.dark .modal-scrollbar {
   scrollbar-color: #059669 #020617;
 }
 .modal-scrollbar::-webkit-scrollbar {
   width: 8px;
 }
 .modal-scrollbar::-webkit-scrollbar-track {
-  background: #020617;
+  background: #f1f5f9;
   border-radius: 4px;
+}
+.dark .modal-scrollbar::-webkit-scrollbar-track {
+  background: #020617;
 }
 .modal-scrollbar::-webkit-scrollbar-thumb {
   background: #059669;
