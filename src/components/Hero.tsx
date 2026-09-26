@@ -49,7 +49,7 @@ export const Hero: React.FC = () => {
         {/* Main Hero Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center pt-8 pb-4">
           
-          <div className="lg:col-span-7 space-y-6">
+          <div className="lg:col-span-6 space-y-6">
             <div className="space-y-2">
               <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
                 Grand Gedeh Citizens <br className="hidden sm:inline" />
@@ -107,7 +107,7 @@ export const Hero: React.FC = () => {
           </div>
 
           {/* Right Column: Interactive Photo Carousel */}
-          <div className="lg:col-span-5 flex flex-col items-center justify-center">
+          <div className="lg:col-span-6 flex flex-col items-center justify-center">
             <PhotoCarousel />
           </div>
 
