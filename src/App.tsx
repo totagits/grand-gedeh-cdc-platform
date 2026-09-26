@@ -19,6 +19,7 @@ import { InstitutionalGovernance } from './components/InstitutionalGovernance';
 import { SecretariatVerificationDesk } from './components/SecretariatVerificationDesk';
 import { SignInModal } from './components/SignInModal';
 import { ContactModal } from './components/ContactModal';
+import { ConcessionIngestionModal } from './components/ConcessionIngestionModal';
 import { Footer } from './components/Footer';
 import { 
   Building2, 
@@ -202,6 +203,9 @@ const MainContent: React.FC = () => {
 
       {/* Official Secretariat Contact Modal */}
       <ContactModal />
+
+      {/* Sovereign Concession Ingestion Modal */}
+      <ConcessionIngestionModal />
 
       {/* Floating RBAC Pill for Quick Role Switching */}
       <div className="fixed bottom-4 right-4 z-30">

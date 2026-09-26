@@ -18,7 +18,14 @@ import { useApp } from '../utils/context';
 import { ConcessionProject } from '../types';
 
 export const ConcessionRegistry: React.FC = () => {
-  const { concessions, selectedProjectId, setSelectedProjectId, setActiveView, setSelectedCommunityId } = useApp();
+  const { 
+    concessions, 
+    selectedProjectId, 
+    setSelectedProjectId, 
+    setActiveView, 
+    setSelectedCommunityId,
+    setIsConcessionModalOpen
+  } = useApp();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSector, setSelectedSector] = useState<string>('All');
   const [activeModalProject, setActiveModalProject] = useState<ConcessionProject | null>(
@@ -57,17 +64,28 @@ export const ConcessionRegistry: React.FC = () => {
               </p>
             </div>
 
-            {/* Executive KPI Stat Badges */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-1 gap-2.5 shrink-0">
-              <div className="bg-slate-900/80 border border-emerald-500/30 rounded-2xl p-3 backdrop-blur-md">
-                <div className="text-[10px] text-emerald-400 font-bold uppercase tracking-wider">Concession Portfolio</div>
-                <div className="text-lg font-black text-white font-mono">$2.4 Billion</div>
-                <div className="text-[10px] text-slate-400">Total CapEx Tracked</div>
-              </div>
-              <div className="bg-slate-900/80 border border-amber-500/30 rounded-2xl p-3 backdrop-blur-md">
-                <div className="text-[10px] text-amber-400 font-bold uppercase tracking-wider">Audited Agreements</div>
-                <div className="text-lg font-black text-white font-mono">{concessions.length} Concessions</div>
-                <div className="text-[10px] text-slate-400">Section 13 Monitored</div>
+            {/* Executive KPI Stat Badges & Ingestion Trigger */}
+            <div className="flex flex-col sm:flex-row lg:flex-col gap-2.5 shrink-0">
+              <button
+                type="button"
+                onClick={() => setIsConcessionModalOpen(true)}
+                className="w-full py-2.5 px-4 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-black text-xs flex items-center justify-center space-x-1.5 shadow-lg transition-transform hover:scale-105 active:scale-95"
+              >
+                <Building2 className="w-4 h-4 text-slate-950" />
+                <span>+ Ingest New Concession / Treaty</span>
+              </button>
+
+              <div className="grid grid-cols-2 lg:grid-cols-1 gap-2.5">
+                <div className="bg-slate-900/80 border border-emerald-500/30 rounded-2xl p-3 backdrop-blur-md">
+                  <div className="text-[10px] text-emerald-400 font-bold uppercase tracking-wider">Concession Portfolio</div>
+                  <div className="text-lg font-black text-white font-mono">$2.4 Billion</div>
+                  <div className="text-[10px] text-slate-400">Total CapEx Tracked</div>
+                </div>
+                <div className="bg-slate-900/80 border border-amber-500/30 rounded-2xl p-3 backdrop-blur-md">
+                  <div className="text-[10px] text-amber-400 font-bold uppercase tracking-wider">Audited Agreements</div>
+                  <div className="text-lg font-black text-white font-mono">{concessions.length} Concessions</div>
+                  <div className="text-[10px] text-slate-400">Section 13 Monitored</div>
+                </div>
               </div>
             </div>
           </div>
@@ -113,6 +131,13 @@ export const ConcessionRegistry: React.FC = () => {
                 {sec}
               </button>
             ))}
+            <button
+              type="button"
+              onClick={() => setIsConcessionModalOpen(true)}
+              className="px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap bg-emerald-600 hover:bg-emerald-500 text-white shadow-sm flex items-center gap-1 transition-all ml-1"
+            >
+              <span>+ Ingest</span>
+            </button>
           </div>
         </div>
 

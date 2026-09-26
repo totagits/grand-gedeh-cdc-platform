@@ -76,6 +76,28 @@ export interface ConcessionProject {
   lng: number;
 }
 
+export type ConcessionInputData = Omit<ConcessionProject, 'id' | 'workingGroupId'> & { 
+  id?: string; 
+  workingGroupId?: string; 
+};
+
+export type NewCommitmentInputData = Omit<CommitmentRecord, 'id' | 'projectId' | 'projectName'> & {
+  title: string;
+  obligor?: string;
+  beneficiary?: string;
+  sector?: string;
+  sourceDoc?: string;
+  clauseRef?: string;
+  deadline?: string;
+  responsibleAgency?: string;
+  location?: string;
+  monetaryValue?: string;
+  status?: CommitmentStatus;
+  evidence?: string;
+  lastAudited?: string;
+  verificationNotes?: string;
+};
+
 export type CommitmentStatus = 'Not Started' | 'In Progress' | 'Completed' | 'Delayed' | 'Awaiting Verification';
 
 export interface CommitmentRecord {
@@ -284,14 +306,15 @@ export type NotificationEventType =
   | 'Application Denied & Disqualified'
   | 'Tender Prequalification Issued' 
   | 'Information Required'
-  | 'Concession Dispatch Issued';
+  | 'Concession Dispatch Issued'
+  | 'Concession Ingestion Approved';
 
 export interface NotificationDispatchRecord {
   id: string;
   recipientName: string;
   recipientPhone: string;
   recipientEmail: string;
-  entityType: 'workforce' | 'business';
+  entityType: 'workforce' | 'business' | 'concession' | 'secretariat';
   entityId: string;
   trackingNumber: string;
   eventType: NotificationEventType;

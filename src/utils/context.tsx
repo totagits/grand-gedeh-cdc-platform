@@ -2,6 +2,8 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import { 
   UserRole, 
   ConcessionProject, 
+  ConcessionInputData,
+  NewCommitmentInputData,
   CommitmentRecord, 
   BusinessSupplier, 
   WorkforceProfile, 
@@ -175,6 +177,9 @@ interface AppContextType {
   isContactModalOpen: boolean;
   setIsContactModalOpen: (open: boolean) => void;
 
+  isConcessionModalOpen: boolean;
+  setIsConcessionModalOpen: (open: boolean) => void;
+
   activeView: string;
   setActiveView: (view: string) => void;
   selectedProjectId: string | null;
@@ -195,6 +200,10 @@ interface AppContextType {
   documents: DocumentItem[];
   opportunities: OpportunityItem[];
   
+  addConcession: (
+    concessionData: ConcessionInputData, 
+    customCommitments?: NewCommitmentInputData[]
+  ) => ConcessionProject;
   registerBusiness: (business: Omit<BusinessSupplier, 'id' | 'trackingNumber' | 'verifiedLocal' | 'verificationStatus' | 'registrationDate'> & { uploadedCredentials?: UploadedCredential[] }) => BusinessSupplier;
   registerWorkforce: (profile: Omit<WorkforceProfile, 'id' | 'trackingNumber' | 'verificationStatus'> & { uploadedCredentials?: UploadedCredential[] }) => WorkforceProfile;
   submitConsultation: (consultationId: string, concern: string, authorName: string, community: string) => void;
@@ -248,13 +257,54 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
   const [isSignInModalOpen, setIsSignInModalOpen] = useState<boolean>(false);
   const [isContactModalOpen, setIsContactModalOpen] = useState<boolean>(false);
+  const [isConcessionModalOpen, setIsConcessionModalOpen] = useState<boolean>(false);
   const [activeView, setActiveView] = useState<string>('home');
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
   const [selectedCommunityId, setSelectedCommunityId] = useState<string | null>(null);
   const [selectedWorkingGroupId, setSelectedWorkingGroupId] = useState<string | null>(null);
 
-  const [concessions] = useState<ConcessionProject[]>(CONCESSIONS_DATA);
-  const [commitments] = useState<CommitmentRecord[]>(COMMITMENTS_DATA);
+  const [concessions, setConcessions] = useState<ConcessionProject[]>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem('ggcdc_concessions');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        }
+      } catch (e) {
+        console.error('Failed to parse saved concessions', e);
+      }
+    }
+    return CONCESSIONS_DATA;
+  });
+
+  const [commitments, setCommitments] = useState<CommitmentRecord[]>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem('ggcdc_commitments');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        }
+      } catch (e) {
+        console.error('Failed to parse saved commitments', e);
+      }
+    }
+    return COMMITMENTS_DATA;
+  });
+
+  useEffect(() => {
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('ggcdc_concessions', JSON.stringify(concessions));
+    }
+  }, [concessions]);
+
+  useEffect(() => {
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('ggcdc_commitments', JSON.stringify(commitments));
+    }
+  }, [commitments]);
+
   const [businesses, setBusinesses] = useState<BusinessSupplier[]>(BUSINESSES_DATA);
   const [workforce, setWorkforce] = useState<WorkforceProfile[]>(WORKFORCE_DATA);
   const [communities] = useState<CommunityProfile[]>(COMMUNITIES_DATA);
@@ -276,6 +326,158 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     };
     setNotifications(prev => [fullRecord, ...prev]);
     return fullRecord;
+  };
+
+  const addConcession = (
+    concessionData: ConcessionInputData, 
+    customCommitments?: NewCommitmentInputData[]
+  ): ConcessionProject => {
+    const slug = concessionData.name
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '')
+      .slice(0, 20);
+    const newId = concessionData.id || `proj-${slug || Date.now()}`;
+    
+    const newProject: ConcessionProject = {
+      ...concessionData,
+      id: newId,
+      lat: concessionData.lat || 5.95,
+      lng: concessionData.lng || -8.15,
+      workingGroupId: concessionData.workingGroupId || (
+        concessionData.sector === 'Mining & Extractives' ? 'wg-mining' :
+        concessionData.sector === 'Forestry & Environment' ? 'wg-forestry' :
+        concessionData.sector === 'Agriculture & Food Systems' ? 'wg-agriculture' : 'wg-infrastructure'
+      ),
+      agreements: concessionData.agreements?.length ? concessionData.agreements : [
+        {
+          title: `${concessionData.name} Agreement`,
+          type: concessionData.sector === 'Mining & Extractives' ? 'Mineral Development Agreement (MDA)' :
+                concessionData.sector === 'Forestry & Environment' ? 'Forestry Management Contract (FMC)' :
+                'Concession Agreement',
+          signedDate: new Date().toISOString().split('T')[0],
+          status: 'Ratified by National Legislature & Signed by President'
+        }
+      ],
+      commitmentsSummary: concessionData.commitmentsSummary || {
+        employmentGoal: '70% Grand Gedean workforce quota within 24 months',
+        localProcurementQuota: 'Mandatory Tier-1 local catering & civil haulage',
+        socialDevFundAnnual: '$250,000 USD Annual CSDF Escrow Deposit',
+        infrastructureItems: ['Feeder road maintenance', 'Community health post electrification'],
+        environmentalObligations: ['EPA-compliant Environmental Social Impact Assessment (ESIA)', 'Quarterly ground water testing']
+      }
+    };
+
+    setConcessions(prev => [newProject, ...prev]);
+
+    // Build associated commitments
+    const generatedCommitments: CommitmentRecord[] = [];
+
+    if (customCommitments && customCommitments.length > 0) {
+      customCommitments.forEach((c, idx) => {
+        generatedCommitments.push({
+          id: `cmt-${newId}-${idx + 1}`,
+          projectId: newId,
+          projectName: newProject.name,
+          title: c.title,
+          obligor: c.obligor || newProject.operator,
+          beneficiary: c.beneficiary || `Grand Gedeh County / ${newProject.district}`,
+          sector: c.sector || newProject.sector,
+          sourceDoc: c.sourceDoc || `${newProject.name} Treaty`,
+          clauseRef: c.clauseRef || `Section ${idx + 8}.1`,
+          deadline: c.deadline || 'Statutory Annual',
+          responsibleAgency: c.responsibleAgency || newProject.govCounterpart,
+          location: c.location || newProject.district,
+          monetaryValue: c.monetaryValue || 'Contractual Covenants',
+          status: c.status || 'In Progress',
+          evidence: c.evidence || 'Ratified Agreement on File with Secretariat',
+          lastAudited: new Date().toISOString().split('T')[0],
+          verificationNotes: c.verificationNotes || 'Ingested by GGCDC Secretariat upon legislative gazetting.'
+        });
+      });
+    } else {
+      // Auto-generate standard sovereign commitments from summary
+      generatedCommitments.push({
+        id: `cmt-${newId}-csdf`,
+        projectId: newId,
+        projectName: newProject.name,
+        title: `Annual County Social Development Fund (CSDF) Escrow`,
+        obligor: newProject.operator,
+        beneficiary: `Grand Gedeh County Administrative Complex, Zwedru`,
+        sector: newProject.sector,
+        sourceDoc: `${newProject.name} Ratified Handbill`,
+        clauseRef: 'Section 14: Social Development Contribution',
+        deadline: 'Annual Statutory Schedule',
+        responsibleAgency: 'Ministry of Finance & Development Planning (MFDP) / GGCDC Secretariat',
+        location: newProject.district,
+        monetaryValue: newProject.commitmentsSummary.socialDevFundAnnual,
+        status: 'In Progress',
+        evidence: 'Ratification Handbill / Joint Account Escrow Deposit Slip',
+        lastAudited: new Date().toISOString().split('T')[0],
+        verificationNotes: 'Baseline fiscal obligation established upon platform treaty ingestion.'
+      });
+
+      generatedCommitments.push({
+        id: `cmt-${newId}-workforce`,
+        projectId: newId,
+        projectName: newProject.name,
+        title: `Section 11 Local Labor & TVET Apprenticeship Quota`,
+        obligor: newProject.operator,
+        beneficiary: `Grand Gedeh Indigenes & TVET Graduates`,
+        sector: newProject.sector,
+        sourceDoc: `${newProject.name} Concession Agreement`,
+        clauseRef: 'Section 11: Employment & Training of Citizens',
+        deadline: 'Quarterly Staff Audit',
+        responsibleAgency: 'Ministry of Labour (MOL) / GGCDC Labor Directorate',
+        location: newProject.district,
+        monetaryValue: 'Mandatory Non-Expatriate Quota',
+        status: 'In Progress',
+        evidence: 'Quarterly Personnel Payroll & Local Content Audit Roster',
+        lastAudited: new Date().toISOString().split('T')[0],
+        verificationNotes: `Target: ${newProject.commitmentsSummary.employmentGoal}`
+      });
+
+      if (newProject.commitmentsSummary.infrastructureItems?.length > 0) {
+        generatedCommitments.push({
+          id: `cmt-${newId}-infra`,
+          projectId: newId,
+          projectName: newProject.name,
+          title: `Infrastructure Mandate: ${newProject.commitmentsSummary.infrastructureItems[0]}`,
+          obligor: newProject.operator,
+          beneficiary: `${newProject.district} Affected Communities`,
+          sector: 'Infrastructure & Public Utilities',
+          sourceDoc: `${newProject.name} Article 9 Infrastructure Accords`,
+          clauseRef: 'Article 9: Social Infrastructure & Roads',
+          deadline: 'Year 2 Operating Phase',
+          responsibleAgency: 'Ministry of Public Works (MPW) / GGCDC Infrastructure Directorate',
+          location: newProject.district,
+          monetaryValue: 'Capital Expenditure Covenant',
+          status: 'In Progress',
+          evidence: 'Engineering Blueprint & MPW Environmental Clearance',
+          lastAudited: new Date().toISOString().split('T')[0],
+          verificationNotes: `Obligations: ${newProject.commitmentsSummary.infrastructureItems.join('; ')}`
+        });
+      }
+    }
+
+    setCommitments(prev => [...generatedCommitments, ...prev]);
+
+    // Dispatch SMS & Email Notification to Secretariat & Public Ledger
+    const trackingRef = `GG-CONCESSION-${new Date().getFullYear()}-${Math.floor(100 + Math.random() * 900)}`;
+    sendDispatchNotification({
+      recipientName: 'GGCDC Permanent Secretariat & County Council',
+      recipientPhone: '+231 770 412 889',
+      recipientEmail: 'secretariat@grandgedeh.gov.lr',
+      entityType: 'secretariat',
+      entityId: newId,
+      trackingNumber: trackingRef,
+      eventType: 'Concession Ingestion Approved',
+      smsMessage: `GGCDC-GOV GAZETTE: New Concession ${newProject.name} (Operator: ${newProject.operator}, District: ${newProject.district}) INGESTED into Sovereign Ledger. Ref: ${trackingRef}. Live at https://totagits.github.io/grand-gedeh-cdc-platform/`,
+      emailSubject: `[OFFICIAL GGCDC GAZETTE] New Concession Ingested & Commitments Spawned - Ref: ${trackingRef}`,
+      emailBody: `OFFICIAL SECRETARIAT GAZETTE RECORD\n\nConcession: ${newProject.name}\nOperator: ${newProject.operator}\nSector: ${newProject.sector}\nDistrict: ${newProject.district}\nStatutory Counterpart: ${newProject.govCounterpart}\nTracking Ref: ${trackingRef}\n\nContractual Commitments Spawned:\n1. CSDF Escrow: ${newProject.commitmentsSummary.socialDevFundAnnual}\n2. Local Employment Mandate: ${newProject.commitmentsSummary.employmentGoal}\n3. Infrastructure Deliverables: ${newProject.commitmentsSummary.infrastructureItems?.join(', ') || 'N/A'}\n\nThis record is permanently verifiable on the Grand Gedeh Sovereign Transparency Platform.`
+    });
+
+    return newProject;
   };
 
   const registerBusiness = (businessData: Omit<BusinessSupplier, 'id' | 'trackingNumber' | 'verifiedLocal' | 'verificationStatus' | 'registrationDate'> & { uploadedCredentials?: UploadedCredential[] }): BusinessSupplier => {
@@ -545,6 +747,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       setIsSignInModalOpen,
       isContactModalOpen,
       setIsContactModalOpen,
+      isConcessionModalOpen,
+      setIsConcessionModalOpen,
       activeView,
       setActiveView,
       selectedProjectId,
@@ -563,6 +767,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       workingGroups,
       documents,
       opportunities,
+      addConcession,
       registerBusiness,
       registerWorkforce,
       submitConsultation,
