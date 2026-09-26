@@ -118,7 +118,7 @@ export const PhotoCarousel: React.FC = () => {
     <div className="relative w-full max-w-xl mx-auto rounded-3xl overflow-hidden border-2 border-emerald-600/30 dark:border-amber-500/40 shadow-2xl bg-slate-950 group">
       
       {/* Aspect Ratio Box with Image */}
-      <div className="relative h-[400px] sm:h-[500px] lg:h-[560px] w-full overflow-hidden bg-slate-950">
+      <div className="relative h-[400px] sm:h-[500px] lg:h-[500px] w-full overflow-hidden bg-slate-950">
         {CAROUSEL_SLIDES.map((slide, idx) => (
           <div
             key={slide.id}
