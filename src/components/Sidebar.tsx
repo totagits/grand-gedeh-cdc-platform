@@ -30,6 +30,7 @@ export const Sidebar: React.FC = () => {
     setActiveView, 
     isSidebarOpen, 
     setIsSignInModalOpen,
+    setIsConcessionModalOpen,
     businesses,
     workforce
   } = useApp();
@@ -106,6 +107,7 @@ export const Sidebar: React.FC = () => {
     icon: React.ComponentType<{ className?: string }>;
     badge?: string | number;
     badgeColor?: string;
+    onClick?: () => void;
   }
 
   const getRoleMenus = (): { section: string; items: NavMenuItem[] }[] => {
@@ -117,6 +119,14 @@ export const Sidebar: React.FC = () => {
             items: [
               { id: 'verification', label: 'Accreditation & Verification', icon: FileCheck2, badge: totalPendingSecretariat, badgeColor: 'bg-red-600 text-white' },
               { id: 'concessions', label: 'Concessions Oversight', icon: Building2 },
+              { 
+                id: 'ingest_concession', 
+                label: '+ Ingest Concession Treaty', 
+                icon: Building2, 
+                badge: 'NEW', 
+                badgeColor: 'bg-amber-500 text-slate-950 font-black',
+                onClick: () => setIsConcessionModalOpen(true)
+              },
               { id: 'commitments', label: 'Commitments & Escrow Tracker', icon: ShieldCheck, badge: '68 Recs', badgeColor: 'bg-amber-600 text-slate-950' },
               { id: 'gismap', label: 'County GIS Cartography', icon: MapPin },
             ]
@@ -324,8 +334,12 @@ export const Sidebar: React.FC = () => {
                   <li key={item.id}>
                     <button
                       onClick={() => {
-                        setActiveView(item.id);
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        if (item.onClick) {
+                          item.onClick();
+                        } else {
+                          setActiveView(item.id);
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }
                       }}
                       title={isCollapsed ? item.label : undefined}
                       className={`w-full flex items-center rounded-xl text-xs transition-all ${
