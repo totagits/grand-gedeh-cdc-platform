@@ -9,7 +9,8 @@ import {
   Award, 
   Check, 
   FileCheck2,
-  AlertTriangle
+  AlertTriangle,
+  Clock
 } from 'lucide-react';
 import { useApp } from '../utils/context';
 import { BusinessSupplier, WorkforceProfile, UploadedCredential } from '../types';
@@ -259,7 +260,7 @@ export const SecretariatVerificationDesk: React.FC = () => {
                     <span className={`self-start sm:self-center px-3 py-1 rounded-full text-xs font-bold ${
                       selectedBiz.verificationStatus === 'Approved & Accredited'
                         ? 'bg-emerald-950 text-emerald-300 border border-emerald-600'
-                        : selectedBiz.localOwnershipPct < 51
+                        : selectedBiz.verificationStatus === 'Information Required' || selectedBiz.verificationStatus === 'Requires Re-upload'
                         ? 'bg-red-950 text-red-300 border border-red-600'
                         : 'bg-amber-950 text-amber-300 border border-amber-600'
                     }`}>
@@ -267,27 +268,27 @@ export const SecretariatVerificationDesk: React.FC = () => {
                     </span>
                   </div>
 
-                  {/* 51%+ Ownership Compliance Audit Alert */}
+                  {/* Articles of Incorporation & Ownership Verification Audit Alert */}
                   <div className={`p-3 rounded-xl border flex items-start space-x-2.5 text-xs ${
-                    selectedBiz.localOwnershipPct >= 51
+                    selectedBiz.verificationStatus === 'Approved & Accredited'
                       ? 'bg-emerald-950/60 border-emerald-600/80 text-emerald-200'
-                      : 'bg-red-950/80 border-red-600/80 text-red-200'
+                      : 'bg-amber-950/60 border-amber-600/80 text-amber-200'
                   }`}>
-                    {selectedBiz.localOwnershipPct >= 51 ? (
+                    {selectedBiz.verificationStatus === 'Approved & Accredited' ? (
                       <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                     ) : (
-                      <AlertTriangle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+                      <Clock className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
                     )}
                     <div>
                       <span className="font-bold text-white block">
-                        {selectedBiz.localOwnershipPct >= 51
-                          ? `✓ Statutory 51%+ Grand Gedean Ownership Verified (${selectedBiz.localOwnershipPct}% Local Equity)`
-                          : `⚠ Statutory Disqualification: ${selectedBiz.localOwnershipPct}% Grand Gedean Equity (Below 51% Majority Requirement)`}
+                        {selectedBiz.verificationStatus === 'Approved & Accredited'
+                          ? `✓ Articles of Incorporation & Grand Gedean Ownership Verified`
+                          : `⏳ Secretariat Legal Audit: Articles of Incorporation & Ownership In Progress`}
                       </span>
                       <p className="text-[11px] text-slate-300 mt-0.5">
-                        {selectedBiz.localOwnershipPct >= 51
-                          ? `This partnership meets the statutory 51% or higher Grand Gedean equity standard under GGCDC Local Content Protocol Art 4.2 for local supplier preference.`
-                          : `Under GGCDC Local Content regulations, partnerships must possess at least 51% Grand Gedean ownership to qualify as a local enterprise. Concessionaires cannot count this contract toward local procurement quotas.`}
+                        {selectedBiz.verificationStatus === 'Approved & Accredited'
+                          ? `The Secretariat Legal & Compliance Desk has verified the uploaded Articles of Incorporation, LBR registration, and shareholder origin, confirming authentic Grand Gedean ownership per county standards.`
+                          : `Auditor is cross-referencing incorporator names, shareholder registries, and citizenship records from the uploaded Articles of Incorporation against LBR records to confirm Grand Gedean ownership.`}
                       </p>
                     </div>
                   </div>

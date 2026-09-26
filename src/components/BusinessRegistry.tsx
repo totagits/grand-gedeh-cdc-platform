@@ -46,8 +46,7 @@ export const BusinessRegistry: React.FC = () => {
   const [formData, setFormData] = useState({
     name: '',
     sector: 'Construction',
-    ownership: '100% Grand Gedean Owned' as BusinessOwnershipType,
-    localOwnershipPct: 100,
+    ownership: 'Sole Proprietorship' as BusinessOwnershipType,
     location: 'Zwedru City Center',
     servicesStr: '',
     contactPerson: '',
@@ -68,8 +67,8 @@ export const BusinessRegistry: React.FC = () => {
   }>({
     lbrCert: {
       file: null,
-      fileName: 'LBR_Certificate_Scan.pdf',
-      fileSize: '1.4 MB',
+      fileName: 'Articles_of_Incorporation_LBR.pdf',
+      fileSize: '1.8 MB',
       isUploaded: true
     },
     lraTax: {
@@ -121,27 +120,6 @@ export const BusinessRegistry: React.FC = () => {
     }
   };
 
-  // Ownership Type change handler to update local equity %
-  const handleOwnershipChange = (newOwnership: BusinessOwnershipType) => {
-    let newPct = formData.localOwnershipPct;
-    if (newOwnership === '100% Grand Gedean Owned') {
-      newPct = 100;
-    } else if (newOwnership === 'Grand Gedean Majority Partnership (51%+)') {
-      newPct = Math.max(51, formData.localOwnershipPct < 51 ? 51 : formData.localOwnershipPct);
-    } else if (newOwnership === 'Minority Grand Gedean Partnership (<51%)') {
-      newPct = Math.min(49, formData.localOwnershipPct >= 51 ? 40 : formData.localOwnershipPct);
-    } else {
-      newPct = 0;
-    }
-    setFormData(prev => ({
-      ...prev,
-      ownership: newOwnership,
-      localOwnershipPct: newPct
-    }));
-  };
-
-  const isFormQualified = formData.localOwnershipPct >= 51;
-
   const filteredBusinesses = businesses.filter((b) => {
     const matchesSector = selectedSector === 'All' || b.sector === selectedSector;
     const matchesSearch = b.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -151,7 +129,7 @@ export const BusinessRegistry: React.FC = () => {
     
     let matchesOwnership = true;
     if (ownershipFilter === 'Accredited') {
-      matchesOwnership = b.verificationStatus === 'Approved & Accredited' || b.isQualifiedGrandGedean;
+      matchesOwnership = b.verificationStatus === 'Approved & Accredited';
     }
 
     return matchesSector && matchesSearch && matchesOwnership;
@@ -163,7 +141,7 @@ export const BusinessRegistry: React.FC = () => {
     const credentials: UploadedCredential[] = [
       {
         id: `cred-${Date.now()}-1`,
-        name: 'Liberia Business Registry (LBR) Certificate',
+        name: 'Articles of Incorporation / Partnership Deed & LBR Certificate',
         docType: 'LBR Business Registration',
         fileName: attachedFiles.lbrCert.fileName,
         fileSize: attachedFiles.lbrCert.fileSize,
@@ -194,8 +172,6 @@ export const BusinessRegistry: React.FC = () => {
       name: formData.name,
       sector: formData.sector,
       ownership: formData.ownership,
-      localOwnershipPct: Number(formData.localOwnershipPct),
-      isQualifiedGrandGedean: isFormQualified,
       location: formData.location,
       services: formData.servicesStr.split(',').map(s => s.trim()).filter(Boolean),
       contactPerson: formData.contactPerson,
@@ -370,14 +346,8 @@ export const BusinessRegistry: React.FC = () => {
                   {/* Secretariat Accreditation Badge */}
                   <div className="mt-3 p-2.5 bg-slate-900 border border-slate-800 rounded-lg text-xs space-y-1.5">
                     <div className="flex items-center justify-between text-[11px]">
-                      <span className="text-slate-400">Classification:</span>
+                      <span className="text-slate-400">Legal Entity Type:</span>
                       <span className="font-bold text-emerald-400">
-                        {biz.ownership.includes('100%') ? '100% Grand Gedean Owned' : 'Grand Gedean Partnership'}
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between text-[10px]">
-                      <span className="text-slate-500">Legal Entity:</span>
-                      <span className="text-slate-300 truncate max-w-[170px]" title={biz.ownership}>
                         {biz.ownership}
                       </span>
                     </div>
@@ -497,69 +467,17 @@ export const BusinessRegistry: React.FC = () => {
                   </div>
 
                   <div>
-                    <label className="block text-slate-300 mb-1 font-medium">Ownership Structure *</label>
+                    <label className="block text-slate-300 mb-1 font-medium">Business Structure / Legal Entity *</label>
                     <select
                       value={formData.ownership}
-                      onChange={(e) => handleOwnershipChange(e.target.value as BusinessOwnershipType)}
+                      onChange={(e) => setFormData({ ...formData, ownership: e.target.value as BusinessOwnershipType })}
                       className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-emerald-500"
                     >
-                      <option value="100% Grand Gedean Owned">100% Grand Gedean Owned (100% Local Equity)</option>
-                      <option value="Grand Gedean Majority Partnership (51%+)">Grand Gedean Majority Partnership (51% or More Grand Gedean Owned)</option>
-                      <option value="Minority Grand Gedean Partnership (<51%)">Minority Grand Gedean Partnership (Less than 51% Grand Gedean Owned)</option>
-                      <option value="Foreign / Non-Local Enterprise">Foreign / Non-Local Enterprise</option>
+                      <option value="Sole Proprietorship">Sole Proprietorship</option>
+                      <option value="Partnership / Joint Venture">Partnership / Joint Venture</option>
+                      <option value="Corporation / LLC">Corporation / LLC</option>
+                      <option value="Cooperative / Association">Cooperative / Community Association</option>
                     </select>
-                  </div>
-                </div>
-
-                {/* CONFIDENTIAL BENEFICIAL OWNERSHIP DISCLOSURE FOR SECRETARIAT AUDIT */}
-                <div className="p-3.5 bg-slate-950 border border-slate-800 rounded-xl space-y-2">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                    <div>
-                      <label className="block text-white font-bold text-xs">
-                        Grand Gedean Beneficial Ownership / Equity Share (%) *
-                      </label>
-                      <span className="text-[11px] text-slate-400">
-                        Confidential regulatory disclosure audited by the Secretariat against Partnership Deed / Articles of Incorporation.
-                      </span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <input
-                        type="number"
-                        min="0"
-                        max="100"
-                        required
-                        value={formData.localOwnershipPct}
-                        onChange={(e) => {
-                          const val = Math.min(100, Math.max(0, Number(e.target.value)));
-                          setFormData({
-                            ...formData,
-                            localOwnershipPct: val,
-                            ownership: val === 100 
-                              ? '100% Grand Gedean Owned' 
-                              : val >= 51 
-                              ? 'Grand Gedean Majority Partnership (51%+)' 
-                              : val > 0 
-                              ? 'Minority Grand Gedean Partnership (<51%)'
-                              : 'Foreign / Non-Local Enterprise'
-                          });
-                        }}
-                        className="w-24 bg-slate-900 border border-slate-700 rounded-lg p-2 text-white font-bold text-center text-sm focus:outline-none focus:border-emerald-500"
-                      />
-                      <span className="text-white font-bold">%</span>
-                    </div>
-                  </div>
-
-                  {/* Confidential Secretarial Audit Advisory */}
-                  <div className="p-2.5 bg-slate-900/90 border border-slate-800 rounded-lg flex items-start space-x-2 text-[11px]">
-                    <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                    <div>
-                      <span className="font-bold text-slate-200">
-                        Confidential Secretarial Verification Audit
-                      </span>
-                      <p className="text-slate-400 mt-0.5">
-                        In accordance with the Grand Gedeh Local Content Protocol, all joint ventures and partnerships undergo beneficial ownership auditing by the Central Secretariat. Please upload your registered Partnership Deed, Articles of Incorporation, and Shareholder Registry below.
-                      </p>
-                    </div>
                   </div>
                 </div>
 
@@ -665,11 +583,11 @@ export const BusinessRegistry: React.FC = () => {
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     
-                    {/* Document 1: LBR Registration */}
+                    {/* Document 1: Articles of Incorporation & LBR Registration */}
                     <div className="p-3 bg-slate-900 border border-slate-700 rounded-xl flex flex-col justify-between space-y-2">
                       <div>
-                        <span className="block text-[11px] text-slate-200 font-bold">1. LBR Registration</span>
-                        <span className="text-[10px] text-slate-400 block mb-1">Liberia Business Registry Certificate</span>
+                        <span className="block text-[11px] text-slate-200 font-bold">1. Articles of Inc. & LBR</span>
+                        <span className="text-[10px] text-slate-400 block mb-1">Articles of Incorporation / Deed & LBR</span>
                         
                         <div className="flex items-center space-x-1.5 p-1.5 bg-slate-950 rounded border border-slate-800 text-[11px] text-emerald-400 truncate">
                           <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
