@@ -153,9 +153,9 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [currentRole, setCurrentRole] = useState<UserRole>('citizen');
-  const [currentUser, setCurrentUser] = useState<AuthenticatedUser | null>(DEMO_USERS.secretariat); // Default to authenticated demo or toggleable
-  const [isSignedIn, setIsSignedIn] = useState<boolean>(true);
-  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
+  const [currentUser, setCurrentUser] = useState<AuthenticatedUser | null>(null);
+  const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   const [isSignInModalOpen, setIsSignInModalOpen] = useState<boolean>(false);
   const [isContactModalOpen, setIsContactModalOpen] = useState<boolean>(false);
   const [activeView, setActiveView] = useState<string>('home');

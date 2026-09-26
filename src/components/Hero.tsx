@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { 
   Building2, 
   MapPin, 
@@ -10,7 +10,8 @@ import {
   TrendingUp,
   Landmark,
   Award,
-  CheckCircle2
+  CheckCircle2,
+  Briefcase
 } from 'lucide-react';
 import { useApp } from '../utils/context';
 import logoImg from '../assets/logo.jpg';
@@ -32,16 +33,16 @@ export const Hero: React.FC = () => {
           <div className="inline-flex items-center space-x-2.5 bg-gradient-to-r from-emerald-950 to-slate-900 border border-amber-500/40 rounded-full px-4 py-1.5 shadow-inner">
             <Landmark className="w-4 h-4 text-amber-400" />
             <span className="text-xs font-bold text-amber-300 uppercase tracking-widest">
-              Permanent County-Development Institution
+              Advocator for Grand Gedeans • Permanent County Institution
             </span>
           </div>
 
           <div className="flex items-center space-x-2 text-xs text-slate-300">
-            <span className="bg-amber-500/20 text-amber-300 px-3 py-1 rounded-full font-mono font-semibold border border-amber-500/40">
-              Flagship Unit: Putu Mining & Development Working Group
+            <span className="bg-emerald-900/60 text-emerald-300 px-3 py-1 rounded-full font-mono font-semibold border border-emerald-700/60">
+              Authoritative Databases: Workers • Professionals • Businesses
             </span>
             <span className="text-slate-500">•</span>
-            <span className="text-emerald-400 font-semibold">Grand Gedeh County, Liberia</span>
+            <span className="text-amber-400 font-semibold">Grand Gedeh County, Liberia</span>
           </div>
         </div>
 
@@ -62,45 +63,45 @@ export const Hero: React.FC = () => {
             </div>
 
             <p className="text-slate-200 text-base sm:text-lg leading-relaxed max-w-3xl">
-              Operating the <strong>Grand Gedeh Development Intelligence, Participation & Accountability Platform</strong>: 
-              one digital system where citizens, customary communities, professionals, local businesses, diaspora members, 
-              investors, and institutions understand what is happening across the county, contribute expertise, track commitments, 
-              and organize around development opportunities.
+              <strong>GGCDC is the premier advocate for Grand Gedeans</strong>, building the authoritative countywide and diaspora 
+              databases of certified workers, engineers, artisans, and 51%+ locally-owned businesses. 
+              We operate the Grand Gedeh Development Intelligence, Participation & Accountability Platform to guarantee 
+              priority local employment, fair concession procurement quotas, and accountable wealth creation across the county.
             </p>
 
             {/* Quick Action Navigation Buttons */}
             <div className="flex flex-wrap gap-3 pt-2">
               <button
-                onClick={() => setActiveView('gismap')}
-                className="inline-flex items-center space-x-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs sm:text-sm px-5 py-3 rounded-xl shadow-xl hover:shadow-emerald-600/30 transition-all"
+                onClick={() => setActiveView('workforce')}
+                className="inline-flex items-center space-x-2 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-black text-xs sm:text-sm px-5 py-3 rounded-xl shadow-xl transition-all hover:scale-105"
               >
-                <MapPin className="w-4 h-4 text-emerald-200" />
-                <span>Grand Gedeh GIS Map</span>
+                <Users className="w-4 h-4 text-slate-950" />
+                <span>Register as Worker / Talent</span>
                 <ArrowRight className="w-4 h-4 ml-1" />
               </button>
 
               <button
+                onClick={() => setActiveView('businesses')}
+                className="inline-flex items-center space-x-2 bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-xs sm:text-sm px-5 py-3 rounded-xl shadow-xl hover:shadow-emerald-600/30 transition-all hover:scale-105"
+              >
+                <Briefcase className="w-4 h-4 text-emerald-200" />
+                <span>Register 51%+ Local Business</span>
+              </button>
+
+              <button
+                onClick={() => setActiveView('gismap')}
+                className="inline-flex items-center space-x-2 bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 font-bold text-xs sm:text-sm px-5 py-3 rounded-xl shadow transition-all"
+              >
+                <MapPin className="w-4 h-4 text-emerald-400" />
+                <span>County GIS Map</span>
+              </button>
+
+              <button
                 onClick={() => setActiveView('concessions')}
-                className="inline-flex items-center space-x-2 bg-slate-900 hover:bg-slate-800 text-white border border-slate-700 font-bold text-xs sm:text-sm px-5 py-3 rounded-xl shadow transition-all"
+                className="inline-flex items-center space-x-2 bg-slate-900 hover:bg-slate-800 text-amber-300 border border-amber-900/60 font-bold text-xs sm:text-sm px-5 py-3 rounded-xl shadow transition-all"
               >
                 <Building2 className="w-4 h-4 text-amber-400" />
-                <span>Investment & Putu Concession</span>
-              </button>
-
-              <button
-                onClick={() => setActiveView('verification')}
-                className="inline-flex items-center space-x-2 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-slate-950 font-black text-xs sm:text-sm px-5 py-3 rounded-xl shadow-lg transition-all"
-              >
-                <ShieldCheck className="w-4 h-4 text-slate-950" />
-                <span>Secretariat Verification Desk</span>
-              </button>
-
-              <button
-                onClick={() => setActiveView('businesses')}
-                className="inline-flex items-center space-x-2 bg-slate-900 hover:bg-slate-800 text-emerald-300 border border-emerald-900 font-bold text-xs sm:text-sm px-5 py-3 rounded-xl shadow transition-all"
-              >
-                <Award className="w-4 h-4 text-emerald-400" />
-                <span>Local Supplier Registry</span>
+                <span>Putu Concession Case Study</span>
               </button>
             </div>
           </div>
