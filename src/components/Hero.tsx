@@ -11,7 +11,8 @@ import {
   Landmark,
   Award,
   CheckCircle2,
-  Briefcase
+  Briefcase,
+  FileText
 } from 'lucide-react';
 import { useApp } from '../utils/context';
 import { PhotoCarousel } from './PhotoCarousel';
@@ -103,6 +104,14 @@ export const Hero: React.FC = () => {
               >
                 <Building2 className="w-4 h-4 text-amber-600 dark:text-amber-400" />
                 <span>Putu Concession Case Study</span>
+              </button>
+
+              <button
+                onClick={() => setActiveView('documents')}
+                className="inline-flex items-center space-x-2 bg-emerald-100 hover:bg-emerald-200 text-emerald-950 border border-emerald-300 dark:bg-emerald-950/70 dark:hover:bg-emerald-900/80 dark:text-emerald-300 dark:border-emerald-700 font-bold text-xs sm:text-sm px-5 py-3 rounded-xl shadow-sm transition-all hover:scale-105"
+              >
+                <FileText className="w-4 h-4 text-emerald-700 dark:text-emerald-400" />
+                <span>16 Public Concessions &amp; Treaties (LEITI)</span>
               </button>
             </div>
           </div>
