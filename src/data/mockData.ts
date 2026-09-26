@@ -1,4 +1,4 @@
-﻿import { 
+import { 
   Pillar, 
   ConcessionProject, 
   CommitmentRecord, 
@@ -551,7 +551,9 @@ export const BUSINESSES_DATA: BusinessSupplier[] = [
     trackingNumber: 'GG-BIZ-2026-001',
     name: 'Zwedru Engineering & Heavy Civil Works Ltd.',
     sector: 'Construction',
-    ownership: '100% Grand Gedeh',
+    ownership: '100% Grand Gedean Owned',
+    localOwnershipPct: 100,
+    isQualifiedGrandGedean: true,
     location: 'Main Highway, Zwedru City',
     services: ['Road grading', 'Bridge culverts', 'Foundation casting', 'Heavy equipment operation', 'Aggregate quarrying'],
     contactPerson: 'Eng. Emmanuel Gaye Krahn',
@@ -606,7 +608,9 @@ export const BUSINESSES_DATA: BusinessSupplier[] = [
     trackingNumber: 'GG-BIZ-2026-002',
     name: 'Cavalla Valley Logistics & Heavy Haulage Syndicate',
     sector: 'Transportation',
-    ownership: '100% Grand Gedeh',
+    ownership: '100% Grand Gedean Owned',
+    localOwnershipPct: 100,
+    isQualifiedGrandGedean: true,
     location: 'Pennoken Junction, Grand Gedeh',
     services: ['Heavy timber haulage', 'Mineral specimen transport', 'Diesel fuel tankers', 'Container drayage from Harper Port'],
     contactPerson: 'Madam Beatrice Dehgar',
@@ -648,7 +652,9 @@ export const BUSINESSES_DATA: BusinessSupplier[] = [
     trackingNumber: 'GG-BIZ-2026-003',
     name: 'Putu Green Horizon Catering & Camp Support Services',
     sector: 'Catering',
-    ownership: 'Liberian Majority',
+    ownership: 'Grand Gedean Majority Partnership (51%+)',
+    localOwnershipPct: 65,
+    isQualifiedGrandGedean: true,
     location: 'Putu Jarwodee / Zwedru',
     services: ['Industrial camp meal catering (500+ meals/day)', 'Camp laundry & housekeeping', 'Food hygiene certified'],
     contactPerson: 'Comfort S. Gaye',
@@ -661,7 +667,7 @@ export const BUSINESSES_DATA: BusinessSupplier[] = [
     verificationStatus: 'Approved & Accredited',
     registrationDate: '2023-01-20',
     pastContracts: ['PIOM Exploration Camp Kitchen Support ($320k)'],
-    secretariatAuditNotes: 'MOH Food Handler certificates for 24 kitchen staff verified.',
+    secretariatAuditNotes: '65% Grand Gedean partnership ownership verified against corporate share register. MOH Food Handler certificates verified.',
     accreditedBy: 'Public Health & Nutrition Desk',
     uploadedCredentials: [
       {
@@ -680,7 +686,9 @@ export const BUSINESSES_DATA: BusinessSupplier[] = [
     trackingNumber: 'GG-BIZ-2026-004',
     name: 'Grand Gedeh Tech Solutions & Solar Systems',
     sector: 'ICT',
-    ownership: '100% Grand Gedeh',
+    ownership: '100% Grand Gedean Owned',
+    localOwnershipPct: 100,
+    isQualifiedGrandGedean: true,
     location: 'Commercial Street, Zwedru',
     services: ['Commercial solar mini-grid installation', 'Fiber optic pulling & splicing', 'CCTV & security telemetry', 'VSAT satellite comms'],
     contactPerson: 'David K. Tarley',
@@ -710,7 +718,9 @@ export const BUSINESSES_DATA: BusinessSupplier[] = [
     trackingNumber: 'GG-BIZ-2026-005',
     name: 'Jarwodee Aggregate & Sand Crushing Syndicate',
     sector: 'Construction',
-    ownership: '100% Grand Gedeh',
+    ownership: '100% Grand Gedean Owned',
+    localOwnershipPct: 100,
+    isQualifiedGrandGedean: true,
     location: 'Putu District Quarry Zone',
     services: ['Crushed basalt rock supply', 'River sand washing', 'Quarry hauling'],
     contactPerson: 'Jackson K. Jarwodee',
@@ -743,6 +753,40 @@ export const BUSINESSES_DATA: BusinessSupplier[] = [
         fileSize: '740 KB',
         uploadedAt: '2026-09-18',
         status: 'Verified'
+      }
+    ]
+  },
+  {
+    id: 'biz-006',
+    trackingNumber: 'GG-BIZ-2026-006',
+    name: 'Cavalla Basin International Geotech Consortium',
+    sector: 'Construction',
+    ownership: 'Minority Grand Gedean Partnership (<51%)',
+    localOwnershipPct: 40,
+    isQualifiedGrandGedean: false,
+    location: 'Zwedru Industrial Zone',
+    services: ['Geotechnical drilling', 'Core sampling', 'Soil lab testing'],
+    contactPerson: 'Arthur Vance',
+    contactPhone: '+231 777 882 109',
+    legalStatus: 'LBR Registered',
+    taxStatus: 'LRA Tax Compliant',
+    workforceSize: 12,
+    equipmentSummary: '2 Diamond core drill rigs, soil compaction lab',
+    verifiedLocal: false,
+    verificationStatus: 'Disqualified (<51% Local Equity)',
+    registrationDate: '2026-09-21',
+    pastContracts: [],
+    secretariatAuditNotes: 'DISQUALIFIED: Partnership agreement indicates only 40% Grand Gedean equity ownership. Under the GGCDC Local Content Protocol, partnerships must possess at least 51% Grand Gedean equity to qualify for local content preferential procurement.',
+    uploadedCredentials: [
+      {
+        id: 'cred-b06-1',
+        name: 'LBR Business Registration Certificate',
+        docType: 'LBR Business Registration',
+        fileName: 'Cavalla_Geotech_LBR.pdf',
+        fileSize: '1.2 MB',
+        uploadedAt: '2026-09-21',
+        status: 'Requires Re-upload',
+        verificationNotes: 'Joint venture agreement shows 40% local equity. Minimum 51% required for local content status.'
       }
     ]
   }

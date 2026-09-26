@@ -98,12 +98,20 @@ export interface CommitmentRecord {
   verificationNotes: string;
 }
 
+export type BusinessOwnershipType = 
+  | '100% Grand Gedean Owned' 
+  | 'Grand Gedean Majority Partnership (51%+)' 
+  | 'Minority Grand Gedean Partnership (<51%)' 
+  | 'Foreign / Non-Local Enterprise';
+
 export interface BusinessSupplier {
   id: string;
   trackingNumber: string;
   name: string;
   sector: string;
-  ownership: '100% Grand Gedeh' | 'Liberian Majority' | 'Joint Venture';
+  ownership: BusinessOwnershipType;
+  localOwnershipPct: number;
+  isQualifiedGrandGedean: boolean;
   location: string;
   services: string[];
   contactPerson: string;
@@ -114,7 +122,7 @@ export interface BusinessSupplier {
   workforceSize: number;
   equipmentSummary: string;
   verifiedLocal: boolean;
-  verificationStatus: 'Approved & Accredited' | 'Pending Secretarial Audit' | 'Under Review' | 'Information Required';
+  verificationStatus: 'Approved & Accredited' | 'Pending Secretarial Audit' | 'Under Review' | 'Information Required' | 'Disqualified (<51% Local Equity)';
   registrationDate: string;
   pastContracts: string[];
   uploadedCredentials: UploadedCredential[];

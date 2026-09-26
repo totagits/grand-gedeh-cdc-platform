@@ -176,12 +176,14 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
   const registerBusiness = (businessData: Omit<BusinessSupplier, 'id' | 'trackingNumber' | 'verifiedLocal' | 'verificationStatus' | 'registrationDate'> & { uploadedCredentials?: UploadedCredential[] }): string => {
     const trackingNum = `GG-BIZ-${new Date().getFullYear()}-${Math.floor(100 + Math.random() * 900)}`;
+    const isQualified = businessData.localOwnershipPct >= 51;
     const newBiz: BusinessSupplier = {
       ...businessData,
       id: `biz-${Date.now()}`,
       trackingNumber: trackingNum,
+      isQualifiedGrandGedean: isQualified,
       verifiedLocal: false,
-      verificationStatus: 'Pending Secretarial Audit',
+      verificationStatus: isQualified ? 'Pending Secretarial Audit' : 'Disqualified (<51% Local Equity)',
       registrationDate: new Date().toISOString().split('T')[0],
       uploadedCredentials: businessData.uploadedCredentials || []
     };

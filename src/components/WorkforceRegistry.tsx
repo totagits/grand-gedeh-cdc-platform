@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { 
   Users, 
   Search, 
   Calculator, 
   CheckCircle, 
+  CheckCircle2,
   GraduationCap, 
   Globe, 
   PlusCircle, 
@@ -42,15 +43,41 @@ export const WorkforceRegistry: React.FC = () => {
     verifiedSkillsStr: ''
   });
 
+  // Hidden File Input References
+  const tradeCertFileRef = useRef<HTMLInputElement | null>(null);
+  const operatingLicenseFileRef = useRef<HTMLInputElement | null>(null);
+  const resumeFileRef = useRef<HTMLInputElement | null>(null);
+
+  // Attached files state with real file metadata
   const [attachedFiles, setAttachedFiles] = useState<{
-    tradeCert: string;
-    operatingLicense: string;
-    resume: string;
+    tradeCert: { file: File | null; fileName: string; fileSize: string };
+    operatingLicense: { file: File | null; fileName: string; fileSize: string };
+    resume: { file: File | null; fileName: string; fileSize: string };
   }>({
-    tradeCert: 'TVET_Trade_Certification.pdf',
-    operatingLicense: 'Heavy_Machinery_License.pdf',
-    resume: 'Curriculum_Vitae_Resume.pdf'
+    tradeCert: { file: null, fileName: 'TVET_Trade_Certification.pdf', fileSize: '1.8 MB' },
+    operatingLicense: { file: null, fileName: 'Heavy_Machinery_License.pdf', fileSize: '1.1 MB' },
+    resume: { file: null, fileName: 'Curriculum_Vitae_Resume.pdf', fileSize: '750 KB' }
   });
+
+  const formatFileSize = (bytes: number): string => {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / 1048576).toFixed(1) + ' MB';
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, docKey: 'tradeCert' | 'operatingLicense' | 'resume') => {
+    if (e.target.files && e.target.files[0]) {
+      const selected = e.target.files[0];
+      setAttachedFiles(prev => ({
+        ...prev,
+        [docKey]: {
+          file: selected,
+          fileName: selected.name,
+          fileSize: formatFileSize(selected.size)
+        }
+      }));
+    }
+  };
 
   const trades = [
     'All',
@@ -88,8 +115,8 @@ export const WorkforceRegistry: React.FC = () => {
         id: `cred-${Date.now()}-1`,
         name: 'Technical Trade Certificate or University Degree',
         docType: formData.qualificationLevel === 'BSc / BEng' || formData.qualificationLevel === 'Master / PhD' ? 'University Degree' : 'TVET Trade Certificate',
-        fileName: attachedFiles.tradeCert,
-        fileSize: '1.8 MB',
+        fileName: attachedFiles.tradeCert.fileName,
+        fileSize: attachedFiles.tradeCert.fileSize,
         uploadedAt: new Date().toISOString().split('T')[0],
         status: 'Pending Verification'
       },
@@ -97,8 +124,8 @@ export const WorkforceRegistry: React.FC = () => {
         id: `cred-${Date.now()}-2`,
         name: 'Professional Operator or Engineering License',
         docType: 'Equipment Operator License',
-        fileName: attachedFiles.operatingLicense,
-        fileSize: '1.1 MB',
+        fileName: attachedFiles.operatingLicense.fileName,
+        fileSize: attachedFiles.operatingLicense.fileSize,
         uploadedAt: new Date().toISOString().split('T')[0],
         status: 'Pending Verification'
       },
@@ -106,8 +133,8 @@ export const WorkforceRegistry: React.FC = () => {
         id: `cred-${Date.now()}-3`,
         name: 'Curriculum Vitae / Work History',
         docType: 'CV / Resume',
-        fileName: attachedFiles.resume,
-        fileSize: '750 KB',
+        fileName: attachedFiles.resume.fileName,
+        fileSize: attachedFiles.resume.fileSize,
         uploadedAt: new Date().toISOString().split('T')[0],
         status: 'Pending Verification'
       }
@@ -522,46 +549,116 @@ export const WorkforceRegistry: React.FC = () => {
                   </div>
                 )}
 
-                {/* UPLOAD CREDENTIALS */}
-                <div className="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-3">
-                  <div className="flex items-center space-x-2 text-xs font-bold text-amber-400 uppercase tracking-wider">
-                    <Upload className="w-4 h-4" />
-                    <span>Upload Credentials for Secretariat Accreditation</span>
+                {/* WORKING REAL FILE UPLOAD SECTION WITH WORKING BROWSE BUTTONS */}
+                <div className="p-4 bg-slate-950 border border-amber-500/50 rounded-xl space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2 text-xs font-bold text-amber-400 uppercase tracking-wider">
+                      <Upload className="w-4 h-4" />
+                      <span>Upload Credentials for Secretariat Accreditation</span>
+                    </div>
+                    <span className="text-[10px] text-slate-400">PDF, JPG, PNG, DOCX accepted</span>
                   </div>
 
+                  {/* Hidden Real HTML File Inputs */}
+                  <input
+                    type="file"
+                    ref={tradeCertFileRef}
+                    onChange={(e) => handleFileChange(e, 'tradeCert')}
+                    accept=".pdf,.png,.jpg,.jpeg,.doc,.docx"
+                    className="hidden"
+                  />
+                  <input
+                    type="file"
+                    ref={operatingLicenseFileRef}
+                    onChange={(e) => handleFileChange(e, 'operatingLicense')}
+                    accept=".pdf,.png,.jpg,.jpeg,.doc,.docx"
+                    className="hidden"
+                  />
+                  <input
+                    type="file"
+                    ref={resumeFileRef}
+                    onChange={(e) => handleFileChange(e, 'resume')}
+                    accept=".pdf,.png,.jpg,.jpeg,.doc,.docx"
+                    className="hidden"
+                  />
+
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    <div className="p-2.5 bg-slate-900 border border-slate-700 rounded-lg">
-                      <label className="block text-[11px] text-slate-300 font-semibold mb-1">1. Certificate / Degree</label>
-                      <input
-                        type="text"
-                        value={attachedFiles.tradeCert}
-                        onChange={(e) => setAttachedFiles({ ...attachedFiles, tradeCert: e.target.value })}
-                        className="w-full bg-slate-950 border border-slate-800 rounded p-1.5 text-[11px] text-emerald-400"
-                      />
-                      <span className="text-[10px] text-slate-500 mt-1 block">TVET or Degree</span>
+                    
+                    {/* Document 1: Certificate / Degree */}
+                    <div className="p-3 bg-slate-900 border border-slate-700 rounded-xl flex flex-col justify-between space-y-2">
+                      <div>
+                        <span className="block text-[11px] text-slate-200 font-bold">1. Technical Certificate</span>
+                        <span className="text-[10px] text-slate-400 block mb-1">TVET Diploma or University Degree</span>
+                        
+                        <div className="flex items-center space-x-1.5 p-1.5 bg-slate-950 rounded border border-slate-800 text-[11px] text-emerald-400 truncate">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                          <span className="truncate">{attachedFiles.tradeCert.fileName}</span>
+                        </div>
+                        <span className="text-[10px] text-slate-500 mt-1 block">
+                          Size: {attachedFiles.tradeCert.fileSize}
+                        </span>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => tradeCertFileRef.current?.click()}
+                        className="w-full bg-slate-800 hover:bg-slate-700 text-amber-400 border border-amber-500/60 font-bold text-xs py-1.5 px-2 rounded-lg flex items-center justify-center space-x-1 transition-colors"
+                      >
+                        <Upload className="w-3.5 h-3.5" />
+                        <span>Browse / Upload File</span>
+                      </button>
                     </div>
 
-                    <div className="p-2.5 bg-slate-900 border border-slate-700 rounded-lg">
-                      <label className="block text-[11px] text-slate-300 font-semibold mb-1">2. Operator / License</label>
-                      <input
-                        type="text"
-                        value={attachedFiles.operatingLicense}
-                        onChange={(e) => setAttachedFiles({ ...attachedFiles, operatingLicense: e.target.value })}
-                        className="w-full bg-slate-950 border border-slate-800 rounded p-1.5 text-[11px] text-emerald-400"
-                      />
-                      <span className="text-[10px] text-slate-500 mt-1 block">License or Cert</span>
+                    {/* Document 2: Operator / License */}
+                    <div className="p-3 bg-slate-900 border border-slate-700 rounded-xl flex flex-col justify-between space-y-2">
+                      <div>
+                        <span className="block text-[11px] text-slate-200 font-bold">2. Operator / License</span>
+                        <span className="text-[10px] text-slate-400 block mb-1">Heavy Machinery or Engineering License</span>
+                        
+                        <div className="flex items-center space-x-1.5 p-1.5 bg-slate-950 rounded border border-slate-800 text-[11px] text-emerald-400 truncate">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                          <span className="truncate">{attachedFiles.operatingLicense.fileName}</span>
+                        </div>
+                        <span className="text-[10px] text-slate-500 mt-1 block">
+                          Size: {attachedFiles.operatingLicense.fileSize}
+                        </span>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => operatingLicenseFileRef.current?.click()}
+                        className="w-full bg-slate-800 hover:bg-slate-700 text-amber-400 border border-amber-500/60 font-bold text-xs py-1.5 px-2 rounded-lg flex items-center justify-center space-x-1 transition-colors"
+                      >
+                        <Upload className="w-3.5 h-3.5" />
+                        <span>Browse / Upload File</span>
+                      </button>
                     </div>
 
-                    <div className="p-2.5 bg-slate-900 border border-slate-700 rounded-lg">
-                      <label className="block text-[11px] text-slate-300 font-semibold mb-1">3. CV / Resume</label>
-                      <input
-                        type="text"
-                        value={attachedFiles.resume}
-                        onChange={(e) => setAttachedFiles({ ...attachedFiles, resume: e.target.value })}
-                        className="w-full bg-slate-950 border border-slate-800 rounded p-1.5 text-[11px] text-emerald-400"
-                      />
-                      <span className="text-[10px] text-slate-500 mt-1 block">Work History</span>
+                    {/* Document 3: CV / Resume */}
+                    <div className="p-3 bg-slate-900 border border-slate-700 rounded-xl flex flex-col justify-between space-y-2">
+                      <div>
+                        <span className="block text-[11px] text-slate-200 font-bold">3. CV / Resume</span>
+                        <span className="text-[10px] text-slate-400 block mb-1">Work History & Technical References</span>
+                        
+                        <div className="flex items-center space-x-1.5 p-1.5 bg-slate-950 rounded border border-slate-800 text-[11px] text-emerald-400 truncate">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                          <span className="truncate">{attachedFiles.resume.fileName}</span>
+                        </div>
+                        <span className="text-[10px] text-slate-500 mt-1 block">
+                          Size: {attachedFiles.resume.fileSize}
+                        </span>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => resumeFileRef.current?.click()}
+                        className="w-full bg-slate-800 hover:bg-slate-700 text-amber-400 border border-amber-500/60 font-bold text-xs py-1.5 px-2 rounded-lg flex items-center justify-center space-x-1 transition-colors"
+                      >
+                        <Upload className="w-3.5 h-3.5" />
+                        <span>Browse / Upload File</span>
+                      </button>
                     </div>
+
                   </div>
                 </div>
 
