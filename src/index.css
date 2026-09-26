@@ -29,3 +29,25 @@
 .modal-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #10b981;
 }
+
+/* Print Styles for Official GGCDC Recommendation Letters and Prequalification Certificates */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #ffffff !important;
+    color: #1a2e26 !important;
+  }
+  .print-clean {
+    position: static !important;
+    max-height: none !important;
+    overflow: visible !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}

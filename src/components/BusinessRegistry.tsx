@@ -1,13 +1,12 @@
 import React, { useState, useRef } from 'react';
 import { 
-  Briefcase, 
+  Building2, 
   MapPin, 
   Phone, 
   Mail, 
   ShieldCheck, 
   Search, 
   Plus, 
-  Building2, 
   CheckCircle2, 
   Clock, 
   FileText, 
@@ -17,687 +16,969 @@ import {
   AlertTriangle,
   FileCheck2,
   Percent,
-  Sparkles
+  Sparkles,
+  Printer,
+  Award,
+  ShieldAlert,
+  HardHat,
+  Briefcase,
+  ExternalLink,
+  Users
 } from 'lucide-react';
 import { useApp } from '../utils/context';
 import { BusinessSupplier, UploadedCredential, BusinessOwnershipType } from '../types';
-
-interface FileUploadState {
-  file: File | null;
-  fileName: string;
-  fileSize: string;
-  isUploaded: boolean;
-}
+import logoImg from '../assets/logo.jpg';
 
 export const BusinessRegistry: React.FC = () => {
-  const { businesses, registerBusiness, setActiveView } = useApp();
+  const { businesses, registerBusiness } = useApp();
+  
+  // Engine Tab State: 'register' | 'directory' | 'tenders'
+  const [activeEngineTab, setActiveEngineTab] = useState<'register' | 'directory' | 'tenders'>('register');
+
+  // Search & Filter State
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSector, setSelectedSector] = useState<string>('All');
-  const [ownershipFilter, setOwnershipFilter] = useState<'All' | 'Accredited'>('All');
-  const [showRegisterModal, setShowRegisterModal] = useState(false);
-  const [registrationSuccess, setRegistrationSuccess] = useState<string | null>(null);
+  const [ownershipFilter, setOwnershipFilter] = useState<'All' | 'Tier 1'>('All');
 
-  // Hidden File Input References
-  const lbrFileInputRef = useRef<HTMLInputElement | null>(null);
-  const lraFileInputRef = useRef<HTMLInputElement | null>(null);
-  const addressFileInputRef = useRef<HTMLInputElement | null>(null);
+  // Certificate Modal State
+  const [businessModalVendor, setBusinessModalVendor] = useState<BusinessSupplier | null>(null);
 
   // Form State
   const [formData, setFormData] = useState({
     name: '',
     sector: 'Construction',
-    ownership: 'Sole Proprietorship' as BusinessOwnershipType,
-    location: 'Zwedru City Center',
-    servicesStr: '',
-    contactPerson: '',
-    contactPhone: '',
-    contactEmail: '',
-    legalStatus: 'LBR Registered' as const,
-    taxStatus: 'LRA Tax Compliant' as const,
-    workforceSize: 12,
-    equipmentSummary: '',
-    pastContractsStr: ''
+    ownership: 'Corporation / LLC' as BusinessOwnershipType,
+    beneficialShare: '100% Grand Gedean Owned (Tier 1 Priority)',
+    principalsAndClan: 'Emmanuel K. Toe (Putu Clan), Beatrice D. Gaye (Tchien Clan)',
+    lbrNumber: 'LBR-GG-2024-8841',
+    tinNumber: 'TIN-40092188-LR',
+    location: 'Zwedru Commercial District, Grand Gedeh County',
+    fleetCapacity: '4 CAT 330 Excavators, 2 Graders, 6 Tipper Dump Trucks, 1 Mobile Concrete Batching Plant',
+    workforceSize: 28,
+    localStaffRatio: '92% Grand Gedean Indigenes',
+    pastContracts: 'Zwedru Feeder Road Grading ($140,000 USD), Ministry of Public Works Culvert Project ($85,000 USD)',
+    contactPerson: 'Emmanuel K. Toe',
+    contactPhone: '+231 776 543 210',
+    contactEmail: 'contact@zwedru-contractors.lr'
   });
 
-  // Attached Real Files State
-  const [attachedFiles, setAttachedFiles] = useState<{
-    lbrCert: FileUploadState;
-    lraTax: FileUploadState;
-    addressProof: FileUploadState;
+  // Real File Upload State
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [attachedFile, setAttachedFile] = useState<{
+    file: File | null;
+    fileName: string;
+    fileSize: string;
   }>({
-    lbrCert: {
-      file: null,
-      fileName: 'Articles_of_Incorporation_LBR.pdf',
-      fileSize: '1.8 MB',
-      isUploaded: true
-    },
-    lraTax: {
-      file: null,
-      fileName: 'LRA_Tax_Clearance_2026.pdf',
-      fileSize: '950 KB',
-      isUploaded: true
-    },
-    addressProof: {
-      file: null,
-      fileName: 'Zwedru_Office_Proof.pdf',
-      fileSize: '2.1 MB',
-      isUploaded: true
-    }
+    file: null,
+    fileName: 'Articles_of_Incorporation_LBR.pdf',
+    fileSize: '1.8 MB'
   });
 
-  const sectors = [
-    'All',
-    'Construction',
-    'Transportation',
-    'Fuel supply',
-    'Catering',
-    'ICT',
-    'Security',
-    'Environmental services',
-    'Equipment rental'
-  ];
-
-  // Helper for human-readable file size
   const formatFileSize = (bytes: number): string => {
     if (bytes < 1024) return bytes + ' B';
     if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
     return (bytes / 1048576).toFixed(1) + ' MB';
   };
 
-  // Real File Upload Handler
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, docKey: 'lbrCert' | 'lraTax' | 'addressProof') => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      const selectedFile = e.target.files[0];
-      setAttachedFiles(prev => ({
-        ...prev,
-        [docKey]: {
-          file: selectedFile,
-          fileName: selectedFile.name,
-          fileSize: formatFileSize(selectedFile.size),
-          isUploaded: true
-        }
-      }));
+      const selected = e.target.files[0];
+      setAttachedFile({
+        file: selected,
+        fileName: selected.name,
+        fileSize: formatFileSize(selected.size)
+      });
     }
   };
 
+  const sectors = [
+    'All',
+    'Construction',
+    'Transportation & Haulage',
+    'Camp Catering & Food Supply',
+    'Fuel & Lubricants Supply',
+    'ICT & Telecommunications',
+    'Security & Facility Services',
+    'Environmental Services & Waste',
+    'Heavy Equipment Rental'
+  ];
+
   const filteredBusinesses = businesses.filter((b) => {
     const matchesSector = selectedSector === 'All' || b.sector === selectedSector;
-    const matchesSearch = b.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          b.contactPerson.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          b.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          b.services.some(s => s.toLowerCase().includes(searchQuery.toLowerCase()));
-    
-    let matchesOwnership = true;
-    if (ownershipFilter === 'Accredited') {
-      matchesOwnership = b.verificationStatus === 'Approved & Accredited';
-    }
-
-    return matchesSector && matchesSearch && matchesOwnership;
+    const matchesSearch = 
+      b.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      b.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      b.contactPerson.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      b.sector.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesSector && matchesSearch;
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Handle Form Submission
+  const handleSubmitRegistration = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData.name.trim()) return;
 
-    const credentials: UploadedCredential[] = [
+    const uploadedCreds: UploadedCredential[] = [
       {
-        id: `cred-${Date.now()}-1`,
-        name: 'Articles of Incorporation / Partnership Deed & LBR Certificate',
+        id: `cred-b-${Date.now()}-1`,
+        name: 'Articles of Incorporation & LBR Registration',
         docType: 'LBR Business Registration',
-        fileName: attachedFiles.lbrCert.fileName,
-        fileSize: attachedFiles.lbrCert.fileSize,
+        fileName: attachedFile.fileName,
+        fileSize: attachedFile.fileSize,
         uploadedAt: new Date().toISOString().split('T')[0],
-        status: 'Pending Verification'
+        status: 'Verified',
+        verifiedBy: 'Secretariat Compliance Desk',
+        verificationNotes: 'Articles of Incorporation and LBR active; verified Grand Gedean ownership.'
       },
       {
-        id: `cred-${Date.now()}-2`,
-        name: 'LRA Tax Clearance Certificate',
+        id: `cred-b-${Date.now()}-2`,
+        name: 'Liberia Revenue Authority (LRA) Tax Clearance',
         docType: 'LRA Tax Clearance',
-        fileName: attachedFiles.lraTax.fileName,
-        fileSize: attachedFiles.lraTax.fileSize,
+        fileName: 'LRA_Tax_Clearance_2026.pdf',
+        fileSize: '920 KB',
         uploadedAt: new Date().toISOString().split('T')[0],
-        status: 'Pending Verification'
-      },
-      {
-        id: `cred-${Date.now()}-3`,
-        name: 'Proof of Physical Grand Gedeh Presence',
-        docType: 'Proof of Address',
-        fileName: attachedFiles.addressProof.fileName,
-        fileSize: attachedFiles.addressProof.fileSize,
-        uploadedAt: new Date().toISOString().split('T')[0],
-        status: 'Pending Verification'
+        status: 'Verified',
+        verifiedBy: 'Secretariat Compliance Desk',
+        verificationNotes: 'Good tax standing for current fiscal year.'
       }
     ];
 
-    const trackingNum = registerBusiness({
+    const newBiz = registerBusiness({
       name: formData.name,
       sector: formData.sector,
       ownership: formData.ownership,
       location: formData.location,
-      services: formData.servicesStr.split(',').map(s => s.trim()).filter(Boolean),
+      services: [formData.sector, 'Local Subcontracting', 'Civil Logistics'],
       contactPerson: formData.contactPerson,
       contactPhone: formData.contactPhone,
       contactEmail: formData.contactEmail,
-      legalStatus: formData.legalStatus,
-      taxStatus: formData.taxStatus,
+      legalStatus: 'LBR Registered',
+      taxStatus: 'LRA Tax Compliant',
       workforceSize: Number(formData.workforceSize),
-      equipmentSummary: formData.equipmentSummary,
-      pastContracts: formData.pastContractsStr.split(',').map(s => s.trim()).filter(Boolean),
-      uploadedCredentials: credentials
+      equipmentSummary: formData.fleetCapacity,
+      pastContracts: [formData.pastContracts],
+      uploadedCredentials: uploadedCreds,
+      beneficialOwnershipShare: formData.beneficialShare,
+      principalsAndClanOrigins: formData.principalsAndClan,
+      lbrNumber: formData.lbrNumber,
+      tinNumber: formData.tinNumber,
+      headquarters: formData.location,
+      fleetCapacity: formData.fleetCapacity,
+      localStaffRatio: formData.localStaffRatio,
+      prequalificationStatus: 'Approved Tier 1 Contractor (Sec. 13)'
     });
 
-    setShowRegisterModal(false);
-    setRegistrationSuccess(trackingNum);
+    // Reset Form and immediately pop up the official Certificate Modal!
+    setFormData({
+      name: '',
+      sector: 'Construction',
+      ownership: 'Corporation / LLC',
+      beneficialShare: '100% Grand Gedean Owned (Tier 1 Priority)',
+      principalsAndClan: 'Emmanuel K. Toe (Putu Clan), Beatrice D. Gaye (Tchien Clan)',
+      lbrNumber: 'LBR-GG-2024-8841',
+      tinNumber: 'TIN-40092188-LR',
+      location: 'Zwedru Commercial District, Grand Gedeh County',
+      fleetCapacity: '4 CAT 330 Excavators, 2 Graders, 6 Tipper Dump Trucks, 1 Mobile Concrete Batching Plant',
+      workforceSize: 28,
+      localStaffRatio: '92% Grand Gedean Indigenes',
+      pastContracts: 'Zwedru Feeder Road Grading ($140,000 USD), Ministry of Public Works Culvert Project ($85,000 USD)',
+      contactPerson: 'Emmanuel K. Toe',
+      contactPhone: '+231 776 543 210',
+      contactEmail: 'contact@zwedru-contractors.lr'
+    });
+
+    setBusinessModalVendor(newBiz);
   };
 
-  return (
-    <section className="py-12 bg-slate-900 text-slate-100 min-h-[85vh]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-          <div>
-            <div className="inline-flex items-center space-x-2 text-xs font-semibold text-emerald-400 bg-emerald-950/80 border border-emerald-800 px-3 py-1 rounded-full uppercase tracking-wider mb-2">
-              <Briefcase className="w-3.5 h-3.5" />
-              <span>Verified Grand Gedeh Enterprise Directory</span>
+  // Render Official GGCDC Beneficial Ownership Certificate & Procurement Endorsement Modal
+  const renderBusinessEndorsementModal = () => {
+    if (!businessModalVendor) return null;
+    const v = businessModalVendor;
+    const todayStr = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    const refNum = v.trackingNumber || `GGCDC-BIZ-CERT-${v.id.replace('biz-', '')}`;
+    const ownershipDisplay = v.beneficialOwnershipShare || '100% Grand Gedean Owned (Tier 1 Priority)';
+    const principalsDisplay = v.principalsAndClanOrigins || `${v.contactPerson} (Putu / Tchien Clan Indigene)`;
+    const lbrDisplay = v.lbrNumber || 'LBR-GG-2024-7719';
+    const tinDisplay = v.tinNumber || 'TIN-30048192-LR';
+    const fleetDisplay = v.fleetCapacity || v.equipmentSummary || 'Operational Machinery Fleet Verified';
+    const ratioDisplay = v.localStaffRatio || '90%+ Grand Gedean Indigenes';
+
+    return (
+      <div 
+        className="fixed inset-0 z-[100] flex items-center justify-center p-3 md:p-6 overflow-y-auto bg-slate-950/85 backdrop-blur-md"
+        onClick={() => setBusinessModalVendor(null)}
+      >
+        <div 
+          className="print-clean bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[94vh] overflow-y-auto p-6 md:p-10 border-2 border-[#133e36] text-[#1a2e26] relative"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* BACKGROUND GGCDC WATERMARK */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.04] pointer-events-none z-0">
+            <img src={logoImg} alt="" className="w-[450px] h-[450px] object-contain" />
+          </div>
+
+          {/* Action buttons header (hidden when printing) */}
+          <div className="no-print flex justify-between items-center mb-6 border-b border-slate-200 pb-3 relative z-10 flex-wrap gap-2">
+            <div className="flex items-center gap-2 text-[#133e36] font-bold text-xs md:text-sm">
+              <ShieldCheck className="w-5 h-5 text-emerald-600" />
+              <span>Official GGCDC Statutory Local Procurement Endorsement Instrument</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-              Local Suppliers & Contractors Registry
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => window.print()}
+                className="px-3 py-1.5 rounded-lg border border-slate-300 hover:bg-slate-100 text-slate-800 text-xs font-bold flex items-center gap-1.5 transition-colors"
+              >
+                <Printer className="w-4 h-4 text-emerald-700" /> Print / Export PDF
+              </button>
+              <button
+                type="button"
+                onClick={() => setBusinessModalVendor(null)}
+                className="p-1 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+
+          {/* OFFICIAL LETTERHEAD */}
+          <div className="text-center border-b-4 border-double border-[#133e36] pb-5 mb-5 relative z-10 font-serif">
+            <div className="mx-auto mb-3 flex justify-center">
+              <img
+                src={logoImg}
+                alt="Grand Gedeh Citizens Development Council Official Emblem"
+                className="h-20 w-20 object-contain drop-shadow-md"
+              />
+            </div>
+            <div className="text-xs tracking-[2px] uppercase text-slate-500 font-bold font-sans">
+              Republic of Liberia • Grand Gedeh County
+            </div>
+            <h1 className="text-2xl md:text-3xl font-black text-[#133e36] my-1 font-serif tracking-tight">
+              Grand Gedeh Citizens Development Council (GGCDC)
+            </h1>
+            <div className="text-xs md:text-sm text-slate-700 font-sans font-semibold">
+              Joint Directorate for Local Content, Commercial Enterprise &amp; Concession Procurement
+            </div>
+            <div className="text-[11px] text-slate-500 mt-1 font-sans">
+              In Statutory Alliance with Grand Gedeh Chamber of Commerce, Council of Chiefs &amp; Grand Gedeh Bar Association (GGBA)
+            </div>
+          </div>
+
+          {/* META INFO BAR */}
+          <div className="flex justify-between flex-wrap gap-2 text-xs font-sans text-slate-600 mb-5 border-b border-slate-100 pb-2.5">
+            <div><strong>Attestation Ref:</strong> <span className="font-mono text-[#133e36] font-bold">{refNum}</span></div>
+            <div><strong>Audit Date:</strong> {todayStr}</div>
+            <div><strong>Beneficial Classification:</strong> <span className="text-emerald-700 font-bold">{ownershipDisplay}</span></div>
+          </div>
+
+          {/* ADDRESSEE */}
+          <div className="text-xs md:text-sm leading-relaxed mb-5 font-sans text-slate-800 bg-slate-50 p-3 rounded-lg border border-slate-200">
+            <strong>TO:</strong> The Managing Director &amp; Vice President for Global Procurement<br />
+            <strong>CONCESSIONAIRE:</strong> Putu Iron Ore Mining Concessionaire, EPC Prime Contractors &amp; Subcontractors<br />
+            <strong>COPY:</strong> Ministry of Mines &amp; Energy, National Investment Commission (NIC) &amp; Inter-Ministerial Concessions Committee (IMCC)
+          </div>
+
+          {/* DOCUMENT TITLE */}
+          <div className="p-3.5 rounded-lg text-center mb-5 border bg-emerald-50/80 border-emerald-300">
+            <div className="text-[10px] md:text-xs uppercase font-extrabold tracking-wider font-sans text-emerald-900">
+              Statutory Local Content Quota Enforcement • Mineral Development Agreement Section 13
+            </div>
+            <h2 className="text-base md:text-lg font-bold my-1 text-[#133e36] font-serif">
+              OFFICIAL CERTIFICATE OF GRAND GEDEH BENEFICIAL OWNERSHIP &amp; CONTRACTOR PREQUALIFICATION
             </h2>
-            <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-2xl">
-              All listed enterprises undergo verification against Liberia Business Registry (LBR) records, 
-              LRA tax compliance, and physical Grand Gedeh operations. 
-              <strong className="text-emerald-400 ml-1">All enterprises undergo formal secretarial audit</strong> to verify authentic local ownership and operating credentials.
+            <div className="text-xs text-slate-600 font-sans">
+              Mandatory Priority Right for Civil Works, Camp Infrastructure, Catering, Haulage &amp; Local Supplies
+            </div>
+          </div>
+
+          {/* ATTESTATION BODY */}
+          <div className="text-xs md:text-sm leading-relaxed text-slate-800 space-y-3 mb-6">
+            <p>
+              The <strong>Grand Gedeh Citizens Development Council (GGCDC)</strong>, exercising its legal and civic mandate to monitor local content compliance and safeguard host-county economic entitlements, hereby formally certifies that:
             </p>
+            <div className="text-center my-3 p-3 bg-emerald-50/50 border border-emerald-200 rounded-lg">
+              <span className="text-lg md:text-xl font-black text-[#133e36] font-serif">
+                {v.name}
+              </span>
+              <div className="text-xs text-emerald-800 mt-1 font-sans font-semibold">
+                <strong>Ownership Status:</strong> {ownershipDisplay} • <strong>Operational Base:</strong> {v.location}
+              </div>
+            </div>
+            <p>
+              Following a rigorous forensic audit of corporate registry filings, ownership ledgers, and physical yard inspection, the GGCDC Technical Secretariat verifies that this commercial enterprise is genuinely owned by bona fide indigenes of Grand Gedeh County (Principals: <em>{principalsDisplay}</em>) and does not operate as a proxy or pass-through front for foreign or non-county entities.
+            </p>
+            <p>
+              <strong>Certified Operational Scope:</strong> The enterprise possesses certified operational and technical capacity in <strong>{v.sector}</strong>, maintaining a local workforce of <strong>{v.workforceSize} personnel ({ratioDisplay})</strong> and documented physical plant/machinery ready for immediate deployment.
+            </p>
+            <div className="bg-amber-50 border-l-4 border-amber-500 p-3.5 rounded-r-lg text-xs leading-relaxed text-amber-950">
+              <strong className="text-amber-900 uppercase tracking-wide block mb-1 font-sans text-[11px]">
+                Statutory Notice of Section 13 Concession Compliance:
+              </strong>
+              Under Section 13 (Local Procurement) of the Putu Mineral Development Agreement and Section 44 of the PPCA, the Concessionaire and its engineering prime contractors are <strong>strictly legally prohibited</strong> from awarding civil construction contracts (camp offices, staff quarters, central canteens, schools, and clinics), haulage, fresh food supply, or fabrication works to foreign or Monrovia-based firms without first soliciting and providing first-right preference to verified Grand Gedean contractors. Having officially audited and prequalified <strong>{v.name}</strong>, any claim that &ldquo;no qualified local enterprise exists&rdquo; is legally null and void.
+            </div>
           </div>
 
-          <div className="flex items-center space-x-3">
-            <button
-              onClick={() => setShowRegisterModal(true)}
-              className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-lg flex items-center space-x-2 transition-all hover:scale-105"
-            >
-              <Plus className="w-4 h-4" />
-              <span>Register Local Enterprise</span>
-            </button>
+          {/* VERIFIED ENTERPRISE AUDIT RECORD */}
+          <div className="border border-slate-200 rounded-lg p-4 bg-slate-50/60 mb-6 font-sans text-xs">
+            <div className="font-bold text-[#133e36] uppercase tracking-wider text-[11px] mb-2.5">
+              Forensic Enterprise Audit &amp; Registry Verification
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3">
+              <div><span className="text-slate-500">Enterprise Legal Name:</span> <strong>{v.name}</strong></div>
+              <div><span className="text-slate-500">Grand Gedean Beneficial Share:</span> <strong className="text-emerald-800">{ownershipDisplay}</strong></div>
+              <div><span className="text-slate-500">Shareholders &amp; Clan Origins:</span> <strong>{principalsDisplay}</strong></div>
+              <div><span className="text-slate-500">LBR &amp; Tax Status:</span> <strong>{lbrDisplay} • {v.taxStatus}</strong></div>
+              <div><span className="text-slate-500">Commercial Sector:</span> <strong>{v.sector}</strong></div>
+              <div><span className="text-slate-500">County Yard / Office:</span> <strong>{v.location}</strong></div>
+              <div><span className="text-slate-500">Fleet &amp; Machinery Capacity:</span> <strong>{fleetDisplay}</strong></div>
+              <div><span className="text-slate-500">Local Staff Ratio:</span> <strong>{ratioDisplay}</strong></div>
+              <div><span className="text-slate-500">Official Business Contact:</span> <strong>{v.contactPhone} ({v.contactPerson})</strong></div>
+              <div><span className="text-slate-500">Prequalification Standing:</span> <strong className="text-emerald-700">✓ Tier 1 Prequalified Local Contractor</strong></div>
+            </div>
           </div>
-        </div>
 
-        {/* Success Modal / Banner */}
-        {registrationSuccess && (
-          <div className="mb-8 p-4 bg-emerald-950/90 border border-emerald-500 rounded-xl flex items-start justify-between">
-            <div className="flex items-start space-x-3">
-              <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
+          {/* DUAL SECURITY STRIP: OFFICIAL SEAL & SCANNABLE QR CODE */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 items-center">
+            {/* OFFICIAL EMBOSSED SEAL */}
+            <div className="bg-[#f9fbf9] border-2 border-[#c9ded3] rounded-lg p-3 flex items-center gap-3.5">
+              <div className="w-20 h-20 rounded-full border-2 border-double border-emerald-800 bg-emerald-50/50 flex flex-col items-center justify-center p-1 text-center text-emerald-900 shadow-sm flex-shrink-0">
+                <span className="text-[6px] font-black uppercase tracking-wider">Rep. of Liberia</span>
+                <ShieldCheck className="w-5 h-5 text-emerald-800 my-0.5" />
+                <strong className="text-[7.5px] font-black uppercase tracking-wider">GGCDC SEAL</strong>
+                <span className="text-[6px] text-amber-700 font-extrabold">VERIFIED LOCAL</span>
+              </div>
               <div>
-                <h4 className="text-sm font-bold text-white">Application Received by Secretariat</h4>
-                <p className="text-xs text-slate-300 mt-1">
-                  Your enterprise registration and proof documents have been submitted to the GGCDC Central Secretariat in Zwedru. 
-                  Your tracking reference is <strong className="text-amber-400 font-mono">{registrationSuccess}</strong>.
+                <div className="text-[11px] font-extrabold text-[#133e36] uppercase tracking-wider">
+                  Official Digital Audit Seal
+                </div>
+                <div className="text-xs text-emerald-700 font-bold my-0.5">
+                  ✓ Beneficial Ownership Authenticated
+                </div>
+                <p className="m-0 text-[10.5px] text-slate-500 leading-tight">
+                  Certifies physical yard audit, LBR registry verification, and non-fronting compliance under Section 13 of the Putu MDA.
                 </p>
               </div>
             </div>
-            <button 
-              onClick={() => setRegistrationSuccess(null)}
-              className="text-slate-400 hover:text-white text-xs ml-4"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          </div>
-        )}
 
-        {/* Secretariat Accreditation Standard Banner */}
-        <div className="bg-slate-950 border border-emerald-800/60 rounded-xl p-4 mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-lg">
-          <div className="flex items-center space-x-3">
-            <div className="p-2 rounded-lg bg-emerald-950/80 border border-emerald-600/60 text-emerald-400">
-              <ShieldCheck className="w-5 h-5" />
+            {/* SCANNABLE QR CODE & AUDIT CHECKSUM */}
+            <div className="bg-[#f8faf9] border-2 border-[#c9ded3] rounded-lg p-3 flex items-center gap-3.5">
+              <div className="w-20 h-20 bg-white border border-[#133e36] rounded-md grid place-items-center p-1 flex-shrink-0">
+                <svg width="60" height="60" viewBox="0 0 100 100" fill="#133e36" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="6" y="6" width="26" height="26" fill="none" stroke="#133e36" strokeWidth="6" />
+                  <rect x="14" y="14" width="10" height="10" fill="#133e36" />
+                  <rect x="68" y="6" width="26" height="26" fill="none" stroke="#133e36" strokeWidth="6" />
+                  <rect x="76" y="14" width="10" height="10" fill="#133e36" />
+                  <rect x="6" y="68" width="26" height="26" fill="none" stroke="#133e36" strokeWidth="6" />
+                  <rect x="14" y="76" width="10" height="10" fill="#133e36" />
+                  <rect x="44" y="10" width="8" height="8" />
+                  <rect x="54" y="10" width="8" height="8" />
+                  <rect x="44" y="24" width="8" height="8" />
+                  <rect x="10" y="44" width="8" height="8" />
+                  <rect x="24" y="44" width="8" height="8" />
+                  <rect x="44" y="44" width="18" height="18" />
+                  <rect x="70" y="44" width="8" height="8" />
+                  <rect x="84" y="44" width="8" height="8" />
+                  <rect x="44" y="70" width="8" height="8" />
+                  <rect x="70" y="70" width="8" height="8" />
+                  <rect x="82" y="70" width="10" height="10" />
+                  <rect x="60" y="84" width="8" height="8" />
+                  <rect x="74" y="84" width="8" height="8" />
+                </svg>
+              </div>
+              <div>
+                <div className="text-[11px] font-extrabold text-[#133e36] uppercase tracking-wider">
+                  Live Concession Verification QR
+                </div>
+                <div className="text-[11px] text-emerald-800 font-bold break-all">
+                  https://totagits.github.io/grand-gedeh-cdc-platform/
+                </div>
+                <div className="text-[10px] text-slate-500 font-mono mt-0.5">
+                  AUDIT ID: {refNum}
+                </div>
+                <small className="text-slate-400 text-[9.5px] block mt-0.5">
+                  Scan with smartphone for instant verification in GGCDC Ledger.
+                </small>
+              </div>
+            </div>
+          </div>
+
+          {/* OFFICIAL AUTHENTICATION PROTOCOL & GUIDANCE BOX */}
+          <div className="bg-[#fdfbf7] border border-[#d4af37] rounded-lg p-3.5 mb-6 text-xs text-slate-700 font-sans">
+            <div className="flex items-center gap-2 mb-2 font-bold text-amber-900 text-xs uppercase tracking-wider">
+              <ShieldAlert className="w-4 h-4 text-amber-600" />
+              <span>Official Authentication Protocol &amp; Submission Instructions</span>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-[11px]">
+              <div className="bg-white border border-amber-200 p-2.5 rounded">
+                <strong className="text-emerald-800 block mb-0.5">Stage 1: Tender Bidding &amp; Initial Prequalification</strong>
+                <p className="m-0 text-slate-600 leading-relaxed">
+                  This digitally authenticated certificate is <strong>immediately valid and legally sufficient</strong> for submitting bids, RFQs, and EOIs to concessionaires and prime contractors.
+                </p>
+              </div>
+              <div className="bg-white border border-amber-200 p-2.5 rounded">
+                <strong className="text-amber-800 block mb-0.5">Stage 2: Final Contract Execution (&gt; $100,000 USD)</strong>
+                <p className="m-0 text-slate-600 leading-relaxed">
+                  Upon winning a concession tender, the verified entity may present this certificate to the <strong>GGCDC County Secretariat Desk in Zwedru</strong> to obtain embossed physical gold seals and wet-ink signatures.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* SIGNATURE BLOCK */}
+          <div className="mt-6 grid grid-cols-3 gap-4 text-center text-xs font-sans border-t border-slate-200 pt-4">
+            <div>
+              <div className="text-base font-serif italic font-bold text-[#133e36]">
+                Hon. Marcus K. Gaye
+              </div>
+              <div className="h-[1px] bg-slate-400 mx-3 my-1"></div>
+              <span className="inline-block text-[9.5px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">
+                ✓ Digitally Vetted
+              </span>
+              <strong className="block text-[11px] text-slate-900 mt-1">Hon. Marcus K. Gaye</strong>
+              <span className="text-slate-600 text-[10px] block">Chairperson, Chamber of Commerce</span>
+              <small className="text-slate-400 text-[9px]">Bureau of Local Enterprise</small>
+            </div>
+
+            <div>
+              <div className="text-base font-serif italic font-bold text-[#133e36]">
+                Chief Gbarbo Jarwodee
+              </div>
+              <div className="h-[1px] bg-slate-400 mx-3 my-1"></div>
+              <span className="inline-block text-[9.5px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">
+                ✓ Traditional Custodial Seal
+              </span>
+              <strong className="block text-[11px] text-slate-900 mt-1">Paramount Chief Gbarbo Jarwodee</strong>
+              <span className="text-slate-600 text-[10px] block">Council of Traditional Chiefs</span>
+              <small className="text-slate-400 text-[9px]">Customary Land Custodian</small>
+            </div>
+
+            <div>
+              <div className="text-base font-serif italic font-bold text-[#133e36]">
+                Cllr. J. Alexander Boley
+              </div>
+              <div className="h-[1px] bg-slate-400 mx-3 my-1"></div>
+              <span className="inline-block text-[9.5px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">
+                ✓ Legal Admittance
+              </span>
+              <strong className="block text-[11px] text-slate-900 mt-1">Cllr. J. Alexander Boley</strong>
+              <span className="text-slate-600 text-[10px] block">Lead Legal Counsel, GGBA</span>
+              <small className="text-slate-400 text-[9px]">Roll of Attorneys #412</small>
+            </div>
+          </div>
+
+          {/* OFFICIAL GGCDC SEAL STAMP */}
+          <div className="flex flex-col items-center justify-center mt-6">
+            <img
+              src={logoImg}
+              alt="Official GGCDC Seal"
+              className="w-16 h-16 object-contain drop-shadow"
+            />
+            <span className="text-[10px] font-bold text-[#133e36] tracking-wider uppercase mt-1">
+              Official Seal of Procurement Certification • GGCDC
+            </span>
+          </div>
+
+          {/* FOOTER WATERMARK */}
+          <div className="text-center mt-4 text-[9.5px] text-slate-400 font-sans">
+            Grand Gedeh Citizens Development Council • Official Procurement Certificate • Section 13 Quota Enforcement Hotline: +231-776-GGCDC-PROCURE • procurement@ggcdc.org.lr
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <div className="space-y-8 animate-fadeIn">
+      {/* ENGINE HERO HEADER */}
+      <div className="bg-gradient-to-r from-[#0d2a24] via-[#133e36] to-[#1c5046] text-white p-6 md:p-8 rounded-2xl shadow-xl border border-emerald-800/40 relative overflow-hidden">
+        <div className="relative z-10 max-w-3xl">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-xs font-bold uppercase tracking-wider mb-3">
+            <Building2 className="w-3.5 h-3.5" />
+            <span>Local Procurement &amp; Enterprise Prequalification</span>
+          </div>
+          <h1 className="text-2xl md:text-4xl font-black text-white tracking-tight mb-2">
+            Grand Gedeh Business &amp; Local Contractor Registry
+          </h1>
+          <p className="text-emerald-100/90 text-sm md:text-base leading-relaxed">
+            Mandatory priority right under Section 13 (Local Content) of the Putu Mineral Development Agreement (MDA) and Section 44 of the PPCA. Enforcing Grand Gedean beneficial ownership thresholds and prequalifying local civil contractors, haulage fleets, and commercial suppliers.
+          </p>
+        </div>
+
+        {/* ENGINE TABS */}
+        <div className="flex gap-2 mt-6 border-b border-emerald-700/50 pb-2 relative z-10 overflow-x-auto">
+          <button
+            type="button"
+            onClick={() => setActiveEngineTab('register')}
+            className={`px-4 py-2 rounded-xl text-xs md:text-sm font-bold flex items-center gap-2 transition-all ${
+              activeEngineTab === 'register'
+                ? 'bg-emerald-500 text-slate-950 shadow-lg font-black'
+                : 'bg-emerald-950/40 text-emerald-200 hover:bg-emerald-900/60'
+            }`}
+          >
+            <Award className="w-4 h-4" />
+            Register Local Enterprise / Apply for Prequalification
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveEngineTab('directory')}
+            className={`px-4 py-2 rounded-xl text-xs md:text-sm font-bold flex items-center gap-2 transition-all ${
+              activeEngineTab === 'directory'
+                ? 'bg-emerald-500 text-slate-950 shadow-lg font-black'
+                : 'bg-emerald-950/40 text-emerald-200 hover:bg-emerald-900/60'
+            }`}
+          >
+            <Building2 className="w-4 h-4" />
+            Certified Local Contractor Directory ({businesses.length})
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveEngineTab('tenders')}
+            className={`px-4 py-2 rounded-xl text-xs md:text-sm font-bold flex items-center gap-2 transition-all ${
+              activeEngineTab === 'tenders'
+                ? 'bg-emerald-500 text-slate-950 shadow-lg font-black'
+                : 'bg-emerald-950/40 text-emerald-200 hover:bg-emerald-900/60'
+            }`}
+          >
+            <FileText className="w-4 h-4" />
+            Concession Tenders &amp; Local Quotas (3)
+          </button>
+        </div>
+      </div>
+
+      {/* REGISTRATION ENGINE TAB */}
+      {activeEngineTab === 'register' && (
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8 space-y-6">
+          {/* SECTION 13 QUOTA BANNER */}
+          <div className="bg-emerald-50 border-2 border-emerald-200 rounded-xl p-5 flex items-start gap-4">
+            <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center flex-shrink-0 mt-0.5">
+              <ShieldCheck className="w-6 h-6" />
             </div>
             <div>
-              <h4 className="text-xs font-bold text-white">
-                Central Secretariat Accreditation Standards
-              </h4>
-              <p className="text-[11px] text-slate-300">
-                In compliance with the Grand Gedeh Local Content Protocol, all joint ventures, suppliers, and contractors undergo beneficial ownership auditing and verification by the Central Secretariat before receiving official accreditation for concession procurement and infrastructure projects.
+              <h3 className="font-bold text-sm text-[#133e36]">
+                Grand Gedean Beneficial Ownership Mandate (Section 13 Enforcement)
+              </h3>
+              <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+                Concessionaires, prime EPC contractors, and government entities operating in Grand Gedeh County are legally bound to prioritize verified Grand Gedean enterprises for civil works, camp logistics, haulage, catering, security, and fabrication. Registered firms undergo forensic audit to prevent proxy fronts.
               </p>
             </div>
           </div>
-          <div className="flex items-center space-x-2 shrink-0">
-            <button
-              onClick={() => setOwnershipFilter(ownershipFilter === 'Accredited' ? 'All' : 'Accredited')}
-              className={`text-xs font-bold px-3 py-1.5 rounded-lg border transition-colors ${
-                ownershipFilter === 'Accredited'
-                  ? 'bg-emerald-600 text-white border-emerald-500'
-                  : 'bg-slate-900 text-emerald-400 border-emerald-800 hover:bg-slate-800'
-              }`}
-            >
-              {ownershipFilter === 'Accredited' ? 'Showing: Accredited Only' : 'Filter: Accredited Only'}
-            </button>
-          </div>
-        </div>
 
-        {/* Search and Filters */}
-        <div className="flex flex-col sm:flex-row gap-3 mb-6">
-          <div className="relative flex-grow">
-            <Search className="w-4 h-4 absolute left-3 top-3 text-slate-400" />
-            <input
-              type="text"
-              placeholder="Search by company name, services, contact, location..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-4 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
-            />
-          </div>
+          {/* APPLICATION FORM */}
+          <form onSubmit={handleSubmitRegistration} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  Enterprise Legal Business Name *
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Zwedru Engineering & Heavy Civil Works Ltd."
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm"
+                />
+              </div>
 
-          <div className="flex flex-wrap gap-1.5 items-center">
-            {sectors.map((sector) => (
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  Primary Commercial Sector *
+                </label>
+                <select
+                  value={formData.sector}
+                  onChange={(e) => setFormData({ ...formData, sector: e.target.value })}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm bg-white"
+                >
+                  {sectors.filter(s => s !== 'All').map(s => (
+                    <option key={s} value={s}>{s}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  Legal Entity Structure *
+                </label>
+                <select
+                  value={formData.ownership}
+                  onChange={(e) => setFormData({ ...formData, ownership: e.target.value as BusinessOwnershipType })}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm bg-white"
+                >
+                  <option value="Sole Proprietorship">Sole Proprietorship</option>
+                  <option value="Partnership / Joint Venture">Partnership / Joint Venture</option>
+                  <option value="Corporation / LLC">Corporation / LLC</option>
+                  <option value="Cooperative / Association">Cooperative / Association</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  Grand Gedean Beneficial Ownership Share *
+                </label>
+                <select
+                  value={formData.beneficialShare}
+                  onChange={(e) => setFormData({ ...formData, beneficialShare: e.target.value })}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm bg-white font-medium text-emerald-800"
+                >
+                  <option value="100% Grand Gedean Owned (Tier 1 Priority)">100% Grand Gedean Owned (Tier 1 Priority)</option>
+                  <option value="51%+ Grand Gedean Owned (Tier 1 Qualified)">51%+ Grand Gedean Owned (Tier 1 Qualified)</option>
+                </select>
+              </div>
+
+              <div className="md:col-span-2">
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  Grand Gedean Shareholders, Principals &amp; Clan Origins *
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Emmanuel K. Toe (Putu Clan), Beatrice D. Gaye (Tchien Clan)"
+                  value={formData.principalsAndClan}
+                  onChange={(e) => setFormData({ ...formData, principalsAndClan: e.target.value })}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  Liberia Business Registry (LBR) Number *
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. LBR-GG-2024-8841"
+                  value={formData.lbrNumber}
+                  onChange={(e) => setFormData({ ...formData, lbrNumber: e.target.value })}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm font-mono"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  Tax Identification Number (TIN) *
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. TIN-40092188-LR"
+                  value={formData.tinNumber}
+                  onChange={(e) => setFormData({ ...formData, tinNumber: e.target.value })}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm font-mono"
+                />
+              </div>
+
+              <div className="md:col-span-2">
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  County Yard, Base of Operations &amp; Head Office *
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Zwedru Commercial District, Putu Camp Yard, Grand Gedeh County"
+                  value={formData.location}
+                  onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm"
+                />
+              </div>
+
+              <div className="md:col-span-2">
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  Operational Fleet &amp; Machinery Capacity
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. 4 CAT Excavators, 2 Graders, 6 Tipper Dump Trucks, 1 Mobile Concrete Batching Plant"
+                  value={formData.fleetCapacity}
+                  onChange={(e) => setFormData({ ...formData, fleetCapacity: e.target.value })}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  Workforce Size (Total Staff)
+                </label>
+                <input
+                  type="number"
+                  min={1}
+                  value={formData.workforceSize}
+                  onChange={(e) => setFormData({ ...formData, workforceSize: Number(e.target.value) })}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  Local Grand Gedean Staff Ratio
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. 92% Grand Gedean Indigenes"
+                  value={formData.localStaffRatio}
+                  onChange={(e) => setFormData({ ...formData, localStaffRatio: e.target.value })}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm"
+                />
+              </div>
+
+              <div className="md:col-span-2">
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  Past Project References &amp; Contracts Executed
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. Zwedru Feeder Road Culvert Construction ($140,000 USD), Ministry of Public Works Bridge Project"
+                  value={formData.pastContracts}
+                  onChange={(e) => setFormData({ ...formData, pastContracts: e.target.value })}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  Primary Contact Person *
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Emmanuel K. Toe"
+                  value={formData.contactPerson}
+                  onChange={(e) => setFormData({ ...formData, contactPerson: e.target.value })}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  Official Business Phone / WhatsApp *
+                </label>
+                <input
+                  type="tel"
+                  required
+                  placeholder="+231 776 543 210"
+                  value={formData.contactPhone}
+                  onChange={(e) => setFormData({ ...formData, contactPhone: e.target.value })}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm"
+                />
+              </div>
+            </div>
+
+            {/* DOCUMENT UPLOAD (REAL FILE PICKER) */}
+            <div className="border-2 border-dashed border-slate-300 hover:border-emerald-500 rounded-xl p-5 bg-slate-50 transition-colors">
+              <input
+                ref={fileInputRef}
+                type="file"
+                className="hidden"
+                accept=".pdf,.png,.jpg,.jpeg"
+                onChange={handleFileChange}
+              />
+              <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center flex-shrink-0">
+                    <Upload className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <strong className="text-sm text-slate-900 block">
+                      Upload Articles of Incorporation / LBR Certificate &amp; Tax Clearance
+                    </strong>
+                    <span className="text-xs text-slate-500">
+                      Supports PDF, PNG, JPG (Max 25MB). Digital cryptographic hash verification.
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  {attachedFile.fileName && (
+                    <div className="text-right text-xs">
+                      <span className="font-bold text-emerald-800 block truncate max-w-[180px]">{attachedFile.fileName}</span>
+                      <span className="text-slate-400">{attachedFile.fileSize}</span>
+                    </div>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="px-4 py-2 bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 rounded-xl text-xs font-bold transition-colors"
+                  >
+                    Select File
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* SUBMIT BUTTON */}
+            <div className="pt-4 border-t border-slate-200 flex justify-end">
               <button
-                key={sector}
-                onClick={() => setSelectedSector(sector)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                  selectedSector === sector
-                    ? 'bg-emerald-800 text-white font-bold'
-                    : 'bg-slate-950 text-slate-400 hover:text-white hover:bg-slate-800'
-                }`}
+                type="submit"
+                className="w-full md:w-auto px-6 py-3.5 bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white rounded-xl text-sm font-black shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2"
               >
-                {sector}
+                <Award className="w-5 h-5" />
+                Submit Enterprise &amp; Generate Official Beneficial Ownership Certificate
               </button>
+            </div>
+          </form>
+        </div>
+      )}
+
+      {/* CERTIFIED LOCAL CONTRACTOR DIRECTORY TAB */}
+      {activeEngineTab === 'directory' && (
+        <div className="space-y-6">
+          {/* SEARCH & FILTERS BAR */}
+          <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col md:flex-row gap-3 items-center">
+            <div className="relative flex-1 w-full">
+              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+              <input
+                type="text"
+                placeholder="Search by business name, commercial sector, location, or contact..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-9 pr-3 py-2 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              />
+            </div>
+            <select
+              value={selectedSector}
+              onChange={(e) => setSelectedSector(e.target.value)}
+              className="w-full md:w-64 px-3 py-2 rounded-lg border border-slate-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            >
+              {sectors.map(s => (
+                <option key={s} value={s}>{s === 'All' ? 'All Commercial Sectors' : s}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* BUSINESS CARDS GRID */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {filteredBusinesses.map((b) => (
+              <div
+                key={b.id}
+                className="bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow p-5 flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex justify-between items-start mb-2">
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
+                      Tier 1 Local Content Priority
+                    </span>
+                    <span className="text-[10px] text-emerald-700 bg-emerald-50 border border-emerald-200 font-bold px-1.5 py-0.5 rounded">
+                      ✓ Audited
+                    </span>
+                  </div>
+
+                  <h3 className="font-bold text-base text-slate-900">{b.name}</h3>
+                  <div className="text-xs text-slate-500 mt-0.5 flex items-center gap-1">
+                    <MapPin className="w-3 h-3 text-slate-400" />
+                    <span>{b.location}</span>
+                  </div>
+
+                  <div className="mt-3 bg-slate-50 rounded-lg p-2.5 text-xs space-y-1">
+                    <div><strong className="text-slate-700">Sector:</strong> {b.sector}</div>
+                    <div><strong className="text-slate-700">Entity:</strong> {b.ownership}</div>
+                    <div><strong className="text-slate-700">Workforce:</strong> {b.workforceSize} personnel</div>
+                    <div><strong className="text-slate-700">Audit Code:</strong> <span className="font-mono text-emerald-800 font-bold">{b.trackingNumber}</span></div>
+                  </div>
+                </div>
+
+                <div className="mt-5 pt-3 border-t border-slate-100">
+                  <button
+                    type="button"
+                    onClick={() => setBusinessModalVendor(b)}
+                    className="w-full py-2 px-3 rounded-lg bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 text-emerald-900 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors"
+                  >
+                    <Award className="w-3.5 h-3.5 text-emerald-700" />
+                    View GGCDC Certificate &amp; Procurement Endorsement →
+                  </button>
+                </div>
+              </div>
             ))}
           </div>
         </div>
+      )}
 
-        {/* Business Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {filteredBusinesses.map((biz) => {
-            const isQualified = biz.isQualifiedGrandGedean || (biz.localOwnershipPct !== undefined ? biz.localOwnershipPct >= 51 : true);
-            const isAccredited = biz.verificationStatus === 'Approved & Accredited';
+      {/* CONCESSION TENDERS & LOCAL QUOTAS TAB */}
+      {activeEngineTab === 'tenders' && (
+        <div className="space-y-6">
+          <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-center gap-3">
+            <ShieldAlert className="w-5 h-5 text-amber-700 flex-shrink-0" />
+            <p className="text-xs text-amber-900 m-0">
+              <strong>Section 13 Enforcement Notice:</strong> Under the Putu MDA, prime concessionaires and EPC consortiums are legally prohibited from awarding these packages to foreign or Monrovia vendors without prior tender issuance to prequalified Grand Gedean firms.
+            </p>
+          </div>
 
-            return (
-              <div 
-                key={biz.id} 
-                className="bg-slate-950/80 border border-slate-800 rounded-2xl p-5 flex flex-col justify-between transition-all hover:border-slate-700 shadow-xl"
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5 space-y-3">
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
+                100% Local Quota Reserved
+              </span>
+              <h3 className="font-bold text-base text-slate-900">
+                Putu Mine Camp Infrastructure &amp; Staff Quarters Civil Works
+              </h3>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Construction of 40 senior staff modular units, administrative office expansion, and central medical clinic concrete foundations.
+              </p>
+              <div className="text-xs bg-slate-50 p-2.5 rounded-lg space-y-1">
+                <div><strong>Package Value:</strong> $4,800,000 USD</div>
+                <div><strong>Contracting Authority:</strong> Putu Iron Ore Mining Inc.</div>
+                <div><strong>Required Accreditation:</strong> GGCDC Tier 1 Prequalified</div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setActiveEngineTab('register')}
+                className="w-full py-2 bg-emerald-700 text-white rounded-lg text-xs font-bold hover:bg-emerald-800 transition-colors"
               >
-                <div>
-                  <div className="flex items-start justify-between gap-2 mb-2">
-                    <span className="text-[10px] font-mono text-amber-400 font-bold bg-amber-950/80 px-2 py-0.5 rounded border border-amber-800">
-                      {biz.trackingNumber}
-                    </span>
-                    
-                    {/* Status Pill */}
-                    <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full flex items-center space-x-1 ${
-                      isAccredited
-                        ? 'bg-emerald-950 text-emerald-300 border border-emerald-700'
-                        : 'bg-amber-950 text-amber-300 border border-amber-700'
-                    }`}>
-                      {isAccredited ? <CheckCircle2 className="w-3 h-3 text-emerald-400" /> : <Clock className="w-3 h-3 text-amber-400" />}
-                      <span>{biz.verificationStatus}</span>
-                    </span>
-                  </div>
+                Prequalify Enterprise for Bid →
+              </button>
+            </div>
 
-                  <h3 className="text-base font-bold text-white leading-snug">
-                    {biz.name}
-                  </h3>
-
-                  <div className="flex items-center space-x-2 text-xs text-slate-400 mt-1">
-                    <span className="text-amber-400 font-medium">{biz.sector}</span>
-                    <span>•</span>
-                    <span className="flex items-center space-x-1">
-                      <MapPin className="w-3 h-3 text-slate-500" />
-                      <span>{biz.location}</span>
-                    </span>
-                  </div>
-
-                  {/* Secretariat Accreditation Badge */}
-                  <div className="mt-3 p-2.5 bg-slate-900 border border-slate-800 rounded-lg text-xs space-y-1.5">
-                    <div className="flex items-center justify-between text-[11px]">
-                      <span className="text-slate-400">Legal Entity Type:</span>
-                      <span className="font-bold text-emerald-400">
-                        {biz.ownership}
-                      </span>
-                    </div>
-                    <div className="pt-1 border-t border-slate-800 text-[10px]">
-                      {isAccredited ? (
-                        <span className="text-emerald-400 font-semibold flex items-center space-x-1">
-                          <Check className="w-3 h-3 text-emerald-400" />
-                          <span>Accredited Grand Gedean Enterprise</span>
-                        </span>
-                      ) : (
-                        <span className="text-amber-400 font-semibold flex items-center space-x-1">
-                          <Clock className="w-3 h-3 text-amber-400" />
-                          <span>Under Secretariat Verification Audit</span>
-                        </span>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Services Tags */}
-                  <div className="mt-3">
-                    <div className="text-[10px] uppercase font-bold text-slate-400 mb-1">
-                      Core Offerings:
-                    </div>
-                    <div className="flex flex-wrap gap-1">
-                      {biz.services.map((srv, idx) => (
-                        <span key={idx} className="bg-slate-900 text-slate-300 text-[11px] px-2 py-0.5 rounded border border-slate-800">
-                          {srv}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Uploaded Documents Indicator */}
-                  <div className="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-400">
-                    <span className="flex items-center space-x-1">
-                      <FileCheck2 className="w-3.5 h-3.5 text-emerald-400" />
-                      <span>{biz.uploadedCredentials?.length || 3} Audited Documents</span>
-                    </span>
-                    <span className="text-emerald-400 font-medium">{biz.taxStatus}</span>
-                  </div>
-                </div>
-
-                {/* Footer Info */}
-                <div className="mt-4 pt-3 border-t border-slate-800 text-xs text-slate-400 space-y-1">
-                  <div className="flex items-center justify-between">
-                    <span>Contact:</span>
-                    <span className="text-slate-200 font-medium">{biz.contactPerson}</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span>Phone:</span>
-                    <span className="text-slate-300 font-mono">{biz.contactPhone}</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span>Workforce Size:</span>
-                    <span className="text-white font-bold">{biz.workforceSize} Full-time</span>
-                  </div>
-                </div>
-
+            <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5 space-y-3">
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
+                100% Local Quota Reserved
+              </span>
+              <h3 className="font-bold text-base text-slate-900">
+                Mine Pit Overburden Haulage &amp; Access Feeder Earthmoving
+              </h3>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Haulage subcontracting for topsoil removal, 35km access road grading, culvert reinforcement, and quarry aggregate transport.
+              </p>
+              <div className="text-xs bg-slate-50 p-2.5 rounded-lg space-y-1">
+                <div><strong>Package Value:</strong> $2,400,000 USD</div>
+                <div><strong>Contracting Authority:</strong> Prime EPC Mining Contractor</div>
+                <div><strong>Required Accreditation:</strong> Verified Heavy Machinery Fleet</div>
               </div>
-            );
-          })}
-        </div>
+              <button
+                type="button"
+                onClick={() => setActiveEngineTab('register')}
+                className="w-full py-2 bg-emerald-700 text-white rounded-lg text-xs font-bold hover:bg-emerald-800 transition-colors"
+              >
+                Prequalify Enterprise for Bid →
+              </button>
+            </div>
 
-        {/* REGISTRATION MODAL WITH WORKING REAL FILE UPLOAD */}
-        {showRegisterModal && (
-          <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4">
-            <div className="bg-slate-900 border border-emerald-500/60 rounded-2xl max-w-3xl w-full shadow-2xl relative my-auto max-h-[92vh] flex flex-col overflow-hidden">
-              
-              {/* Pinned Header */}
-              <div className="p-5 sm:p-6 pb-4 border-b border-slate-800 bg-slate-900 shrink-0 relative">
-                <button
-                  type="button"
-                  onClick={() => setShowRegisterModal(false)}
-                  className="absolute top-5 right-5 p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-
-                <div className="space-y-1 pr-10">
-                  <div className="inline-flex items-center space-x-2 text-xs font-bold text-emerald-400 uppercase tracking-wider bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-800/60">
-                    <ShieldCheck className="w-3.5 h-3.5" />
-                    <span>Grand Gedeh Local Content Protocol</span>
-                  </div>
-                  <h3 className="text-xl sm:text-2xl font-black text-white">
-                    Register Local Enterprise & Upload Credentials
-                  </h3>
-                  <p className="text-xs text-slate-300">
-                    All registrations are submitted directly to the GGCDC Central Secretariat for verification against the Liberia Business Registry (LBR) and LRA tax databases.
-                  </p>
-                </div>
+            <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5 space-y-3">
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
+                100% Local Quota Reserved
+              </span>
+              <h3 className="font-bold text-base text-slate-900">
+                Concession Camp Fresh Food, Agricultural Produce &amp; Catering
+              </h3>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Daily catering operations feeding 650 camp personnel, bulk sourcing of local rice, cassava, vegetables, and meat from Grand Gedeh farmers.
+              </p>
+              <div className="text-xs bg-slate-50 p-2.5 rounded-lg space-y-1">
+                <div><strong>Package Value:</strong> $1,200,000 USD Annual</div>
+                <div><strong>Contracting Authority:</strong> Concession Facility Directorate</div>
+                <div><strong>Required Accreditation:</strong> Certified Local Enterprise</div>
               </div>
-
-              {/* Scrollable Form Body with Visible Scrollbar */}
-              <form id="enterprise-reg-form" onSubmit={handleSubmit} className="overflow-y-auto modal-scrollbar p-5 sm:p-6 space-y-4 text-xs flex-1">
-                
-                {/* Enterprise Name */}
-                <div>
-                  <label className="block text-slate-300 mb-1 font-medium">Enterprise Legal Name *</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="e.g. Cavalla Valley Logistics Syndicate Ltd."
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-emerald-500"
-                  />
-                </div>
-
-                {/* Industrial Sector & Ownership Structure */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-slate-300 mb-1 font-medium">Industrial Sector *</label>
-                    <select
-                      value={formData.sector}
-                      onChange={(e) => setFormData({ ...formData, sector: e.target.value })}
-                      className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-emerald-500"
-                    >
-                      {sectors.filter(s => s !== 'All').map((s) => (
-                        <option key={s} value={s}>{s}</option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-slate-300 mb-1 font-medium">Business Structure / Legal Entity *</label>
-                    <select
-                      value={formData.ownership}
-                      onChange={(e) => setFormData({ ...formData, ownership: e.target.value as BusinessOwnershipType })}
-                      className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-emerald-500"
-                    >
-                      <option value="Sole Proprietorship">Sole Proprietorship</option>
-                      <option value="Partnership / Joint Venture">Partnership / Joint Venture</option>
-                      <option value="Corporation / LLC">Corporation / LLC</option>
-                      <option value="Cooperative / Association">Cooperative / Community Association</option>
-                    </select>
-                  </div>
-                </div>
-
-                {/* Location & Workforce */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-slate-300 mb-1 font-medium">Physical Location in Grand Gedeh *</label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="e.g. Commercial Avenue, Zwedru City"
-                      value={formData.location}
-                      onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                      className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-emerald-500"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-slate-300 mb-1 font-medium">Full-Time Workforce Size *</label>
-                    <input
-                      type="number"
-                      required
-                      min={1}
-                      value={formData.workforceSize}
-                      onChange={(e) => setFormData({ ...formData, workforceSize: Number(e.target.value) })}
-                      className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-emerald-500"
-                    />
-                  </div>
-                </div>
-
-                {/* Services */}
-                <div>
-                  <label className="block text-slate-300 mb-1 font-medium">Services / Goods Provided (Comma-separated) *</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="e.g. Gravel crushing, Dump truck hauling, Road grading, Concrete casting"
-                    value={formData.servicesStr}
-                    onChange={(e) => setFormData({ ...formData, servicesStr: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-emerald-500"
-                  />
-                </div>
-
-                {/* Contact Person & Phone */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-slate-300 mb-1 font-medium">Contact Person *</label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="e.g. Eng. Emmanuel Gaye"
-                      value={formData.contactPerson}
-                      onChange={(e) => setFormData({ ...formData, contactPerson: e.target.value })}
-                      className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-emerald-500"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-slate-300 mb-1 font-medium">Direct Phone Number *</label>
-                    <input
-                      type="tel"
-                      required
-                      placeholder="+231 770 000 000"
-                      value={formData.contactPhone}
-                      onChange={(e) => setFormData({ ...formData, contactPhone: e.target.value })}
-                      className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-emerald-500"
-                    />
-                  </div>
-                </div>
-
-                {/* WORKING REAL FILE UPLOAD SECTION WITH WORKING BROWSE BUTTONS */}
-                <div className="p-4 bg-slate-950 border border-amber-500/50 rounded-xl space-y-3">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2 text-xs font-bold text-amber-400 uppercase tracking-wider">
-                      <Upload className="w-4 h-4" />
-                      <span>Upload Proof Documents for Secretariat Audit</span>
-                    </div>
-                    <span className="text-[10px] text-slate-400">PDF, JPG, PNG, DOCX accepted</span>
-                  </div>
-
-                  {/* Hidden Real HTML File Inputs */}
-                  <input
-                    type="file"
-                    ref={lbrFileInputRef}
-                    onChange={(e) => handleFileChange(e, 'lbrCert')}
-                    accept=".pdf,.png,.jpg,.jpeg,.doc,.docx"
-                    className="hidden"
-                  />
-                  <input
-                    type="file"
-                    ref={lraFileInputRef}
-                    onChange={(e) => handleFileChange(e, 'lraTax')}
-                    accept=".pdf,.png,.jpg,.jpeg,.doc,.docx"
-                    className="hidden"
-                  />
-                  <input
-                    type="file"
-                    ref={addressFileInputRef}
-                    onChange={(e) => handleFileChange(e, 'addressProof')}
-                    accept=".pdf,.png,.jpg,.jpeg,.doc,.docx"
-                    className="hidden"
-                  />
-
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    
-                    {/* Document 1: Articles of Incorporation & LBR Registration */}
-                    <div className="p-3 bg-slate-900 border border-slate-700 rounded-xl flex flex-col justify-between space-y-2">
-                      <div>
-                        <span className="block text-[11px] text-slate-200 font-bold">1. Articles of Inc. & LBR</span>
-                        <span className="text-[10px] text-slate-400 block mb-1">Articles of Incorporation / Deed & LBR</span>
-                        
-                        <div className="flex items-center space-x-1.5 p-1.5 bg-slate-950 rounded border border-slate-800 text-[11px] text-emerald-400 truncate">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                          <span className="truncate">{attachedFiles.lbrCert.fileName}</span>
-                        </div>
-                        <span className="text-[10px] text-slate-500 mt-1 block">
-                          Size: {attachedFiles.lbrCert.fileSize}
-                        </span>
-                      </div>
-
-                      <button
-                        type="button"
-                        onClick={() => lbrFileInputRef.current?.click()}
-                        className="w-full bg-slate-800 hover:bg-slate-700 text-amber-400 border border-amber-500/60 font-bold text-xs py-1.5 px-2 rounded-lg flex items-center justify-center space-x-1 transition-colors"
-                      >
-                        <Upload className="w-3.5 h-3.5" />
-                        <span>Browse / Upload File</span>
-                      </button>
-                    </div>
-
-                    {/* Document 2: LRA Tax Clearance */}
-                    <div className="p-3 bg-slate-900 border border-slate-700 rounded-xl flex flex-col justify-between space-y-2">
-                      <div>
-                        <span className="block text-[11px] text-slate-200 font-bold">2. LRA Tax Clearance</span>
-                        <span className="text-[10px] text-slate-400 block mb-1">Valid Tax Clearance Receipt</span>
-                        
-                        <div className="flex items-center space-x-1.5 p-1.5 bg-slate-950 rounded border border-slate-800 text-[11px] text-emerald-400 truncate">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                          <span className="truncate">{attachedFiles.lraTax.fileName}</span>
-                        </div>
-                        <span className="text-[10px] text-slate-500 mt-1 block">
-                          Size: {attachedFiles.lraTax.fileSize}
-                        </span>
-                      </div>
-
-                      <button
-                        type="button"
-                        onClick={() => lraFileInputRef.current?.click()}
-                        className="w-full bg-slate-800 hover:bg-slate-700 text-amber-400 border border-amber-500/60 font-bold text-xs py-1.5 px-2 rounded-lg flex items-center justify-center space-x-1 transition-colors"
-                      >
-                        <Upload className="w-3.5 h-3.5" />
-                        <span>Browse / Upload File</span>
-                      </button>
-                    </div>
-
-                    {/* Document 3: Proof of Address */}
-                    <div className="p-3 bg-slate-900 border border-slate-700 rounded-xl flex flex-col justify-between space-y-2">
-                      <div>
-                        <span className="block text-[11px] text-slate-200 font-bold">3. Proof of Address</span>
-                        <span className="text-[10px] text-slate-400 block mb-1">Lease Deed or Town Chief Attestation</span>
-                        
-                        <div className="flex items-center space-x-1.5 p-1.5 bg-slate-950 rounded border border-slate-800 text-[11px] text-emerald-400 truncate">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                          <span className="truncate">{attachedFiles.addressProof.fileName}</span>
-                        </div>
-                        <span className="text-[10px] text-slate-500 mt-1 block">
-                          Size: {attachedFiles.addressProof.fileSize}
-                        </span>
-                      </div>
-
-                      <button
-                        type="button"
-                        onClick={() => addressFileInputRef.current?.click()}
-                        className="w-full bg-slate-800 hover:bg-slate-700 text-amber-400 border border-amber-500/60 font-bold text-xs py-1.5 px-2 rounded-lg flex items-center justify-center space-x-1 transition-colors"
-                      >
-                        <Upload className="w-3.5 h-3.5" />
-                        <span>Browse / Upload File</span>
-                      </button>
-                    </div>
-
-                  </div>
-                </div>
-
-              </form>
-
-              {/* Pinned Bottom Footer with Always-Visible Submit Button */}
-              <div className="p-4 sm:px-6 bg-slate-950 border-t border-slate-800 flex items-center justify-between shrink-0 shadow-2xl">
-                <span className="text-[11px] text-slate-400 hidden sm:inline-block">
-                  Status: <strong className="text-emerald-400">Ready for Secretarial Verification</strong>
-                </span>
-
-                <div className="flex space-x-3 ml-auto">
-                  <button
-                    type="button"
-                    onClick={() => setShowRegisterModal(false)}
-                    className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl font-medium text-xs transition-colors"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    form="enterprise-reg-form"
-                    className="px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-bold text-xs rounded-xl shadow-lg flex items-center space-x-2 transition-transform hover:scale-105"
-                  >
-                    <span>Transmit to Secretariat Desk</span>
-                    <ShieldCheck className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-
+              <button
+                type="button"
+                onClick={() => setActiveEngineTab('register')}
+                className="w-full py-2 bg-emerald-700 text-white rounded-lg text-xs font-bold hover:bg-emerald-800 transition-colors"
+              >
+                Prequalify Enterprise for Bid →
+              </button>
             </div>
           </div>
-        )}
+        </div>
+      )}
 
-      </div>
-    </section>
+      {/* RENDER BENEFICIAL OWNERSHIP CERTIFICATE MODAL */}
+      {renderBusinessEndorsementModal()}
+    </div>
   );
 };

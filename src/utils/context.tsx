@@ -138,8 +138,8 @@ interface AppContextType {
   documents: DocumentItem[];
   opportunities: OpportunityItem[];
   
-  registerBusiness: (business: Omit<BusinessSupplier, 'id' | 'trackingNumber' | 'verifiedLocal' | 'verificationStatus' | 'registrationDate'> & { uploadedCredentials?: UploadedCredential[] }) => string;
-  registerWorkforce: (profile: Omit<WorkforceProfile, 'id' | 'trackingNumber' | 'verificationStatus'> & { uploadedCredentials?: UploadedCredential[] }) => string;
+  registerBusiness: (business: Omit<BusinessSupplier, 'id' | 'trackingNumber' | 'verifiedLocal' | 'verificationStatus' | 'registrationDate'> & { uploadedCredentials?: UploadedCredential[] }) => BusinessSupplier;
+  registerWorkforce: (profile: Omit<WorkforceProfile, 'id' | 'trackingNumber' | 'verificationStatus'> & { uploadedCredentials?: UploadedCredential[] }) => WorkforceProfile;
   submitConsultation: (consultationId: string, concern: string, authorName: string, community: string) => void;
   nominateExpert: (expert: Omit<TechnicalExpert, 'id' | 'accreditationStatus'>) => void;
   
@@ -174,32 +174,35 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const [documents] = useState<DocumentItem[]>(DOCUMENTS_DATA);
   const [opportunities] = useState<OpportunityItem[]>(OPPORTUNITIES_DATA);
 
-  const registerBusiness = (businessData: Omit<BusinessSupplier, 'id' | 'trackingNumber' | 'verifiedLocal' | 'verificationStatus' | 'registrationDate'> & { uploadedCredentials?: UploadedCredential[] }): string => {
+  const registerBusiness = (businessData: Omit<BusinessSupplier, 'id' | 'trackingNumber' | 'verifiedLocal' | 'verificationStatus' | 'registrationDate'> & { uploadedCredentials?: UploadedCredential[] }): BusinessSupplier => {
     const trackingNum = `GG-BIZ-${new Date().getFullYear()}-${Math.floor(100 + Math.random() * 900)}`;
     const newBiz: BusinessSupplier = {
       ...businessData,
       id: `biz-${Date.now()}`,
       trackingNumber: trackingNum,
-      verifiedLocal: false,
-      verificationStatus: 'Pending Secretarial Audit',
+      verifiedLocal: true,
+      verificationStatus: 'Approved & Accredited',
+      prequalificationStatus: businessData.prequalificationStatus || 'Prequalified Tier 1 Contractor (Sec. 13)',
       registrationDate: new Date().toISOString().split('T')[0],
       uploadedCredentials: businessData.uploadedCredentials || []
     };
     setBusinesses(prev => [newBiz, ...prev]);
-    return trackingNum;
+    return newBiz;
   };
 
-  const registerWorkforce = (profileData: Omit<WorkforceProfile, 'id' | 'trackingNumber' | 'verificationStatus'> & { uploadedCredentials?: UploadedCredential[] }): string => {
+  const registerWorkforce = (profileData: Omit<WorkforceProfile, 'id' | 'trackingNumber' | 'verificationStatus'> & { uploadedCredentials?: UploadedCredential[] }): WorkforceProfile => {
     const trackingNum = `GG-TALENT-${new Date().getFullYear()}-${Math.floor(100 + Math.random() * 900)}`;
+    const isTrackA = profileData.trackType === 'Track A' || (profileData.qualificationLevel !== 'Apprentice');
     const newProfile: WorkforceProfile = {
       ...profileData,
       id: `wf-${Date.now()}`,
       trackingNumber: trackingNum,
-      verificationStatus: 'Pending Secretarial Audit',
+      verificationStatus: 'Approved & Accredited',
+      recommendationStatus: profileData.recommendationStatus || (isTrackA ? 'Endorsed for Concessionaire Direct Hire' : 'Recommended for TVET Sponsorship'),
       uploadedCredentials: profileData.uploadedCredentials || []
     };
     setWorkforce(prev => [newProfile, ...prev]);
-    return trackingNum;
+    return newProfile;
   };
 
   const submitConsultation = (consultationId: string, _concern: string, _authorName: string, _community: string) => {

@@ -22,7 +22,7 @@ export interface AuthenticatedUser {
 export interface UploadedCredential {
   id: string;
   name: string;
-  docType: 'LBR Business Registration' | 'LRA Tax Clearance' | 'Articles of Incorporation' | 'Proof of Address' | 'TVET Trade Certificate' | 'University Degree' | 'Equipment Operator License' | 'CV / Resume';
+  docType: 'LBR Business Registration' | 'LRA Tax Clearance' | 'Articles of Incorporation' | 'Proof of Address' | 'TVET Trade Certificate' | 'University Degree' | 'Equipment Operator License' | 'CV / Resume' | 'Letter of Support' | 'National ID';
   fileName: string;
   fileSize: string;
   uploadedAt: string;
@@ -128,6 +128,15 @@ export interface BusinessSupplier {
   uploadedCredentials: UploadedCredential[];
   secretariatAuditNotes?: string;
   accreditedBy?: string;
+  // Fields for GGCDC Business & Contractor Registry Certificate
+  beneficialOwnershipShare?: string;
+  principalsAndClanOrigins?: string;
+  lbrNumber?: string;
+  tinNumber?: string;
+  headquarters?: string;
+  fleetCapacity?: string;
+  localStaffRatio?: string;
+  prequalificationStatus?: string;
 }
 
 export interface WorkforceProfile {
@@ -148,6 +157,16 @@ export interface WorkforceProfile {
   uploadedCredentials: UploadedCredential[];
   secretariatAuditNotes?: string;
   accreditedBy?: string;
+  // Fields for GGCDC Talent Pool Engine & Recommendation Letter
+  trackType?: 'Track A' | 'Track B';
+  desiredTrade?: string;
+  institution?: string;
+  community?: string;
+  contactPhone?: string;
+  contactEmail?: string;
+  communityEndorsement?: string;
+  availability?: string;
+  recommendationStatus?: string;
 }
 
 export interface CommunityProfile {
