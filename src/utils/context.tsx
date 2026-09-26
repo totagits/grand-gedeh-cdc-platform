@@ -12,7 +12,8 @@ import {
   DocumentItem, 
   OpportunityItem,
   UploadedCredential,
-  AuthenticatedUser
+  AuthenticatedUser,
+  NotificationDispatchRecord
 } from '../types';
 import { 
   CONCESSIONS_DATA, 
@@ -26,6 +27,41 @@ import {
   DOCUMENTS_DATA, 
   OPPORTUNITIES_DATA 
 } from '../data/mockData';
+
+export const INITIAL_NOTIFICATIONS: NotificationDispatchRecord[] = [
+  {
+    id: 'notif-001',
+    recipientName: 'Jackson Glaydor Krahn',
+    recipientPhone: '+231 770 412 889',
+    recipientEmail: 'jdoe.operator@gmail.com',
+    entityType: 'workforce',
+    entityId: 'wf-001',
+    trackingNumber: 'GG-TALENT-2026-001',
+    eventType: 'Secretariat Approved & Accredited',
+    smsMessage: 'GGCDC-GOV: Jackson Glaydor Krahn, your Class-A Operator profile is ACCREDITED for Putu Iron Ore Concession direct-hire under Sec 11 MDA. Ref: GG-TALENT-2026-001. View letter: https://totagits.github.io/grand-gedeh-cdc-platform/',
+    emailSubject: '[OFFICIAL GGCDC NOTICE] Concession Direct-Hire Recommendation Approved - Ref: GG-TALENT-2026-001',
+    emailBody: 'Dear Jackson Glaydor Krahn,\n\nThe GGCDC Technical Secretariat has completed audit of your credentials and formally approved your placement on the Grand Gedeh Concession Direct-Hire Roster under Section 11 of the Putu MDA.\n\nDispatch Reference: GG-TALENT-2026-001\nTrade: Heavy Equipment Operator\nAccredited by: GGCDC Technical Secretariat\n\nYour official Recommendation Letter has been dispatched to Putu Iron Ore Mining Inc. HR.',
+    timestamp: '2026-09-24 14:32 GMT',
+    gatewayStatus: 'Delivered via Orange/Lonestar GSM',
+    verificationUrl: 'https://totagits.github.io/grand-gedeh-cdc-platform/'
+  },
+  {
+    id: 'notif-002',
+    recipientName: 'Zwedru Engineering & Heavy Civil Works Ltd.',
+    recipientPhone: '+231 770 412 889',
+    recipientEmail: 'info@zwedru-engineering.lr',
+    entityType: 'business',
+    entityId: 'biz-001',
+    trackingNumber: 'GG-BIZ-2026-001',
+    eventType: 'Tender Prequalification Issued',
+    smsMessage: 'GGCDC-GOV: Zwedru Engineering Ltd is ACCREDITED as Tier 1 Local Contractor under Sec 13 Putu MDA. Prequalified for Camp Infrastructure Tenders. Ref: GG-BIZ-2026-001. Verify: https://totagits.github.io/grand-gedeh-cdc-platform/',
+    emailSubject: '[OFFICIAL GGCDC NOTICE] Certificate of Beneficial Ownership & Prequalification Approved - Ref: GG-BIZ-2026-001',
+    emailBody: 'To the Management of Zwedru Engineering & Heavy Civil Works Ltd.,\n\nFollowing forensic audit of your corporate filings and operational yard, GGCDC has officially issued your Certificate of Grand Gedean Beneficial Ownership & Contractor Prequalification.\n\nClassification: Tier 1 Priority (100% Grand Gedean Owned)\nAudit Ref: GG-BIZ-2026-001\nAuthorized Sectors: Civil Engineering, Earthmoving & Camp Works.',
+    timestamp: '2026-09-25 09:15 GMT',
+    gatewayStatus: 'Delivered via Orange/Lonestar GSM',
+    verificationUrl: 'https://totagits.github.io/grand-gedeh-cdc-platform/'
+  }
+];
 
 export const DEMO_USERS: Record<UserRole, AuthenticatedUser> = {
   secretariat: {
@@ -147,6 +183,10 @@ interface AppContextType {
   updateBusinessVerification: (id: string, status: BusinessSupplier['verificationStatus'], notes: string, auditor: string) => void;
   updateWorkforceVerification: (id: string, status: WorkforceProfile['verificationStatus'], notes: string, auditor: string) => void;
   verifyCredentialDoc: (entityType: 'business' | 'workforce', entityId: string, credId: string, status: UploadedCredential['status'], notes?: string) => void;
+
+  // SMS & Official Email Transparency Dispatch
+  notifications: NotificationDispatchRecord[];
+  sendDispatchNotification: (record: Omit<NotificationDispatchRecord, 'id' | 'timestamp' | 'gatewayStatus' | 'verificationUrl'> & Partial<NotificationDispatchRecord>) => NotificationDispatchRecord;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -173,6 +213,20 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const [workingGroups] = useState<WorkingGroup[]>(WORKING_GROUPS_DATA);
   const [documents] = useState<DocumentItem[]>(DOCUMENTS_DATA);
   const [opportunities] = useState<OpportunityItem[]>(OPPORTUNITIES_DATA);
+  const [notifications, setNotifications] = useState<NotificationDispatchRecord[]>(INITIAL_NOTIFICATIONS);
+
+  const sendDispatchNotification = (record: Omit<NotificationDispatchRecord, 'id' | 'timestamp' | 'gatewayStatus' | 'verificationUrl'> & Partial<NotificationDispatchRecord>): NotificationDispatchRecord => {
+    const timestamp = new Date().toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' });
+    const fullRecord: NotificationDispatchRecord = {
+      ...record,
+      id: `notif-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+      timestamp,
+      gatewayStatus: record.gatewayStatus || 'Delivered via Orange/Lonestar GSM',
+      verificationUrl: record.verificationUrl || 'https://totagits.github.io/grand-gedeh-cdc-platform/'
+    };
+    setNotifications(prev => [fullRecord, ...prev]);
+    return fullRecord;
+  };
 
   const registerBusiness = (businessData: Omit<BusinessSupplier, 'id' | 'trackingNumber' | 'verifiedLocal' | 'verificationStatus' | 'registrationDate'> & { uploadedCredentials?: UploadedCredential[] }): BusinessSupplier => {
     const trackingNum = `GG-BIZ-${new Date().getFullYear()}-${Math.floor(100 + Math.random() * 900)}`;
@@ -187,6 +241,21 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       uploadedCredentials: businessData.uploadedCredentials || []
     };
     setBusinesses(prev => [newBiz, ...prev]);
+
+    // Automated Transparency Dispatch: SMS & Email
+    sendDispatchNotification({
+      recipientName: newBiz.contactPerson || newBiz.name,
+      recipientPhone: newBiz.contactPhone,
+      recipientEmail: newBiz.contactEmail || 'procurement@grandgedeh.gov.lr',
+      entityType: 'business',
+      entityId: newBiz.id,
+      trackingNumber: trackingNum,
+      eventType: 'Registration Submitted',
+      smsMessage: `GGCDC-GOV: Enterprise ${newBiz.name} registered. Ref: ${trackingNum}. Prequalification Certificate issued under Sec 13 Putu MDA. Verify: https://totagits.github.io/grand-gedeh-cdc-platform/`,
+      emailSubject: `[OFFICIAL GGCDC NOTICE] Local Enterprise Registered - Ref: ${trackingNum}`,
+      emailBody: `Dear Management of ${newBiz.name},\n\nYour enterprise has been officially registered in the Grand Gedeh Business & Local Contractor Registry.\n\nSector: ${newBiz.sector}\nOwnership: ${newBiz.beneficialOwnershipShare || newBiz.ownership}\nTracking Code: ${trackingNum}\n\nYour digital Certificate of Grand Gedean Beneficial Ownership & Contractor Prequalification is active and verifiable online.`
+    });
+
     return newBiz;
   };
 
@@ -202,6 +271,21 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       uploadedCredentials: profileData.uploadedCredentials || []
     };
     setWorkforce(prev => [newProfile, ...prev]);
+
+    // Automated Transparency Dispatch: SMS & Email
+    sendDispatchNotification({
+      recipientName: newProfile.fullName,
+      recipientPhone: newProfile.contactPhone || '+231 770 000 000',
+      recipientEmail: newProfile.contactEmail || 'talent@citizens.lr',
+      entityType: 'workforce',
+      entityId: newProfile.id,
+      trackingNumber: trackingNum,
+      eventType: 'Registration Submitted',
+      smsMessage: `GGCDC-GOV: Hello ${newProfile.fullName}, your ${newProfile.tradeCategory} profile is registered. Ref: ${trackingNum}. Endorsed for Putu MDA placement. View letter: https://totagits.github.io/grand-gedeh-cdc-platform/`,
+      emailSubject: `[OFFICIAL GGCDC NOTICE] Candidate Registered & Recommendation Issued - Ref: ${trackingNum}`,
+      emailBody: `Dear ${newProfile.fullName},\n\nYou have been officially registered in the Grand Gedeh Talent Pool & TVET Apprenticeship Engine.\n\nDesignated Trade: ${newProfile.specialization || newProfile.tradeCategory}\nCounty Status: Indigene of ${newProfile.district}\nTracking Ref: ${trackingNum}\n\nYour Official GGCDC Recommendation Letter is ready and verifiable online.`
+    });
+
     return newProfile;
   };
 
@@ -239,6 +323,25 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       }
       return b;
     }));
+
+    const targetBiz = businesses.find(b => b.id === id);
+    if (targetBiz) {
+      const isApproved = status === 'Approved & Accredited';
+      sendDispatchNotification({
+        recipientName: targetBiz.contactPerson || targetBiz.name,
+        recipientPhone: targetBiz.contactPhone,
+        recipientEmail: targetBiz.contactEmail || 'procurement@grandgedeh.gov.lr',
+        entityType: 'business',
+        entityId: targetBiz.id,
+        trackingNumber: targetBiz.trackingNumber,
+        eventType: isApproved ? 'Secretariat Approved & Accredited' : 'Information Required',
+        smsMessage: isApproved
+          ? `GGCDC-GOV: CONGRATULATIONS! ${targetBiz.name} is ACCREDITED by Secretariat as Tier 1 Contractor under Sec 13 Putu MDA. Audited by ${auditor}. Ref: ${targetBiz.trackingNumber}`
+          : `GGCDC-GOV: ATTENTION ${targetBiz.name}: Secretariat audit requires additional documentation: "${notes}". Log in to update. Ref: ${targetBiz.trackingNumber}`,
+        emailSubject: `[OFFICIAL GGCDC AUDIT NOTICE] Status: ${status} - ${targetBiz.name}`,
+        emailBody: `Official Secretariat Audit Notice:\n\nEnterprise: ${targetBiz.name}\nAuditor: ${auditor}\nStatus: ${status}\nNotes: ${notes}\n\nReference: ${targetBiz.trackingNumber}`
+      });
+    }
   };
 
   const updateWorkforceVerification = (id: string, status: WorkforceProfile['verificationStatus'], notes: string, auditor: string) => {
@@ -253,6 +356,25 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       }
       return w;
     }));
+
+    const targetWf = workforce.find(w => w.id === id);
+    if (targetWf) {
+      const isApproved = status === 'Approved & Accredited';
+      sendDispatchNotification({
+        recipientName: targetWf.fullName,
+        recipientPhone: targetWf.contactPhone || '+231 770 000 000',
+        recipientEmail: targetWf.contactEmail || 'talent@citizens.lr',
+        entityType: 'workforce',
+        entityId: targetWf.id,
+        trackingNumber: targetWf.trackingNumber,
+        eventType: isApproved ? 'Secretariat Approved & Accredited' : 'Information Required',
+        smsMessage: isApproved
+          ? `GGCDC-GOV: CONGRATULATIONS! ${targetWf.fullName}, your credentials have been ACCREDITED by Secretariat for direct hire. Audited by ${auditor}. Ref: ${targetWf.trackingNumber}`
+          : `GGCDC-GOV: ATTENTION ${targetWf.fullName}: Secretariat audit notice: "${notes}". Ref: ${targetWf.trackingNumber}`,
+        emailSubject: `[OFFICIAL GGCDC AUDIT NOTICE] Accreditation Status: ${status} - ${targetWf.fullName}`,
+        emailBody: `Official Secretariat Audit Notice:\n\nCandidate: ${targetWf.fullName}\nTrade: ${targetWf.tradeCategory}\nAuditor: ${auditor}\nStatus: ${status}\nNotes: ${notes}\n\nReference: ${targetWf.trackingNumber}`
+      });
+    }
   };
 
   const verifyCredentialDoc = (entityType: 'business' | 'workforce', entityId: string, credId: string, status: UploadedCredential['status'], notes?: string) => {
@@ -352,7 +474,9 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       nominateExpert,
       updateBusinessVerification,
       updateWorkforceVerification,
-      verifyCredentialDoc
+      verifyCredentialDoc,
+      notifications,
+      sendDispatchNotification
     }}>
       {children}
     </AppContext.Provider>

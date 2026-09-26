@@ -10,10 +10,19 @@ import {
   Check, 
   FileCheck2,
   AlertTriangle,
-  Clock
+  Clock,
+  Radio,
+  Smartphone,
+  Mail,
+  Send,
+  CheckCheck,
+  ExternalLink,
+  MessageSquare,
+  Copy,
+  Filter
 } from 'lucide-react';
 import { useApp } from '../utils/context';
-import { BusinessSupplier, WorkforceProfile, UploadedCredential } from '../types';
+import { BusinessSupplier, WorkforceProfile, UploadedCredential, NotificationDispatchRecord } from '../types';
 
 export const SecretariatVerificationDesk: React.FC = () => {
   const { 
@@ -21,12 +30,16 @@ export const SecretariatVerificationDesk: React.FC = () => {
     workforce, 
     updateBusinessVerification, 
     updateWorkforceVerification, 
-    verifyCredentialDoc 
+    verifyCredentialDoc,
+    notifications,
+    sendDispatchNotification
   } = useApp();
 
-  const [activeTab, setActiveTab] = useState<'businesses' | 'workforce'>('businesses');
+  const [activeTab, setActiveTab] = useState<'businesses' | 'workforce' | 'audit_log'>('businesses');
   const [filterStatus, setFilterStatus] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState('');
+  const [notificationChannelFilter, setNotificationChannelFilter] = useState<'All' | 'sms' | 'email'>('All');
+  const [copiedNotificationId, setCopiedNotificationId] = useState<string | null>(null);
   
   const [selectedBiz, setSelectedBiz] = useState<BusinessSupplier | null>(businesses[businesses.length - 1] || businesses[0]);
   const [selectedWf, setSelectedWf] = useState<WorkforceProfile | null>(workforce[workforce.length - 1] || workforce[0]);
@@ -51,22 +64,41 @@ export const SecretariatVerificationDesk: React.FC = () => {
     return matchesStatus && matchesSearch;
   });
 
+  const filteredNotifications = notifications.filter((notif) => {
+    const q = searchQuery.toLowerCase();
+    const matchesSearch = 
+      notif.recipientName.toLowerCase().includes(q) ||
+      notif.recipientPhone.toLowerCase().includes(q) ||
+      notif.recipientEmail.toLowerCase().includes(q) ||
+      notif.trackingNumber.toLowerCase().includes(q) ||
+      notif.smsMessage.toLowerCase().includes(q) ||
+      notif.emailSubject.toLowerCase().includes(q) ||
+      notif.emailBody.toLowerCase().includes(q);
+    return matchesSearch;
+  });
+
+  const handleCopyNotification = (id: string, text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedNotificationId(id);
+    setTimeout(() => setCopiedNotificationId(null), 2500);
+  };
+
   const handleApproveBusiness = (biz: BusinessSupplier) => {
     updateBusinessVerification(biz.id, 'Approved & Accredited', auditNotes || 'Credentials, LBR registration, and physical Grand Gedeh presence authenticated.', auditorName);
-    setActionSuccessNotice(`Enterprise ${biz.name} has been formally ACCREDITED and awarded Verified Local Supplier status!`);
-    setTimeout(() => setActionSuccessNotice(null), 5000);
+    setActionSuccessNotice(`Enterprise ${biz.name} has been formally ACCREDITED! Liberian GSM SMS (+231) & Official Secretariat Accreditation Email automatically dispatched.`);
+    setTimeout(() => setActionSuccessNotice(null), 6000);
   };
 
   const handleFlagBusiness = (biz: BusinessSupplier) => {
     updateBusinessVerification(biz.id, 'Information Required', auditNotes || 'Additional tax clearance documentation required.', auditorName);
-    setActionSuccessNotice(`Notice dispatched to ${biz.name} requesting supplementary documentation.`);
-    setTimeout(() => setActionSuccessNotice(null), 5000);
+    setActionSuccessNotice(`Notice dispatched to ${biz.name} requesting supplementary documentation via GSM SMS & Email.`);
+    setTimeout(() => setActionSuccessNotice(null), 6000);
   };
 
   const handleApproveWorkforce = (wf: WorkforceProfile) => {
     updateWorkforceVerification(wf.id, 'Approved & Accredited', auditNotes || 'Trade certificates and professional licenses verified.', auditorName);
-    setActionSuccessNotice(`Professional ${wf.fullName} has been ACCREDITED into the Grand Gedeh Talent Roster!`);
-    setTimeout(() => setActionSuccessNotice(null), 5000);
+    setActionSuccessNotice(`Professional ${wf.fullName} has been ACCREDITED into the Grand Gedeh Talent Roster! Instant GSM SMS notification dispatched.`);
+    setTimeout(() => setActionSuccessNotice(null), 6000);
   };
 
   const handleDocToggle = (entityType: 'business' | 'workforce', entityId: string, cred: UploadedCredential) => {
@@ -139,7 +171,7 @@ export const SecretariatVerificationDesk: React.FC = () => {
         )}
 
         {/* Primary Tabs */}
-        <div className="flex items-center space-x-3 mb-6 border-b border-slate-800 pb-3">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-6 border-b border-slate-800 pb-3">
           <button
             onClick={() => setActiveTab('businesses')}
             className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
@@ -162,6 +194,18 @@ export const SecretariatVerificationDesk: React.FC = () => {
           >
             <Users className="w-4 h-4" />
             <span>Talent & Diaspora Queue ({filteredWorkforce.length})</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('audit_log')}
+            className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+              activeTab === 'audit_log'
+                ? 'bg-amber-500 text-slate-950 shadow-lg font-black'
+                : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+            }`}
+          >
+            <Radio className="w-4 h-4" />
+            <span>Dispatched Alerts & Transparency Ledger ({notifications.length})</span>
           </button>
         </div>
 
@@ -582,6 +626,229 @@ export const SecretariatVerificationDesk: React.FC = () => {
                 <div className="text-center py-16 text-slate-500 text-xs">
                   Select a worker profile from the queue to inspect credentials.
                 </div>
+              )}
+            </div>
+
+          </div>
+        )}
+
+        {/* Content: Dispatched Alerts & Transparency Audit Ledger */}
+        {activeTab === 'audit_log' && (
+          <div className="space-y-6">
+            
+            {/* Header / Context Banner */}
+            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+              <div>
+                <div className="inline-flex items-center space-x-2 text-xs font-semibold text-amber-400 bg-amber-950/80 border border-amber-800 px-3 py-1 rounded-full uppercase tracking-wider mb-2">
+                  <Radio className="w-3.5 h-3.5 text-amber-400" />
+                  <span>Dual-Channel Automated Dispatch Engine</span>
+                </div>
+                <h3 className="text-xl font-black text-white">Dispatched Alerts & Transparency Audit Ledger</h3>
+                <p className="text-xs text-slate-300 max-w-2xl mt-1">
+                  Immutable record of real-time alerts transmitted across the Liberian GSM Network (Orange Liberia +231-77 / Lonestar MTN +231-88) 
+                  and Official Secretariat Email (@ggcdc-liberia.org) directly to local enterprise owners and professionals.
+                </p>
+              </div>
+
+              {/* Quick Summary Badges */}
+              <div className="flex flex-wrap gap-2">
+                <div className="bg-slate-950 border border-slate-800 px-3 py-2 rounded-xl text-center min-w-[90px]">
+                  <span className="text-[10px] text-slate-400 block">Total Alerts</span>
+                  <span className="text-lg font-black text-white">{notifications.length}</span>
+                </div>
+                <div className="bg-slate-950 border border-amber-900/40 px-3 py-2 rounded-xl text-center min-w-[90px]">
+                  <span className="text-[10px] text-amber-400 block">GSM SMS</span>
+                  <span className="text-lg font-black text-amber-400">{notifications.length}</span>
+                </div>
+                <div className="bg-slate-950 border border-sky-900/40 px-3 py-2 rounded-xl text-center min-w-[90px]">
+                  <span className="text-[10px] text-sky-400 block">Emails</span>
+                  <span className="text-lg font-black text-sky-400">{notifications.length}</span>
+                </div>
+                <div className="bg-emerald-950/70 border border-emerald-800/80 px-3 py-2 rounded-xl text-center min-w-[90px]">
+                  <span className="text-[10px] text-emerald-400 block">Carrier Health</span>
+                  <span className="text-xs font-black text-emerald-300 block mt-1">100% OK</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Filter and Search Controls */}
+            <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 flex flex-col md:flex-row items-center justify-between gap-3">
+              <div className="relative w-full md:w-80">
+                <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                <input
+                  type="text"
+                  placeholder="Search recipient, +231 phone, ref..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full bg-slate-950 border border-slate-700 rounded-xl pl-9 pr-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
+                />
+              </div>
+
+              <div className="flex items-center space-x-2 w-full md:w-auto overflow-x-auto text-xs">
+                <span className="text-slate-400 text-xs font-semibold flex items-center space-x-1 pl-1">
+                  <Filter className="w-3.5 h-3.5" />
+                  <span>Channel Focus:</span>
+                </span>
+                {(['All', 'sms', 'email'] as const).map((ch) => (
+                  <button
+                    key={ch}
+                    onClick={() => setNotificationChannelFilter(ch)}
+                    className={`px-3 py-1.5 rounded-lg font-bold transition-all whitespace-nowrap ${
+                      notificationChannelFilter === ch
+                        ? 'bg-amber-500 text-slate-950 shadow-md font-black'
+                        : 'bg-slate-950 text-slate-400 hover:text-white border border-slate-800'
+                    }`}
+                  >
+                    {ch === 'All' ? 'Dual Channels (Both)' : ch === 'sms' ? '📱 Liberian GSM SMS' : '✉️ Official Email'}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Notifications Feed */}
+            <div className="space-y-4">
+              {filteredNotifications.length === 0 ? (
+                <div className="bg-slate-900 border border-slate-800 rounded-2xl p-12 text-center text-slate-400 text-sm">
+                  <MessageSquare className="w-8 h-8 text-slate-600 mx-auto mb-2" />
+                  No dispatched notifications found matching your search.
+                </div>
+              ) : (
+                filteredNotifications.map((notif) => {
+                  const isCopied = copiedNotificationId === notif.id;
+                  const showSms = notificationChannelFilter === 'All' || notificationChannelFilter === 'sms';
+                  const showEmail = notificationChannelFilter === 'All' || notificationChannelFilter === 'email';
+
+                  return (
+                    <div 
+                      key={notif.id}
+                      className="bg-slate-900/90 border border-slate-800 hover:border-slate-700 rounded-2xl p-5 shadow-lg transition-all space-y-4"
+                    >
+                      {/* Top Meta Line */}
+                      <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-800 text-xs">
+                        <div className="flex items-center space-x-2">
+                          <span className="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-amber-950 text-amber-300 border border-amber-800">
+                            <Smartphone className="w-3.5 h-3.5 text-amber-400" />
+                            <span>Orange / Lonestar GSM</span>
+                          </span>
+
+                          <span className="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-sky-950 text-sky-300 border border-sky-800">
+                            <Mail className="w-3.5 h-3.5 text-sky-400" />
+                            <span>SMTP Relay</span>
+                          </span>
+
+                          <span className="inline-flex items-center space-x-1 text-[11px] font-semibold text-emerald-400 bg-emerald-950/80 border border-emerald-800 px-2 py-0.5 rounded-full">
+                            <CheckCheck className="w-3.5 h-3.5" />
+                            <span>{notif.gatewayStatus}</span>
+                          </span>
+                        </div>
+
+                        <div className="flex items-center space-x-3 text-slate-400 text-xs">
+                          <span className="font-mono text-amber-400/90 font-semibold">{notif.trackingNumber}</span>
+                          <span>•</span>
+                          <span className="flex items-center space-x-1">
+                            <Clock className="w-3 h-3 text-slate-500" />
+                            <span>{notif.timestamp}</span>
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Recipient Header */}
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <div>
+                          <h4 className="font-bold text-white text-base leading-snug">{notif.recipientName}</h4>
+                          <div className="flex flex-wrap items-center gap-3 text-xs text-slate-300 mt-1">
+                            <span className="flex items-center space-x-1 text-amber-400 font-mono">
+                              <Smartphone className="w-3.5 h-3.5" />
+                              <span>{notif.recipientPhone}</span>
+                            </span>
+                            <span>•</span>
+                            <span className="flex items-center space-x-1 text-sky-400">
+                              <Mail className="w-3.5 h-3.5" />
+                              <span>{notif.recipientEmail}</span>
+                            </span>
+                          </div>
+                        </div>
+
+                        <span className={`self-start sm:self-center px-3 py-1 rounded-full text-[11px] font-bold ${
+                          notif.eventType === 'Secretariat Approved & Accredited'
+                            ? 'bg-emerald-950 text-emerald-300 border border-emerald-700'
+                            : notif.eventType === 'Registration Submitted'
+                            ? 'bg-blue-950 text-blue-300 border border-blue-700'
+                            : 'bg-amber-950 text-amber-300 border border-amber-700'
+                        }`}>
+                          {notif.eventType === 'Secretariat Approved & Accredited' ? '✓ Accreditation Approved' : notif.eventType === 'Registration Submitted' ? '📝 Application Filed' : notif.eventType}
+                        </span>
+                      </div>
+
+                      {/* Message Content Container */}
+                      <div className="space-y-3">
+                        {showSms && (
+                          <div className="bg-slate-950 border border-amber-900/40 rounded-xl p-4 font-mono text-xs text-amber-200/90 space-y-1 shadow-inner">
+                            <div className="flex items-center justify-between text-[10px] text-amber-400/80 uppercase font-bold tracking-wider pb-1 border-b border-amber-900/30">
+                              <span>Liberian GSM SMS Broadcast (077 / 088 Relay)</span>
+                              <span>Handshake Confirmed ✓✓</span>
+                            </div>
+                            <p className="pt-1 whitespace-pre-line leading-relaxed">{notif.smsMessage}</p>
+                          </div>
+                        )}
+
+                        {showEmail && (
+                          <div className="bg-slate-950 border border-sky-900/40 rounded-xl p-4 text-xs text-slate-200 space-y-2 shadow-inner">
+                            <div className="font-bold text-sky-300 pb-1 border-b border-sky-900/30 flex items-center justify-between">
+                              <span>Subject: {notif.emailSubject}</span>
+                              <span className="text-[10px] text-slate-400 font-mono">From: secretariat@ggcdc-liberia.org</span>
+                            </div>
+                            <p className="whitespace-pre-line leading-relaxed text-slate-300 font-mono text-[11px]">{notif.emailBody}</p>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Quick Communication & Audit Actions */}
+                      <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-800 text-xs">
+                        <button
+                          onClick={() => handleCopyNotification(notif.id, showSms ? notif.smsMessage : notif.emailBody)}
+                          className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg font-semibold transition-all ${
+                            isCopied
+                              ? 'bg-emerald-600 text-white font-bold'
+                              : 'bg-slate-950 hover:bg-slate-800 text-slate-300 border border-slate-700'
+                          }`}
+                        >
+                          {isCopied ? <Check className="w-3.5 h-3.5 text-white" /> : <Copy className="w-3.5 h-3.5 text-slate-400" />}
+                          <span>{isCopied ? 'Copied to Clipboard' : 'Copy Notice Text'}</span>
+                        </button>
+
+                        <div className="flex flex-wrap items-center gap-2">
+                          <a
+                            href={`https://wa.me/${notif.recipientPhone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(notif.smsMessage)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center space-x-1 px-3 py-1.5 bg-emerald-950/70 hover:bg-emerald-900 text-emerald-300 border border-emerald-700 rounded-lg font-semibold"
+                          >
+                            <span>WhatsApp (+231)</span>
+                            <ExternalLink className="w-3 h-3" />
+                          </a>
+
+                          <a
+                            href={`sms:${notif.recipientPhone}?body=${encodeURIComponent(notif.smsMessage)}`}
+                            className="inline-flex items-center space-x-1 px-3 py-1.5 bg-amber-950/70 hover:bg-amber-900 text-amber-300 border border-amber-700 rounded-lg font-semibold"
+                          >
+                            <span>Direct GSM SMS</span>
+                            <ExternalLink className="w-3 h-3" />
+                          </a>
+
+                          <a
+                            href={`mailto:${notif.recipientEmail}?subject=${encodeURIComponent(notif.emailSubject)}&body=${encodeURIComponent(notif.emailBody)}`}
+                            className="inline-flex items-center space-x-1 px-3 py-1.5 bg-sky-950/70 hover:bg-sky-900 text-sky-300 border border-sky-700 rounded-lg font-semibold"
+                          >
+                            <span>Official Email</span>
+                            <ExternalLink className="w-3 h-3" />
+                          </a>
+                        </div>
+                      </div>
+
+                    </div>
+                  );
+                })
               )}
             </div>
 

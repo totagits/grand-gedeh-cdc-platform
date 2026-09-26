@@ -275,3 +275,29 @@ export interface OpportunityItem {
   compensationOrValue: string;
   description: string;
 }
+
+export type NotificationChannel = 'SMS' | 'Email' | 'Dual (SMS & Email)';
+
+export type NotificationEventType = 
+  | 'Registration Submitted' 
+  | 'Secretariat Approved & Accredited' 
+  | 'Tender Prequalification Issued' 
+  | 'Information Required'
+  | 'Concession Dispatch Issued';
+
+export interface NotificationDispatchRecord {
+  id: string;
+  recipientName: string;
+  recipientPhone: string;
+  recipientEmail: string;
+  entityType: 'workforce' | 'business';
+  entityId: string;
+  trackingNumber: string;
+  eventType: NotificationEventType;
+  smsMessage: string;
+  emailSubject: string;
+  emailBody: string;
+  timestamp: string;
+  gatewayStatus: 'Delivered via Orange/Lonestar GSM' | 'Sent via SMTP Relay';
+  verificationUrl: string;
+}
