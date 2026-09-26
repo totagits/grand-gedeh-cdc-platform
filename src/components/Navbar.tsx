@@ -134,15 +134,20 @@ export const Navbar: React.FC = () => {
 
             {/* Typography */}
             <div>
-              <div className="flex items-center space-x-2">
-                <span className="text-slate-900 dark:text-white font-black text-lg sm:text-xl md:text-2xl tracking-tight leading-tight group-hover:text-emerald-700 dark:group-hover:text-emerald-300 transition-colors">
-                  Grand Gedeh Citizens Development Council
+              <div className="flex flex-col">
+                <span className="text-slate-900 dark:text-white font-black text-base sm:text-lg md:text-xl tracking-tight leading-tight group-hover:text-emerald-700 dark:group-hover:text-emerald-300 transition-colors">
+                  Grand Gedeh Citizens Development
                 </span>
-                <span className="hidden lg:inline-block bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-xs font-black px-2 py-0.5 rounded border border-emerald-300 dark:border-emerald-700/80">
-                  GGCDC
-                </span>
+                <div className="flex items-center space-x-2 mt-0.5">
+                  <span className="text-slate-900 dark:text-white font-black text-base sm:text-lg md:text-xl tracking-tight leading-tight group-hover:text-emerald-700 dark:group-hover:text-emerald-300 transition-colors">
+                    Council
+                  </span>
+                  <span className="inline-block bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-[11px] font-black px-2 py-0.5 rounded border border-emerald-300 dark:border-emerald-700/80 tracking-wide">
+                    GGCDC
+                  </span>
+                </div>
               </div>
-              <p className="text-amber-600 dark:text-amber-400 text-xs font-semibold tracking-wide flex items-center space-x-1.5 mt-0.5">
+              <p className="text-amber-600 dark:text-amber-400 text-[11px] sm:text-xs font-semibold tracking-wide flex items-center space-x-1.5 mt-0.5">
                 <span>One County</span>
                 <span className="text-emerald-600 dark:text-emerald-500">•</span>
                 <span>One Voice</span>

@@ -14,7 +14,7 @@ import {
   Briefcase
 } from 'lucide-react';
 import { useApp } from '../utils/context';
-import logoImg from '../assets/logo.jpg';
+import { PhotoCarousel } from './PhotoCarousel';
 
 export const Hero: React.FC = () => {
   const { setActiveView } = useApp();
@@ -49,7 +49,7 @@ export const Hero: React.FC = () => {
         {/* Main Hero Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center pt-8 pb-4">
           
-          <div className="lg:col-span-8 space-y-6">
+          <div className="lg:col-span-7 space-y-6">
             <div className="space-y-2">
               <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
                 Grand Gedeh Citizens <br className="hidden sm:inline" />
@@ -106,46 +106,9 @@ export const Hero: React.FC = () => {
             </div>
           </div>
 
-          {/* Official Emblem & Sovereign Shield Card */}
-          <div className="lg:col-span-4 flex flex-col items-center justify-center">
-            <div className="relative p-5 bg-white dark:bg-gradient-to-b dark:from-amber-500/20 dark:via-slate-900/90 dark:to-emerald-950/90 rounded-3xl border-2 border-emerald-600/20 dark:border-amber-400/60 shadow-xl backdrop-blur-md max-w-sm w-full text-center">
-              
-              <div className="relative mx-auto w-40 h-40 mb-3 group">
-                <img 
-                  src={logoImg} 
-                  alt="Official Crest of Grand Gedeh Citizens Development Council" 
-                  className="w-full h-full rounded-full object-cover border-4 border-amber-500 shadow-xl group-hover:scale-105 transition-transform"
-                />
-                <div className="absolute inset-0 rounded-full border-2 border-emerald-900/10 dark:border-white/20"></div>
-              </div>
-
-              <h2 className="text-slate-900 dark:text-white font-extrabold text-base leading-snug">
-                Grand Gedeh Citizens Development Council
-              </h2>
-              <div className="inline-block my-1 text-[10px] font-black tracking-widest text-amber-800 dark:text-amber-400 uppercase bg-amber-50 dark:bg-amber-950/80 px-2.5 py-0.5 rounded border border-amber-300 dark:border-amber-600/40">
-                Official Institutional Seal
-              </div>
-              <p className="text-xs text-slate-600 dark:text-slate-300 mt-1 px-2 leading-relaxed">
-                Permanent civic governance structure spanning Mining, Forestry, Agriculture, Infrastructure, and Citizen Empowerment.
-              </p>
-
-              <div className="mt-4 pt-3 border-t border-slate-200 dark:border-slate-700/80 flex items-center justify-around text-xs text-slate-700 dark:text-slate-300">
-                <div>
-                  <span className="block font-black text-slate-900 dark:text-white">8 Arms</span>
-                  <span className="text-[10px] text-slate-500 dark:text-slate-400">Directorates</span>
-                </div>
-                <div className="h-6 w-px bg-slate-200 dark:bg-slate-700"></div>
-                <div>
-                  <span className="block font-black text-emerald-700 dark:text-emerald-400">Putu Group</span>
-                  <span className="text-[10px] text-slate-500 dark:text-slate-400">Flagship Unit</span>
-                </div>
-                <div className="h-6 w-px bg-slate-200 dark:bg-slate-700"></div>
-                <div>
-                  <span className="block font-black text-amber-600 dark:text-amber-400">Zwedru HQ</span>
-                  <span className="text-[10px] text-slate-500 dark:text-slate-400">Secretariat</span>
-                </div>
-              </div>
-            </div>
+          {/* Right Column: Interactive Photo Carousel */}
+          <div className="lg:col-span-5 flex flex-col items-center justify-center">
+            <PhotoCarousel />
           </div>
 
         </div>
