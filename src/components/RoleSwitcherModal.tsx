@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { 
   Users, 
   Building2, 
@@ -100,24 +100,24 @@ export const RoleSwitcherModal: React.FC<RoleSwitcherModalProps> = ({ isOpen, on
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm overflow-y-auto">
-      <div className="bg-slate-900 border border-slate-700 rounded-2xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl relative my-8">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-sm overflow-y-auto">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl relative my-8 text-slate-900 dark:text-white">
         
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 text-slate-400 hover:text-white bg-slate-800 p-1.5 rounded-full"
+          className="absolute top-5 right-5 text-slate-400 hover:text-slate-700 dark:hover:text-white bg-slate-100 dark:bg-slate-800 p-1.5 rounded-full"
         >
           <X className="w-5 h-5" />
         </button>
 
-        <div className="flex items-center space-x-2 text-xs font-bold text-amber-400 uppercase tracking-wider mb-2">
+        <div className="flex items-center space-x-2 text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider mb-2">
           <Lock className="w-4 h-4" />
           <span>Role-Based Access Control (RBAC) Switcher</span>
         </div>
-        <h2 className="text-xl sm:text-2xl font-extrabold text-white">
+        <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white">
           Simulate User Role & Institutional Permissions
         </h2>
-        <p className="text-xs text-slate-300 mt-1 mb-6">
+        <p className="text-xs text-slate-600 dark:text-slate-300 mt-1 mb-6">
           Switch roles to experience how the GGCDC platform adapts interface views, data access, and workspace tools 
           for each civic stakeholder group.
         </p>
@@ -136,27 +136,27 @@ export const RoleSwitcherModal: React.FC<RoleSwitcherModalProps> = ({ isOpen, on
                 }}
                 className={`p-4 rounded-xl border cursor-pointer transition-all flex flex-col sm:flex-row sm:items-start justify-between gap-3 ${
                   isSelected
-                    ? 'bg-slate-800/90 border-emerald-500 ring-2 ring-emerald-500/30 shadow-lg'
-                    : 'bg-slate-950/70 border-slate-800 hover:bg-slate-800/60'
+                    ? 'bg-slate-50 dark:bg-slate-800/90 border-emerald-500 ring-2 ring-emerald-500/30 shadow-md'
+                    : 'bg-white dark:bg-slate-950/70 border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/60'
                 }`}
               >
                 <div className="flex items-start space-x-3.5">
-                  <div className={`p-2.5 rounded-lg ${isSelected ? 'bg-emerald-600 text-white' : 'bg-slate-800 text-slate-400'}`}>
+                  <div className={`p-2.5 rounded-lg ${isSelected ? 'bg-emerald-600 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}`}>
                     <Icon className="w-5 h-5" />
                   </div>
                   <div>
                     <div className="flex items-center space-x-2">
-                      <h4 className="font-bold text-white text-sm">{r.title}</h4>
+                      <h4 className="font-bold text-slate-900 dark:text-white text-sm">{r.title}</h4>
                       {isSelected && (
                         <span className="bg-emerald-500 text-slate-950 font-black text-[9px] px-2 py-0.5 rounded-full uppercase">
                           Active Persona
                         </span>
                       )}
                     </div>
-                    <p className="text-xs text-slate-300 mt-1">{r.description}</p>
+                    <p className="text-xs text-slate-600 dark:text-slate-300 mt-1">{r.description}</p>
                     <div className="mt-2 flex flex-wrap gap-1">
                       {r.permissions.slice(0, 3).map((perm, idx) => (
-                        <span key={idx} className="bg-slate-900 text-slate-400 text-[10px] px-2 py-0.5 rounded border border-slate-800">
+                        <span key={idx} className="bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400 text-[10px] px-2 py-0.5 rounded border border-slate-200 dark:border-slate-800">
                           ✓ {perm}
                         </span>
                       ))}
@@ -174,10 +174,10 @@ export const RoleSwitcherModal: React.FC<RoleSwitcherModalProps> = ({ isOpen, on
           })}
         </div>
 
-        <div className="mt-6 pt-4 border-t border-slate-800 flex justify-end">
+        <div className="mt-6 pt-4 border-t border-slate-200 dark:border-slate-800 flex justify-end">
           <button
             onClick={onClose}
-            className="px-5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-lg"
+            className="px-5 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-lg"
           >
             Close
           </button>

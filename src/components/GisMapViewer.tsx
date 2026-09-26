@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { 
@@ -437,32 +437,32 @@ export const GisMapViewer: React.FC = () => {
   };
 
   return (
-    <section className="py-12 bg-slate-950 text-slate-100 min-h-[90vh]">
+    <section className="py-12 bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-[90vh] transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
           <div>
-            <div className="inline-flex items-center space-x-2 text-xs font-semibold text-emerald-400 bg-emerald-950/80 border border-emerald-800 px-3 py-1 rounded-full uppercase tracking-wider mb-2">
+            <div className="inline-flex items-center space-x-2 text-xs font-semibold text-emerald-800 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-950/80 border border-emerald-300 dark:border-emerald-800 px-3 py-1 rounded-full uppercase tracking-wider mb-2">
               <Compass className="w-3.5 h-3.5" />
               <span>Authentic Grand Gedeh County GIS Atlas</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
               Grand Gedeh County Development GIS Map
             </h2>
-            <p className="text-xs sm:text-sm text-slate-300 max-w-2xl mt-1">
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-2xl mt-1">
               Geographically accurate GIS map of Grand Gedeh County, Liberia. Centered on Zwedru with the Putu mountain 
               range, Cavalla River international boundary, forest concessions, and Corridor 3 highway.
             </p>
           </div>
 
-          <div className="flex items-center space-x-2 bg-slate-900 border border-slate-800 p-1.5 rounded-xl self-start md:self-auto">
+          <div className="flex items-center space-x-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-1.5 rounded-xl self-start md:self-auto shadow-sm">
             <button
               onClick={() => handleTileSwitch('streets')}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center space-x-1.5 ${
                 tileMode === 'streets'
                   ? 'bg-emerald-600 text-white shadow'
-                  : 'text-slate-400 hover:text-white'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
               <Compass className="w-3.5 h-3.5" />
@@ -473,8 +473,8 @@ export const GisMapViewer: React.FC = () => {
               onClick={() => handleTileSwitch('satellite')}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center space-x-1.5 ${
                 tileMode === 'satellite'
-                  ? 'bg-amber-600 text-slate-950 font-bold shadow'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-amber-500 text-slate-950 font-bold shadow'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
               <Satellite className="w-3.5 h-3.5" />
@@ -487,33 +487,33 @@ export const GisMapViewer: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           
           {/* Layer Selector */}
-          <div className="lg:col-span-3 bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-2xl">
-            <div className="flex items-center space-x-2 pb-3 border-b border-slate-800 text-xs font-bold uppercase tracking-wider text-slate-300">
-              <Layers className="w-4 h-4 text-emerald-400" />
+          <div className="lg:col-span-3 bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-xl text-slate-800 dark:text-slate-100">
+            <div className="flex items-center space-x-2 pb-3 border-b border-slate-200 dark:border-slate-800 text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+              <Layers className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
               <span>Active GIS Layers</span>
             </div>
 
             <div className="mt-4 space-y-2 text-xs">
               {[
-                { id: 'mining', label: 'Putu Iron Ore Concession', color: 'text-amber-400', icon: '⛏️' },
-                { id: 'forestry', label: 'Commercial Forest Concessions', color: 'text-emerald-400', icon: '🌲' },
-                { id: 'agriculture', label: 'Cavalla Agro-Industrial Zone', color: 'text-lime-400', icon: '🌾' },
-                { id: 'community', label: 'Customary Towns & Chiefdoms', color: 'text-sky-400', icon: '🏛️' },
-                { id: 'utility', label: 'CLSG 225kV Electrical Grid', color: 'text-yellow-400', icon: '⚡' },
-                { id: 'health', label: 'Martha Tubman Hospital & Clinics', color: 'text-red-400', icon: '🏥' },
-                { id: 'education', label: 'GGCC Campus & High Schools', color: 'text-indigo-400', icon: '🎓' },
+                { id: 'mining', label: 'Putu Iron Ore Concession', color: 'text-amber-500', icon: '⛏️' },
+                { id: 'forestry', label: 'Commercial Forest Concessions', color: 'text-emerald-600', icon: '🌲' },
+                { id: 'agriculture', label: 'Cavalla Agro-Industrial Zone', color: 'text-lime-600', icon: '🌾' },
+                { id: 'community', label: 'Customary Towns & Chiefdoms', color: 'text-sky-600', icon: '🏛️' },
+                { id: 'utility', label: 'CLSG 225kV Electrical Grid', color: 'text-amber-600', icon: '⚡' },
+                { id: 'health', label: 'Martha Tubman Hospital & Clinics', color: 'text-red-500', icon: '🏥' },
+                { id: 'education', label: 'GGCC Campus & High Schools', color: 'text-indigo-600', icon: '🎓' },
               ].map((item) => (
                 <button
                   key={item.id}
                   onClick={() => toggleLayer(item.id)}
-                  className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-800 transition-colors text-left"
+                  className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-left"
                 >
                   <span className="flex items-center space-x-2">
                     <span>{item.icon}</span>
-                    <span className="text-slate-200 font-medium">{item.label}</span>
+                    <span className="text-slate-800 dark:text-slate-200 font-medium">{item.label}</span>
                   </span>
-                  <span className={`w-3.5 h-3.5 rounded flex items-center justify-center text-[10px] ${
-                    activeLayers[item.id] ? 'bg-emerald-500 text-slate-950 font-bold' : 'border border-slate-600'
+                  <span className={`w-4 h-4 rounded flex items-center justify-center text-[10px] ${
+                    activeLayers[item.id] ? 'bg-emerald-600 text-white font-bold' : 'border border-slate-300 dark:border-slate-600'
                   }`}>
                     {activeLayers[item.id] ? '✓' : ''}
                   </span>
@@ -521,66 +521,66 @@ export const GisMapViewer: React.FC = () => {
               ))}
             </div>
 
-            <div className="mt-6 pt-4 border-t border-slate-800 text-[11px] text-slate-400 space-y-1.5">
+            <div className="mt-6 pt-4 border-t border-slate-200 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-400 space-y-1.5">
               <div className="flex items-center space-x-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
                 <span>Grand Gedeh County Boundary Line</span>
               </div>
               <div className="flex items-center space-x-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+                <span className="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
                 <span>Corridor 3 Asphalt Highway Corridor</span>
               </div>
             </div>
           </div>
 
           {/* Leaflet Map Canvas */}
-          <div className="lg:col-span-6 bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl relative">
+          <div className="lg:col-span-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-xl relative">
             <div 
               ref={mapContainerRef} 
               className="w-full h-[540px] z-10"
               style={{ background: '#020617' }}
             ></div>
             
-            <div className="p-3 bg-slate-950/90 border-t border-slate-800 text-[11px] text-slate-400 flex items-center justify-between">
+            <div className="p-3 bg-slate-50 dark:bg-slate-950/90 border-t border-slate-200 dark:border-slate-800 text-[11px] text-slate-600 dark:text-slate-400 flex items-center justify-between">
               <span>Projection: WGS84 • Centered: Zwedru (6.0719°N, 8.1322°W)</span>
-              <span className="text-emerald-400 font-semibold">Genuine Grand Gedeh Cartography</span>
+              <span className="text-emerald-700 dark:text-emerald-400 font-semibold">Genuine Grand Gedeh Cartography</span>
             </div>
           </div>
 
           {/* Linked Record Inspector Card */}
-          <div className="lg:col-span-3 bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-2xl">
+          <div className="lg:col-span-3 bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-xl text-slate-800 dark:text-slate-100">
             {selectedNode ? (
               <div className="space-y-4">
-                <div className="flex items-center justify-between pb-3 border-b border-slate-800">
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-amber-400 bg-amber-950/80 px-2.5 py-0.5 rounded border border-amber-800">
+                <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-amber-800 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/80 px-2.5 py-0.5 rounded border border-amber-200 dark:border-amber-800">
                     {selectedNode.categoryLabel}
                   </span>
-                  <span className="text-[11px] text-slate-400 font-mono">
+                  <span className="text-[11px] text-slate-500 dark:text-slate-400 font-mono">
                     {selectedNode.district}
                   </span>
                 </div>
 
                 <div>
-                  <h3 className="text-base font-bold text-white leading-snug">
+                  <h3 className="text-base font-bold text-slate-900 dark:text-white leading-snug">
                     {selectedNode.name}
                   </h3>
-                  <div className="text-[11px] font-mono text-emerald-400 mt-1">
+                  <div className="text-[11px] font-mono text-emerald-700 dark:text-emerald-400 mt-1">
                     Coordinates: {selectedNode.lat.toFixed(4)}°N, {selectedNode.lng.toFixed(4)}°W
                   </div>
-                  <p className="text-xs text-slate-300 mt-2 leading-relaxed">
+                  <p className="text-xs text-slate-600 dark:text-slate-300 mt-2 leading-relaxed">
                     {selectedNode.summary}
                   </p>
                 </div>
 
-                <div className="bg-slate-950/80 border border-slate-800 rounded-xl p-3.5 space-y-2">
-                  <div className="text-[11px] font-bold text-emerald-400 uppercase tracking-wider flex items-center space-x-1.5">
+                <div className="bg-slate-50 dark:bg-slate-950/80 border border-slate-200 dark:border-slate-800 rounded-xl p-3.5 space-y-2">
+                  <div className="text-[11px] font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider flex items-center space-x-1.5">
                     <Info className="w-3.5 h-3.5" />
                     <span>Concession & Civic Metadata</span>
                   </div>
-                  <ul className="text-xs text-slate-300 space-y-1.5">
+                  <ul className="text-xs text-slate-700 dark:text-slate-300 space-y-1.5">
                     {selectedNode.keyDetails.map((det, idx) => (
                       <li key={idx} className="flex items-start space-x-2">
-                        <span className="text-amber-400 font-bold">•</span>
+                        <span className="text-amber-500 dark:text-amber-400 font-bold">•</span>
                         <span>{det}</span>
                       </li>
                     ))}
@@ -607,7 +607,7 @@ export const GisMapViewer: React.FC = () => {
                         setSelectedCommunityId(selectedNode.linkedCommunityId || null);
                         setActiveView('communities');
                       }}
-                      className="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-semibold text-xs py-2 rounded-lg flex items-center justify-center space-x-1.5"
+                      className="w-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700 font-semibold text-xs py-2 rounded-lg flex items-center justify-center space-x-1.5 transition-colors"
                     >
                       <span>Open Community Profile</span>
                     </button>
@@ -615,7 +615,7 @@ export const GisMapViewer: React.FC = () => {
 
                   <button
                     onClick={() => setActiveView('commitments')}
-                    className="w-full text-center text-xs text-amber-400 hover:underline pt-1 font-medium"
+                    className="w-full text-center text-xs text-amber-700 dark:text-amber-400 hover:underline pt-1 font-medium"
                   >
                     View Related Commitments & Benefits
                   </button>

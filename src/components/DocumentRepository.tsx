@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { 
   FileText, 
   Search, 
@@ -44,33 +44,33 @@ export const DocumentRepository: React.FC = () => {
   };
 
   return (
-    <section className="py-12 bg-slate-950 text-slate-100 min-h-[85vh]">
+    <section className="py-12 bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-[85vh] transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header */}
         <div className="mb-8">
-          <div className="inline-flex items-center space-x-2 text-xs font-semibold text-emerald-400 bg-emerald-950/80 border border-emerald-800 px-3 py-1 rounded-full uppercase tracking-wider mb-2">
+          <div className="inline-flex items-center space-x-2 text-xs font-semibold text-emerald-800 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-950/80 border border-emerald-300 dark:border-emerald-800 px-3 py-1 rounded-full uppercase tracking-wider mb-2">
             <FileText className="w-3.5 h-3.5" />
             <span>Permanent Institutional Memory</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
             Grand Gedeh Central Document Repository
           </h2>
-          <p className="text-xs sm:text-sm text-slate-300 max-w-3xl mt-1">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-3xl mt-1">
             Preserving institutional memory across generations. Years from now, future Grand Gedeh leaders 
             will never have to wonder where the Putu agreement, forestry permits, or environmental audits are stored.
           </p>
         </div>
 
         {downloadNotice && (
-          <div className="mb-6 p-3 bg-emerald-950 border border-emerald-600 rounded-xl text-xs text-emerald-200 flex items-center space-x-2">
-            <CheckCircle className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+          <div className="mb-6 p-3 bg-emerald-100 dark:bg-emerald-950 border border-emerald-300 dark:border-emerald-600 rounded-xl text-xs text-emerald-900 dark:text-emerald-200 flex items-center space-x-2">
+            <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
             <span>{downloadNotice} (GGCDC Document Verification Stamp Verified).</span>
           </div>
         )}
 
         {/* Filter Toolbar */}
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 mb-6 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 mb-6 flex flex-col md:flex-row items-center justify-between gap-4 shadow-sm">
           <div className="relative w-full md:w-80">
             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
             <input
@@ -78,7 +78,7 @@ export const DocumentRepository: React.FC = () => {
               placeholder="Search document title, project, sector..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-slate-950 border border-slate-700 rounded-lg pl-9 pr-4 py-2 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-emerald-500"
+              className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg pl-9 pr-4 py-2 text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-emerald-500"
             />
           </div>
 
@@ -90,7 +90,7 @@ export const DocumentRepository: React.FC = () => {
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
                   selectedType === dt
                     ? 'bg-emerald-600 text-white font-semibold shadow'
-                    : 'bg-slate-950 text-slate-400 hover:text-white'
+                    : 'bg-slate-100 dark:bg-slate-950 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-transparent hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
                 {dt.split('(')[0]}
@@ -100,10 +100,10 @@ export const DocumentRepository: React.FC = () => {
         </div>
 
         {/* Documents Table View */}
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-xl">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-slate-950 text-slate-400 uppercase font-semibold border-b border-slate-800">
+              <thead className="bg-slate-50 dark:bg-slate-950 text-slate-600 dark:text-slate-400 uppercase font-semibold border-b border-slate-200 dark:border-slate-800">
                 <tr>
                   <th className="p-4">Document Title & Sector</th>
                   <th className="p-4 hidden md:table-cell">Associated Project</th>
@@ -113,42 +113,42 @@ export const DocumentRepository: React.FC = () => {
                   <th className="p-4 text-right">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800 text-slate-300">
+              <tbody className="divide-y divide-slate-200 dark:divide-slate-800 text-slate-700 dark:text-slate-300">
                 {filteredDocs.map((doc) => {
                   const isConfidential = doc.classification.includes('Confidential');
 
                   return (
-                    <tr key={doc.id} className="hover:bg-slate-800/60 transition-colors">
+                    <tr key={doc.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors">
                       <td className="p-4">
-                        <div className="font-bold text-white text-sm leading-snug">{doc.title}</div>
-                        <div className="text-slate-400 text-[11px] mt-0.5">{doc.sector}</div>
-                        <p className="text-[11px] text-slate-400 mt-1 line-clamp-1 max-w-md">{doc.summary}</p>
+                        <div className="font-bold text-slate-900 dark:text-white text-sm leading-snug">{doc.title}</div>
+                        <div className="text-slate-500 dark:text-slate-400 text-[11px] mt-0.5">{doc.sector}</div>
+                        <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 line-clamp-1 max-w-md">{doc.summary}</p>
                       </td>
 
                       <td className="p-4 hidden md:table-cell">
-                        <span className="font-medium text-amber-300">{doc.projectName}</span>
+                        <span className="font-medium text-amber-800 dark:text-amber-300">{doc.projectName}</span>
                       </td>
 
                       <td className="p-4 hidden sm:table-cell">
-                        <span className="bg-slate-950 text-slate-300 px-2 py-0.5 rounded border border-slate-800 font-mono text-[10px]">
+                        <span className="bg-slate-100 dark:bg-slate-950 text-slate-700 dark:text-slate-300 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-800 font-mono text-[10px]">
                           {doc.fileFormat}
                         </span>
                       </td>
 
                       <td className="p-4 whitespace-nowrap">
-                        <div className="font-mono text-slate-200">{doc.date}</div>
+                        <div className="font-mono text-slate-900 dark:text-slate-200">{doc.date}</div>
                         <div className="text-slate-500 text-[10px]">{doc.size}</div>
                       </td>
 
                       <td className="p-4 whitespace-nowrap">
                         {isConfidential ? (
-                          <span className="inline-flex items-center space-x-1 text-[10px] font-bold text-amber-300 bg-amber-950 border border-amber-800 px-2 py-0.5 rounded-full">
-                            <Lock className="w-3 h-3 text-amber-400" />
+                          <span className="inline-flex items-center space-x-1 text-[10px] font-bold text-amber-800 dark:text-amber-300 bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 px-2 py-0.5 rounded-full">
+                            <Lock className="w-3 h-3 text-amber-600 dark:text-amber-400" />
                             <span>Executive Review</span>
                           </span>
                         ) : (
-                          <span className="inline-flex items-center space-x-1 text-[10px] font-bold text-emerald-300 bg-emerald-950 border border-emerald-800 px-2 py-0.5 rounded-full">
-                            <Globe className="w-3 h-3 text-emerald-400" />
+                          <span className="inline-flex items-center space-x-1 text-[10px] font-bold text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800 px-2 py-0.5 rounded-full">
+                            <Globe className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
                             <span>Public Archive</span>
                           </span>
                         )}
@@ -157,7 +157,7 @@ export const DocumentRepository: React.FC = () => {
                       <td className="p-4 text-right whitespace-nowrap">
                         <button
                           onClick={() => handleDownload(doc.title)}
-                          className="bg-emerald-600/20 hover:bg-emerald-600/40 text-emerald-300 border border-emerald-700/60 font-semibold px-3 py-1.5 rounded-lg inline-flex items-center space-x-1 transition-colors"
+                          className="bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 dark:bg-emerald-600/20 dark:hover:bg-emerald-600/40 dark:text-emerald-300 dark:border-emerald-700/60 font-semibold px-3 py-1.5 rounded-lg inline-flex items-center space-x-1 transition-colors shadow-sm"
                         >
                           <Download className="w-3.5 h-3.5" />
                           <span>Download</span>
