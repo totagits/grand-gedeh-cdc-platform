@@ -33,7 +33,7 @@ export const BusinessRegistry: React.FC = () => {
   const { businesses, registerBusiness, setActiveView } = useApp();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSector, setSelectedSector] = useState<string>('All');
-  const [ownershipFilter, setOwnershipFilter] = useState<'All' | 'Qualified' | 'Under51'>('All');
+  const [ownershipFilter, setOwnershipFilter] = useState<'All' | 'Accredited'>('All');
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   const [registrationSuccess, setRegistrationSuccess] = useState<string | null>(null);
 
@@ -150,10 +150,8 @@ export const BusinessRegistry: React.FC = () => {
                           b.services.some(s => s.toLowerCase().includes(searchQuery.toLowerCase()));
     
     let matchesOwnership = true;
-    if (ownershipFilter === 'Qualified') {
-      matchesOwnership = b.isQualifiedGrandGedean || b.localOwnershipPct >= 51;
-    } else if (ownershipFilter === 'Under51') {
-      matchesOwnership = b.localOwnershipPct < 51;
+    if (ownershipFilter === 'Accredited') {
+      matchesOwnership = b.verificationStatus === 'Approved & Accredited' || b.isQualifiedGrandGedean;
     }
 
     return matchesSector && matchesSearch && matchesOwnership;
@@ -232,7 +230,7 @@ export const BusinessRegistry: React.FC = () => {
             <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-2xl">
               All listed enterprises undergo verification against Liberia Business Registry (LBR) records, 
               LRA tax compliance, and physical Grand Gedeh operations. 
-              <strong className="text-amber-400 ml-1">Partnerships must possess 51% or higher Grand Gedean ownership</strong> to qualify for local content preferential quotas.
+              <strong className="text-emerald-400 ml-1">All enterprises undergo formal secretarial audit</strong> to verify authentic local ownership and operating credentials.
             </p>
           </div>
 
@@ -242,7 +240,7 @@ export const BusinessRegistry: React.FC = () => {
               className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-lg flex items-center space-x-2 transition-all hover:scale-105"
             >
               <Plus className="w-4 h-4" />
-              <span>Register Enterprise</span>
+              <span>Register Local Enterprise</span>
             </button>
           </div>
         </div>
@@ -269,31 +267,31 @@ export const BusinessRegistry: React.FC = () => {
           </div>
         )}
 
-        {/* 51%+ Rule Policy Banner */}
-        <div className="bg-slate-950 border border-amber-500/40 rounded-xl p-4 mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-lg">
+        {/* Secretariat Accreditation Standard Banner */}
+        <div className="bg-slate-950 border border-emerald-800/60 rounded-xl p-4 mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-lg">
           <div className="flex items-center space-x-3">
-            <div className="p-2 rounded-lg bg-amber-950/80 border border-amber-600/60 text-amber-400">
-              <Percent className="w-5 h-5" />
+            <div className="p-2 rounded-lg bg-emerald-950/80 border border-emerald-600/60 text-emerald-400">
+              <ShieldCheck className="w-5 h-5" />
             </div>
             <div>
               <h4 className="text-xs font-bold text-white">
-                Statutory 51%+ Local Ownership Threshold
+                Central Secretariat Accreditation Standards
               </h4>
               <p className="text-[11px] text-slate-300">
-                In compliance with the Grand Gedeh Local Content Protocol (Art 4.2), partnerships must verify at least 51% Grand Gedean equity ownership to qualify for preferential bidding quotas under the Putu Iron Ore concession and infrastructure projects.
+                In compliance with the Grand Gedeh Local Content Protocol, all joint ventures, suppliers, and contractors undergo beneficial ownership auditing and verification by the Central Secretariat before receiving official accreditation for concession procurement and infrastructure projects.
               </p>
             </div>
           </div>
           <div className="flex items-center space-x-2 shrink-0">
             <button
-              onClick={() => setOwnershipFilter(ownershipFilter === 'Qualified' ? 'All' : 'Qualified')}
+              onClick={() => setOwnershipFilter(ownershipFilter === 'Accredited' ? 'All' : 'Accredited')}
               className={`text-xs font-bold px-3 py-1.5 rounded-lg border transition-colors ${
-                ownershipFilter === 'Qualified'
+                ownershipFilter === 'Accredited'
                   ? 'bg-emerald-600 text-white border-emerald-500'
                   : 'bg-slate-900 text-emerald-400 border-emerald-800 hover:bg-slate-800'
               }`}
             >
-              {ownershipFilter === 'Qualified' ? 'Showing: 51%+ Qualified' : 'Filter: 51%+ Qualified Only'}
+              {ownershipFilter === 'Accredited' ? 'Showing: Accredited Only' : 'Filter: Accredited Only'}
             </button>
           </div>
         </div>
@@ -337,9 +335,7 @@ export const BusinessRegistry: React.FC = () => {
             return (
               <div 
                 key={biz.id} 
-                className={`bg-slate-950/80 border rounded-2xl p-5 flex flex-col justify-between transition-all hover:border-slate-600 shadow-xl ${
-                  isQualified ? 'border-slate-800' : 'border-amber-900/60 bg-slate-950/40'
-                }`}
+                className="bg-slate-950/80 border border-slate-800 rounded-2xl p-5 flex flex-col justify-between transition-all hover:border-slate-700 shadow-xl"
               >
                 <div>
                   <div className="flex items-start justify-between gap-2 mb-2">
@@ -348,11 +344,9 @@ export const BusinessRegistry: React.FC = () => {
                     </span>
                     
                     {/* Status Pill */}
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center space-x-1 ${
+                    <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full flex items-center space-x-1 ${
                       isAccredited
                         ? 'bg-emerald-950 text-emerald-300 border border-emerald-700'
-                        : !isQualified
-                        ? 'bg-red-950 text-red-300 border border-red-700'
                         : 'bg-amber-950 text-amber-300 border border-amber-700'
                     }`}>
                       {isAccredited ? <CheckCircle2 className="w-3 h-3 text-emerald-400" /> : <Clock className="w-3 h-3 text-amber-400" />}
@@ -373,30 +367,30 @@ export const BusinessRegistry: React.FC = () => {
                     </span>
                   </div>
 
-                  {/* 51% Ownership Status Badge */}
-                  <div className="mt-3 p-2 bg-slate-900 border border-slate-800 rounded-lg text-xs space-y-1">
+                  {/* Secretariat Accreditation Badge */}
+                  <div className="mt-3 p-2.5 bg-slate-900 border border-slate-800 rounded-lg text-xs space-y-1.5">
                     <div className="flex items-center justify-between text-[11px]">
-                      <span className="text-slate-400">Grand Gedean Equity:</span>
-                      <span className={`font-bold ${isQualified ? 'text-emerald-400' : 'text-amber-400'}`}>
-                        {biz.localOwnershipPct ?? 100}%
+                      <span className="text-slate-400">Classification:</span>
+                      <span className="font-bold text-emerald-400">
+                        {biz.ownership.includes('100%') ? '100% Grand Gedean Owned' : 'Grand Gedean Partnership'}
                       </span>
                     </div>
                     <div className="flex items-center justify-between text-[10px]">
-                      <span className="text-slate-500">Ownership Type:</span>
+                      <span className="text-slate-500">Legal Entity:</span>
                       <span className="text-slate-300 truncate max-w-[170px]" title={biz.ownership}>
                         {biz.ownership}
                       </span>
                     </div>
                     <div className="pt-1 border-t border-slate-800 text-[10px]">
-                      {isQualified ? (
+                      {isAccredited ? (
                         <span className="text-emerald-400 font-semibold flex items-center space-x-1">
                           <Check className="w-3 h-3 text-emerald-400" />
-                          <span>Qualified Grand Gedean Business (51%+)</span>
+                          <span>Accredited Grand Gedean Enterprise</span>
                         </span>
                       ) : (
                         <span className="text-amber-400 font-semibold flex items-center space-x-1">
-                          <AlertTriangle className="w-3 h-3 text-amber-400" />
-                          <span>Non-Qualified: Below 51% Local Equity</span>
+                          <Clock className="w-3 h-3 text-amber-400" />
+                          <span>Under Secretariat Verification Audit</span>
                         </span>
                       )}
                     </div>
@@ -517,15 +511,15 @@ export const BusinessRegistry: React.FC = () => {
                   </div>
                 </div>
 
-                {/* 51%+ RULE: EQUITY PERCENTAGE & LIVE VALIDATION ALERT */}
+                {/* CONFIDENTIAL BENEFICIAL OWNERSHIP DISCLOSURE FOR SECRETARIAT AUDIT */}
                 <div className="p-3.5 bg-slate-950 border border-slate-800 rounded-xl space-y-2">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <div>
                       <label className="block text-white font-bold text-xs">
-                        Grand Gedean Ownership / Equity Percentage (%) *
+                        Grand Gedean Beneficial Ownership / Equity Share (%) *
                       </label>
                       <span className="text-[11px] text-slate-400">
-                        A partnership must possess 51% or higher to qualify as a Grand Gedean enterprise.
+                        Confidential regulatory disclosure audited by the Secretariat against Partnership Deed / Articles of Incorporation.
                       </span>
                     </div>
                     <div className="flex items-center space-x-2">
@@ -549,38 +543,24 @@ export const BusinessRegistry: React.FC = () => {
                               : 'Foreign / Non-Local Enterprise'
                           });
                         }}
-                        className="w-24 bg-slate-900 border border-amber-500 rounded-lg p-2 text-white font-bold text-center text-sm focus:outline-none focus:ring-1 focus:ring-amber-400"
+                        className="w-24 bg-slate-900 border border-slate-700 rounded-lg p-2 text-white font-bold text-center text-sm focus:outline-none focus:border-emerald-500"
                       />
                       <span className="text-white font-bold">%</span>
                     </div>
                   </div>
 
-                  {/* Real-time Qualification Notice */}
-                  {isFormQualified ? (
-                    <div className="p-2.5 bg-emerald-950/80 border border-emerald-500/80 rounded-lg flex items-start space-x-2 text-[11px]">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                      <div>
-                        <span className="font-bold text-emerald-300">
-                          QUALIFIED: Meets the statutory 51%+ Grand Gedean ownership requirement.
-                        </span>
-                        <p className="text-slate-300 mt-0.5">
-                          Eligible for preferential concession procurement quotas and official GGCDC accreditation upon Secretariat audit.
-                        </p>
-                      </div>
+                  {/* Confidential Secretarial Audit Advisory */}
+                  <div className="p-2.5 bg-slate-900/90 border border-slate-800 rounded-lg flex items-start space-x-2 text-[11px]">
+                    <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                    <div>
+                      <span className="font-bold text-slate-200">
+                        Confidential Secretarial Verification Audit
+                      </span>
+                      <p className="text-slate-400 mt-0.5">
+                        In accordance with the Grand Gedeh Local Content Protocol, all joint ventures and partnerships undergo beneficial ownership auditing by the Central Secretariat. Please upload your registered Partnership Deed, Articles of Incorporation, and Shareholder Registry below.
+                      </p>
                     </div>
-                  ) : (
-                    <div className="p-2.5 bg-amber-950/80 border border-amber-500/80 rounded-lg flex items-start space-x-2 text-[11px]">
-                      <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-                      <div>
-                        <span className="font-bold text-amber-300">
-                          NOT QUALIFIED: Grand Gedean ownership is {formData.localOwnershipPct}% (Below 51% threshold).
-                        </span>
-                        <p className="text-slate-300 mt-0.5">
-                          Per GGCDC Local Content Protocol Art 4.2, partnerships require at least 51% Grand Gedean equity to qualify as a local enterprise. You may register, but will not receive local content preferential quota accreditation.
-                        </p>
-                      </div>
-                    </div>
-                  )}
+                  </div>
                 </div>
 
                 {/* Location & Workforce */}
@@ -765,8 +745,8 @@ export const BusinessRegistry: React.FC = () => {
 
                 <div className="pt-4 flex items-center justify-between">
                   <span className="text-[11px] text-slate-400">
-                    Status: <strong className={isFormQualified ? 'text-emerald-400' : 'text-amber-400'}>
-                      {isFormQualified ? '51%+ Qualified Local Enterprise' : 'Ineligible for Preferential Local Quota (<51%)'}
+                    Status: <strong className="text-emerald-400">
+                      Ready for Secretarial Verification
                     </strong>
                   </span>
 

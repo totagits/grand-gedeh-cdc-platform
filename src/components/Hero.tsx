@@ -64,7 +64,7 @@ export const Hero: React.FC = () => {
 
             <p className="text-slate-200 text-base sm:text-lg leading-relaxed max-w-3xl">
               <strong>GGCDC is the premier advocate for Grand Gedeans</strong>, building the authoritative countywide and diaspora 
-              databases of certified workers, engineers, artisans, and 51%+ locally-owned businesses. 
+              databases of certified workers, engineers, artisans, and registered local businesses. 
               We operate the Grand Gedeh Development Intelligence, Participation & Accountability Platform to guarantee 
               priority local employment, fair concession procurement quotas, and accountable wealth creation across the county.
             </p>
@@ -85,7 +85,7 @@ export const Hero: React.FC = () => {
                 className="inline-flex items-center space-x-2 bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-xs sm:text-sm px-5 py-3 rounded-xl shadow-xl hover:shadow-emerald-600/30 transition-all hover:scale-105"
               >
                 <Briefcase className="w-4 h-4 text-emerald-200" />
-                <span>Register 51%+ Local Business</span>
+                <span>Register Local Enterprise</span>
               </button>
 
               <button

@@ -183,7 +183,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       trackingNumber: trackingNum,
       isQualifiedGrandGedean: isQualified,
       verifiedLocal: false,
-      verificationStatus: isQualified ? 'Pending Secretarial Audit' : 'Disqualified (<51% Local Equity)',
+      verificationStatus: 'Pending Secretarial Audit',
       registrationDate: new Date().toISOString().split('T')[0],
       uploadedCredentials: businessData.uploadedCredentials || []
     };
