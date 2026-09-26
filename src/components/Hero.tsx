@@ -47,7 +47,7 @@ export const Hero: React.FC = () => {
         </div>
 
         {/* Main Hero Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center pt-8 pb-4">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:items-stretch items-center pt-8 pb-4">
           
           <div className="lg:col-span-7 space-y-6">
             <div className="space-y-2">
@@ -108,8 +108,8 @@ export const Hero: React.FC = () => {
           </div>
 
           {/* Right Column: Interactive Photo Carousel */}
-          <div className="lg:col-span-5 flex flex-col items-center justify-center">
-            <PhotoCarousel />
+          <div className="lg:col-span-5 flex flex-col justify-start h-full">
+            <PhotoCarousel className="h-full" />
           </div>
 
         </div>

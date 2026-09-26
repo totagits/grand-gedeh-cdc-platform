@@ -83,7 +83,11 @@ export const CAROUSEL_SLIDES: CarouselSlide[] = [
   }
 ];
 
-export const PhotoCarousel: React.FC = () => {
+interface PhotoCarouselProps {
+  className?: string;
+}
+
+export const PhotoCarousel: React.FC<PhotoCarouselProps> = ({ className = '' }) => {
   const [currentIndex, setCurrentIndex] = useState(4); // Default to slide 5 (Alluvial Gold Mining) as in user reference
   const [isPlaying, setIsPlaying] = useState(true);
   const timerRef = useRef<any>(null);
@@ -115,10 +119,10 @@ export const PhotoCarousel: React.FC = () => {
   const currentSlide = CAROUSEL_SLIDES[currentIndex];
 
   return (
-    <div className="relative w-full max-w-xl mx-auto rounded-3xl overflow-hidden border-2 border-emerald-600/30 dark:border-amber-500/40 shadow-2xl bg-slate-950 group">
+    <div className={`relative w-full max-w-xl mx-auto rounded-3xl overflow-hidden border-2 border-emerald-600/30 dark:border-amber-500/40 shadow-2xl bg-slate-950 group h-full flex flex-col ${className}`}>
       
       {/* Aspect Ratio Box with Image */}
-      <div className="relative h-[360px] sm:h-[420px] w-full overflow-hidden bg-slate-950">
+      <div className="relative h-[360px] sm:h-[420px] lg:h-full min-h-[380px] w-full overflow-hidden bg-slate-950 flex-1">
         {CAROUSEL_SLIDES.map((slide, idx) => (
           <div
             key={slide.id}
