@@ -24,7 +24,8 @@ export const ConcessionRegistry: React.FC = () => {
     setSelectedProjectId, 
     setActiveView, 
     setSelectedCommunityId,
-    setIsConcessionModalOpen
+    setIsConcessionModalOpen,
+    currentUser
   } = useApp();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSector, setSelectedSector] = useState<string>('All');
@@ -66,14 +67,16 @@ export const ConcessionRegistry: React.FC = () => {
 
             {/* Executive KPI Stat Badges & Ingestion Trigger */}
             <div className="flex flex-col sm:flex-row lg:flex-col gap-2.5 shrink-0">
-              <button
-                type="button"
-                onClick={() => setIsConcessionModalOpen(true)}
-                className="w-full py-2.5 px-4 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-black text-xs flex items-center justify-center space-x-1.5 shadow-lg transition-transform hover:scale-105 active:scale-95"
-              >
-                <Building2 className="w-4 h-4 text-slate-950" />
-                <span>+ Ingest New Concession / Treaty</span>
-              </button>
+              {currentUser?.role === 'secretariat' && (
+                <button
+                  type="button"
+                  onClick={() => setIsConcessionModalOpen(true)}
+                  className="w-full py-2.5 px-4 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-black text-xs flex items-center justify-center space-x-1.5 shadow-lg transition-transform hover:scale-105 active:scale-95"
+                >
+                  <Building2 className="w-4 h-4 text-slate-950" />
+                  <span>+ Ingest New Concession / Treaty</span>
+                </button>
+              )}
 
               <div className="grid grid-cols-2 lg:grid-cols-1 gap-2.5">
                 <div className="bg-slate-900/80 border border-emerald-500/30 rounded-2xl p-3 backdrop-blur-md">
@@ -131,13 +134,15 @@ export const ConcessionRegistry: React.FC = () => {
                 {sec}
               </button>
             ))}
-            <button
-              type="button"
-              onClick={() => setIsConcessionModalOpen(true)}
-              className="px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap bg-emerald-600 hover:bg-emerald-500 text-white shadow-sm flex items-center gap-1 transition-all ml-1"
-            >
-              <span>+ Ingest</span>
-            </button>
+            {currentUser?.role === 'secretariat' && (
+              <button
+                type="button"
+                onClick={() => setIsConcessionModalOpen(true)}
+                className="px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap bg-emerald-600 hover:bg-emerald-500 text-white shadow-sm flex items-center gap-1 transition-all ml-1"
+              >
+                <span>+ Ingest</span>
+              </button>
+            )}
           </div>
         </div>
 

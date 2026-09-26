@@ -247,22 +247,24 @@ export const Navbar: React.FC = () => {
                         </div>
                       </button>
 
-                      <button
-                        onClick={() => {
-                          setPlatformsDropdownOpen(false);
-                          setIsConcessionModalOpen(true);
-                        }}
-                        className="w-full text-left flex items-start space-x-2.5 p-2 rounded-xl text-xs bg-amber-50 hover:bg-amber-100 dark:bg-amber-950/40 dark:hover:bg-amber-900/60 border border-amber-300 dark:border-amber-800 transition-colors"
-                      >
-                        <Building2 className="w-4 h-4 text-amber-600 dark:text-amber-400 mt-0.5 shrink-0" />
-                        <div>
-                          <div className="font-bold text-xs text-amber-900 dark:text-amber-300 flex items-center gap-1.5">
-                            <span>+ Ingest Concession Treaty</span>
-                            <span className="text-[9px] px-1.5 py-0.2 rounded bg-amber-500 text-slate-950 font-black">NEW</span>
+                      {currentUser?.role === 'secretariat' && (
+                        <button
+                          onClick={() => {
+                            setPlatformsDropdownOpen(false);
+                            setIsConcessionModalOpen(true);
+                          }}
+                          className="w-full text-left flex items-start space-x-2.5 p-2 rounded-xl text-xs bg-amber-50 hover:bg-amber-100 dark:bg-amber-950/40 dark:hover:bg-amber-900/60 border border-amber-300 dark:border-amber-800 transition-colors"
+                        >
+                          <Building2 className="w-4 h-4 text-amber-600 dark:text-amber-400 mt-0.5 shrink-0" />
+                          <div>
+                            <div className="font-bold text-xs text-amber-900 dark:text-amber-300 flex items-center gap-1.5">
+                              <span>+ Ingest Concession Treaty</span>
+                              <span className="text-[9px] px-1.5 py-0.2 rounded bg-amber-500 text-slate-950 font-black">SECRETARIAT</span>
+                            </div>
+                            <div className="text-[10px] text-amber-700/80 dark:text-amber-400/80">Statutory MDA &amp; FMC Ingestion Desk</div>
                           </div>
-                          <div className="text-[10px] text-amber-700/80 dark:text-amber-400/80">Statutory MDA &amp; FMC Ingestion Desk</div>
-                        </div>
-                      </button>
+                        </button>
+                      )}
 
                       <button
                         onClick={() => handleNav('commitments')}

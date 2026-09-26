@@ -17,7 +17,7 @@ import { useApp } from '../utils/context';
 import { PhotoCarousel } from './PhotoCarousel';
 
 export const Hero: React.FC = () => {
-  const { setActiveView, setIsConcessionModalOpen } = useApp();
+  const { setActiveView } = useApp();
 
   return (
     <div className="relative overflow-hidden bg-gradient-to-b from-emerald-50/70 via-slate-50 to-white dark:from-slate-950 dark:via-emerald-950/80 dark:to-slate-950 text-slate-800 dark:text-white border-b border-slate-200 dark:border-amber-500/30 transition-colors">
@@ -103,15 +103,6 @@ export const Hero: React.FC = () => {
               >
                 <Building2 className="w-4 h-4 text-amber-600 dark:text-amber-400" />
                 <span>Putu Concession Case Study</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setIsConcessionModalOpen(true)}
-                className="inline-flex items-center space-x-2 bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-black text-xs sm:text-sm px-5 py-3 rounded-xl shadow-lg transition-all hover:scale-105 active:scale-95 border-2 border-amber-300 ring-2 ring-amber-400/30"
-              >
-                <Building2 className="w-4 h-4 text-slate-950" />
-                <span>+ Ingest New Concession / Treaty</span>
               </button>
             </div>
           </div>
