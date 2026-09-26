@@ -133,11 +133,13 @@ export const PhotoCarousel: React.FC<PhotoCarouselProps> = ({ className = '' }) 
             <img
               src={slide.imageUrl}
               alt={slide.alt}
-              className="w-full h-full object-cover transform scale-105 group-hover:scale-100 transition-transform duration-1000"
+              loading={idx === 0 || idx === currentIndex ? "eager" : "lazy"}
+              className="w-full h-full object-cover object-center transition-transform duration-700 filter contrast-[1.02]"
+              style={{ imageRendering: 'auto' }}
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
                 const fileName = slide.imageUrl.split('/').pop();
-                target.src = `https://totagits.github.io/GGCDC/images/${fileName}`;
+                target.src = `https://totagits.github.io/grand-gedeh-cdc-platform/images/${fileName}`;
               }}
             />
           </div>
